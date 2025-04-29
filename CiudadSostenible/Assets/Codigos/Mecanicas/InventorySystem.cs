@@ -5,9 +5,8 @@ public class InventorySystem : MonoBehaviour
 {
     public List<InventorySlot> slots;
 
-    private void Start() // Añade este método
+    private void Start()
     {
-        // Limpia todos los slots al inicio
         foreach (var slot in slots)
         {
             slot.ClearSlot();

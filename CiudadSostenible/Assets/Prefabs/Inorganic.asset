@@ -12,5 +12,5 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: d3e01e06551dd2a489f97638cf5b3c99, type: 3}
   m_Name: Inorganic
   m_EditorClassIdentifier: 
-  itemName: Inorganico
-  icon: {fileID: 21300000, guid: 96cc9f43e25e0c2499c42879930caae0, type: 3}
+  itemName: Organico
+  icon: {fileID: 21300000, guid: a761a09b4d082e641811a657f1d0daba, type: 3}

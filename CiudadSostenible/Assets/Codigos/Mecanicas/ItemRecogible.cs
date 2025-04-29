@@ -21,14 +21,12 @@ public class ItemRecogible : MonoBehaviour
             {
                 inventario.AddItem(itemData);
 
-                // 🔥 AVISAR AL SPAWNER que se recogió basura
                 BasuraSpawner spawner = FindObjectOfType<BasuraSpawner>();
                 if (spawner != null)
                 {
                     spawner.RecogerBasura(itemData.itemName);
                 }
 
-                // 🔥 Ocultar mensaje de recoger
                 if (uiRecolectar != null)
                 {
                     uiRecolectar.OcultarMensaje();
