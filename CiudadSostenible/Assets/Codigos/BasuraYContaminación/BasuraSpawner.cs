@@ -15,7 +15,7 @@ public class TipoBasura
 public class BasuraSpawner : MonoBehaviour
 {
     [Header("Tipos de Basura")]
-    public List<TipoBasura> tiposBasura; // Lista de tipos de basura
+    public List<TipoBasura> tiposBasura;
 
     [Header("Configuración de Spawn")]
     public float alturaBasura = 0.133f;
@@ -26,13 +26,6 @@ public class BasuraSpawner : MonoBehaviour
 
     [Header("UI")]
     public Slider sliderSuciedad;
-    public TMP_Text textoContadoresBasura;
-
-    [Header("Contadores de Basura")]
-    public int contadorPapel = 0;
-    public int contadorPlastico = 0;
-    public int contadorOrganico = 0;
-    public int contadorVidrio = 0;
 
     private int basuraActual = 0;
     private float tiempoEntreSpawns;
@@ -64,7 +57,6 @@ public class BasuraSpawner : MonoBehaviour
 
     void GenerarBasura()
     {
-        // Elegir basura basado en probabilidad
         GameObject prefabElegido = ElegirPrefabPorProbabilidad();
 
         if (prefabElegido == null)
@@ -107,32 +99,12 @@ public class BasuraSpawner : MonoBehaviour
             }
         }
 
-        return null; // Esto no debería pasar si las probabilidades están bien configuradas
+        return null;
     }
 
     public void RecogerBasura(string tipo)
     {
         basuraActual = Mathf.Max(0, basuraActual - 1);
-
-        switch (tipo)
-        {
-            case "Papel":
-                contadorPapel++;
-                break;
-            case "Plastico":
-                contadorPlastico++;
-                break;
-            case "Organico":
-                contadorOrganico++;
-                break;
-            case "Vidrio":
-                contadorVidrio++;
-                break;
-            default:
-                Debug.LogWarning("Tipo de basura no reconocido: " + tipo);
-                break;
-        }
-
         ActualizarUI();
     }
 
@@ -141,15 +113,6 @@ public class BasuraSpawner : MonoBehaviour
         if (sliderSuciedad != null)
         {
             sliderSuciedad.value = (float)basuraActual / cantidadMaximaBasura;
-        }
-
-        if (textoContadoresBasura != null)
-        {
-            textoContadoresBasura.text =
-                "Papel: " + contadorPapel + "\n" +
-                "Plástico: " + contadorPlastico + "\n" +
-                "Orgánico: " + contadorOrganico + "\n" +
-                "Vidrio: " + contadorVidrio;
         }
     }
 }

@@ -13,9 +13,10 @@ GameObject:
   - component: {fileID: 3150950939724769709}
   - component: {fileID: 2007852365433886127}
   - component: {fileID: -9170112035245157423}
+  - component: {fileID: -6633900154237642244}
   m_Layer: 0
   m_Name: Basura1
-  m_TagString: Untagged
+  m_TagString: Inorganico
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -113,9 +114,22 @@ MonoBehaviour:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 3147880471640370871}
-  m_Enabled: 1
+  m_Enabled: 0
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: d6b6552b7459e7f48bfc5beb0c263b08, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
   tipoBasura: Organico
+--- !u!114 &-6633900154237642244
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 3147880471640370871}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 82018dccf9ddab248ab11587b8debf3e, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  itemData: {fileID: 11400000, guid: 7027b3c6cb2e586478053ccd21cf62d0, type: 2}

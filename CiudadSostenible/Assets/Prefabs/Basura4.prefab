@@ -13,9 +13,10 @@ GameObject:
   - component: {fileID: 6790817599435941012}
   - component: {fileID: 5315355509257443566}
   - component: {fileID: 2862832016274164825}
+  - component: {fileID: 5505597361221190666}
   m_Layer: 0
   m_Name: Basura4
-  m_TagString: Untagged
+  m_TagString: Paper
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -119,3 +120,16 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   tipoBasura: Papel
+--- !u!114 &5505597361221190666
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 4196289293189380467}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 82018dccf9ddab248ab11587b8debf3e, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  itemData: {fileID: 11400000, guid: dc24f1464e8b016459b86de50b31f487, type: 2}

@@ -4,31 +4,44 @@ using TMPro;
 
 public class InventorySlot : MonoBehaviour
 {
-    public Image itemIcon;    // Arrastra el Image del icono aquí
-    public TextMeshProUGUI quantityText; // Arrastra el Text de cantidad aquí
-    private string itemName;  // Para rastrear el nombre del ítem
+    public Image itemIcon;
+    public TextMeshProUGUI quantityText;
 
-    // Método para actualizar el slot
-    public void UpdateSlot(string newItemName, int quantity, Sprite icon)
+    private ItemData currentItem;
+    private int currentQuantity = 0;
+
+    public void UpdateSlot(ItemData item, int quantity)
     {
-        itemName = newItemName;
-        itemIcon.sprite = icon;
+        currentItem = item;
+        currentQuantity = quantity;
+
+        itemIcon.sprite = item.icon;
+        itemIcon.enabled = true;
         quantityText.text = quantity.ToString();
-        itemIcon.enabled = true; // Asegúrate de que el icono sea visible
     }
 
-    // Método para limpiar el slot
+    public void AddQuantity(int quantity)
+    {
+        currentQuantity += quantity;
+        quantityText.text = currentQuantity.ToString();
+    }
+
     public void ClearSlot()
     {
-        itemName = null;
+        currentItem = null;
+        currentQuantity = 0;
         itemIcon.sprite = null;
-        quantityText.text = "";
         itemIcon.enabled = false;
+        quantityText.text = "";
     }
 
-    // Método para verificar si el slot está vacío
     public bool IsEmpty()
     {
-        return itemIcon.sprite == null; // O también: string.IsNullOrEmpty(itemName);
+        return currentItem == null;
+    }
+
+    public bool HasItem(ItemData item)
+    {
+        return currentItem == item;
     }
 }

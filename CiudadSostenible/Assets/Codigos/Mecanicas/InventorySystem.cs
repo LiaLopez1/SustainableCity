@@ -1,70 +1,49 @@
 using System.Collections.Generic;
 using UnityEngine;
-using TMPro;
-
 
 public class InventorySystem : MonoBehaviour
 {
-    public List<InventorySlot> slots; // Lista de slots (arrástralos desde el Inspector)
+    public List<InventorySlot> slots;
 
-    void Start()
+    private void Start() // Añade este método
     {
-        // Inicializa todos los slots como vacíos
+        // Limpia todos los slots al inicio
         foreach (var slot in slots)
         {
             slot.ClearSlot();
         }
     }
 
-    public void AddItem(string itemName, int quantity, Sprite icon)
+    public void AddItem(ItemData item)
     {
-        Debug.Log($"Intentando añadir: {itemName}"); // Verifica si el método se ejecuta
-
-        if (icon == null) Debug.LogError("¡El icono es null!");
-        else Debug.Log($"Icono asignado: {icon.name}");
-
-        foreach (InventorySlot slot in slots)
+        foreach (var slot in slots)
         {
-            if (slot == null)
+            if (!slot.IsEmpty() && slot.HasItem(item))
             {
-                Debug.LogError("¡Un slot en la lista es null!");
-                continue;
-            }
-
-            if (slot.itemIcon == null) Debug.LogError("¡itemIcon en un slot es null!");
-            if (slot.quantityText == null) Debug.LogError("¡quantityText en un slot es null!");
-
-            if (slot.IsEmpty() || slot.itemIcon.sprite == icon)
-            {
-                slot.UpdateSlot(itemName, quantity, icon);
-                Debug.Log($"Item añadido al slot: {slot.name}");
+                slot.AddQuantity(1);
                 return;
             }
         }
-        Debug.LogWarning("¡Inventario lleno!");
-    }
-    //public void AddItem(string itemName, int quantity, Sprite icon)
-    //{
-    //    foreach (InventorySlot slot in slots)
-    //    {
-    //        // Si el slot está vacío o ya tiene el mismo item
-    //        if (slot.IsEmpty() || slot.itemIcon.sprite == icon)
-    //        {
-    //            slot.UpdateSlot(itemName, quantity, icon);
-    //            return;
-    //        }
-    //    }
-    //    Debug.LogWarning("¡Inventario lleno!");
-    //}
 
-
- 
-    void Update()
-    {
-        if (Input.GetKeyDown(KeyCode.T)) // Al presionar "T", añade plástico al inventario
+        foreach (var slot in slots)
         {
-            Sprite plasticIcon = Resources.Load<Sprite>("Sprites/PlasticIcon");
-            AddItem("Plástico", 1, plasticIcon);
+            if (slot.IsEmpty())
+            {
+                slot.UpdateSlot(item, 1);
+                return;
+            }
+        }
+
+        Debug.LogWarning("Inventario lleno");
+    }
+
+    public ItemData Plastic;
+
+    private void Update()
+    {
+        if (Input.GetKeyDown(KeyCode.T))
+        {
+            AddItem(Plastic);
         }
     }
 }
