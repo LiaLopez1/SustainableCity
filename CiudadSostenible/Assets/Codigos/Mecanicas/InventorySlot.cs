@@ -1,29 +1,49 @@
-using UnityEngine;
+﻿using UnityEngine;
 using UnityEngine.UI;
 using TMPro;
 
 public class InventorySlot : MonoBehaviour
 {
+    [Header("Referencias UI")]
     public Image itemIcon;
     public TextMeshProUGUI quantityText;
 
-    private ItemData currentItem;
-    private int currentQuantity = 0;
+    [Header("Datos del Ítem")]
+    [SerializeField] private ItemData currentItem;
+    [SerializeField] private int currentQuantity = 0;
+
+    // Métodos públicos para acceso controlado
+    public ItemData GetItemData() => currentItem;
+    public int GetQuantity() => currentQuantity;
+    public bool IsEmpty() => currentItem == null;
+    public bool ContainsItem(ItemData item) => currentItem == item;
 
     public void UpdateSlot(ItemData item, int quantity)
     {
         currentItem = item;
         currentQuantity = quantity;
-
-        itemIcon.sprite = item.icon;
-        itemIcon.enabled = true;
-        quantityText.text = quantity.ToString();
+        UpdateUI();
     }
 
-    public void AddQuantity(int quantity)
+    public bool AddQuantity(int amount)
     {
-        currentQuantity += quantity;
-        quantityText.text = currentQuantity.ToString();
+        if (currentItem == null || amount <= 0) return false;
+
+        currentQuantity += amount;
+        UpdateUI();
+        return true;
+    }
+
+    public bool RemoveQuantity(int amount)
+    {
+        if (currentItem == null || currentQuantity < amount) return false;
+
+        currentQuantity -= amount;
+        if (currentQuantity <= 0)
+            ClearSlot();
+        else
+            UpdateUI();
+        return true;
     }
 
     public void ClearSlot()
@@ -35,13 +55,10 @@ public class InventorySlot : MonoBehaviour
         quantityText.text = "";
     }
 
-    public bool IsEmpty()
+    private void UpdateUI()
     {
-        return currentItem == null;
-    }
-
-    public bool HasItem(ItemData item)
-    {
-        return currentItem == item;
+        itemIcon.sprite = currentItem.icon;
+        itemIcon.enabled = true;
+        quantityText.text = currentQuantity > 1 ? currentQuantity.ToString() : "";
     }
 }

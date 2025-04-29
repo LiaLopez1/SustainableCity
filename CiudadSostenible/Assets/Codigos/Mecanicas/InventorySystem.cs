@@ -7,42 +7,71 @@ public class InventorySystem : MonoBehaviour
 
     private void Start()
     {
+        InitializeSlots();
+    }
+
+    private void InitializeSlots()
+    {
         foreach (var slot in slots)
         {
             slot.ClearSlot();
         }
     }
 
-    public void AddItem(ItemData item)
+    public bool AddItem(ItemData item, int quantity = 1)
     {
+        // Primero buscar slots con el mismo ítem que no estén llenos
         foreach (var slot in slots)
         {
-            if (!slot.IsEmpty() && slot.HasItem(item))
+            if (!slot.IsEmpty() && slot.ContainsItem(item))
             {
-                slot.AddQuantity(1);
-                return;
+                int availableSpace = item.maxStack - slot.GetQuantity();
+                if (availableSpace > 0)
+                {
+                    int toAdd = Mathf.Min(availableSpace, quantity);
+                    slot.AddQuantity(toAdd);
+                    quantity -= toAdd;
+                    if (quantity <= 0) return true;
+                }
             }
         }
 
+        // Luego buscar slots vacíos
         foreach (var slot in slots)
         {
             if (slot.IsEmpty())
             {
-                slot.UpdateSlot(item, 1);
-                return;
+                int toAdd = Mathf.Min(quantity, item.maxStack);
+                slot.UpdateSlot(item, toAdd);
+                quantity -= toAdd;
+                if (quantity <= 0) return true;
             }
         }
 
-        Debug.LogWarning("Inventario lleno");
+        Debug.LogWarning($"No hay espacio para {quantity} unidades de {item.itemName}");
+        return false;
     }
 
-    public ItemData Plastic;
-
-    private void Update()
+    public bool RemoveItem(ItemData item, int quantity = 1)
     {
-        if (Input.GetKeyDown(KeyCode.T))
+        int remaining = quantity;
+
+        for (int i = slots.Count - 1; i >= 0; i--)
         {
-            AddItem(Plastic);
+            if (!slots[i].IsEmpty() && slots[i].ContainsItem(item))
+            {
+                int available = slots[i].GetQuantity();
+                int toRemove = Mathf.Min(available, remaining);
+
+                if (slots[i].RemoveQuantity(toRemove))
+                {
+                    remaining -= toRemove;
+                    if (remaining <= 0) return true;
+                }
+            }
         }
+
+        Debug.LogWarning($"No se encontraron {quantity} unidades de {item.itemName} para remover");
+        return false;
     }
 }

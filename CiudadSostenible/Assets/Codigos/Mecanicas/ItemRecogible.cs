@@ -46,7 +46,7 @@ public class ItemRecogible : MonoBehaviour
 
             if (uiRecolectar != null)
             {
-                uiRecolectar.MostrarMensaje("Presiona [E] para recoger");
+                uiRecolectar.MostrarMensaje("Recoger");
             }
         }
     }
