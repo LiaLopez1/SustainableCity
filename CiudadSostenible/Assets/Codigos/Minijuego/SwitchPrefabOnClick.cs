@@ -11,14 +11,14 @@ public class SwitchPrefabOnClick : MonoBehaviour
         itemData = data;
     }
 
-    private void OnMouseDown() // Se ejecuta al hacer clic con el mouse
+    private void OnMouseDown() 
     {
         if (itemData == null || itemData.alternatePrefab == null) return;
 
         // Cambia entre prefabs
         GameObject newPrefab = isAlternate ? itemData.worldPrefab : itemData.alternatePrefab;
         Instantiate(newPrefab, transform.position, transform.rotation);
-        Destroy(gameObject); // Destruye el objeto actual
+        Destroy(gameObject); 
         isAlternate = !isAlternate; // Alterna el estado
     }
 }
