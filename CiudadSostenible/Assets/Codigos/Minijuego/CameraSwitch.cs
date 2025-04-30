@@ -4,23 +4,26 @@ public class CameraSwitch : MonoBehaviour
 {
     [Header("Referencias")]
     public GameObject panelUI;
+    public Canvas specialViewCanvas;
     public Camera mainCamera;
-    public Camera specialCamera;
-    public PlayerMove playerMovement; // Referencia al controlador de movimiento
+    public PlayerMove playerMovement;
 
     [Header("Configuración")]
     public KeyCode switchKey = KeyCode.E;
     public KeyCode exitKey = KeyCode.Escape;
 
     private bool canSwitch = false;
+    private Camera specialCamera;
 
     private void Start()
     {
         mainCamera.enabled = true;
-        specialCamera.enabled = false;
-        panelUI.SetActive(false);
+        specialViewCanvas.gameObject.SetActive(false);
 
-        // Asegurarse de que el jugador puede moverse al inicio
+        specialCamera = specialViewCanvas.GetComponentInChildren<Camera>();
+        if (specialCamera != null)
+            specialCamera.enabled = false;
+
         if (playerMovement != null)
             playerMovement.EnableMovement(true);
     }
@@ -36,45 +39,51 @@ public class CameraSwitch : MonoBehaviour
 
     private void Update()
     {
-        if (canSwitch && Input.GetKeyDown(switchKey) && !specialCamera.enabled)
-        {
-            SwitchToSpecialCamera();
-        }
+        if (canSwitch && Input.GetKeyDown(switchKey) && !specialViewCanvas.gameObject.activeSelf)
+            SwitchToSpecialView();
 
-        if (Input.GetKeyDown(exitKey))
-        {
-            ReturnToMainCamera();
-        }
+        if (Input.GetKeyDown(exitKey) && specialViewCanvas.gameObject.activeSelf)
+            ReturnToMainView();
     }
 
-    private void SwitchToSpecialCamera()
+    private void SwitchToSpecialView()
     {
-        mainCamera.enabled = false;
-        specialCamera.enabled = true;
-        panelUI.SetActive(false);
+        specialViewCanvas.gameObject.SetActive(true);
+        if (specialCamera != null)
+            specialCamera.enabled = true;
 
-        // Deshabilitar movimiento del jugador
+        panelUI.SetActive(false);
         if (playerMovement != null)
             playerMovement.EnableMovement(false);
+
+        NotifyDragHandlers(true);
     }
 
-    private void ReturnToMainCamera()
+    private void ReturnToMainView()
     {
+        specialViewCanvas.gameObject.SetActive(false);
+        if (specialCamera != null)
+            specialCamera.enabled = false;
+
         mainCamera.enabled = true;
-        specialCamera.enabled = false;
         panelUI.SetActive(false);
         canSwitch = false;
 
-        // Habilitar movimiento del jugador
         if (playerMovement != null)
             playerMovement.EnableMovement(true);
+
+        NotifyDragHandlers(false);
     }
 
     private void OnCollisionExit(Collision collision)
     {
         if (collision.gameObject.CompareTag("Player"))
-        {
-            ReturnToMainCamera();
-        }
+            ReturnToMainView();
+    }
+
+    private void NotifyDragHandlers(bool isActive)
+    {
+        foreach (var handler in FindObjectsOfType<InventoryItemDragHandler>())
+            handler.SetSpecialCanvasActive(isActive);
     }
 }

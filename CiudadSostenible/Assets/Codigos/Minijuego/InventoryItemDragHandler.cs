@@ -1,6 +1,7 @@
 ﻿using UnityEngine;
 using UnityEngine.EventSystems;
 using UnityEngine.UI;
+using System.Collections;
 
 [RequireComponent(typeof(Image))]
 [RequireComponent(typeof(CanvasGroup))]
@@ -11,21 +12,27 @@ public class InventoryItemDragHandler : MonoBehaviour, IBeginDragHandler, IDragH
     public LayerMask groundMask;
     public float maxDropDistance = 10f;
 
+    [Header("Efecto de Rebote")]
+    public float bounceDuration = 0.5f;
+    public float bounceIntensity = 100f;
+
     [Header("Referencias")]
     public Camera aerialCamera;
     private Camera currentActiveCamera;
-
     private CanvasGroup canvasGroup;
     private InventorySlot parentSlot;
     private GameObject dragVisual;
     private Vector3 originalPosition;
     private Transform canvasTransform;
+    private RectTransform rectTransform;
+    private bool isSpecialCanvasActive = false;
 
     private void Awake()
     {
         canvasGroup = GetComponent<CanvasGroup>();
         parentSlot = GetComponentInParent<InventorySlot>();
         canvasTransform = GetComponentInParent<Canvas>().transform;
+        rectTransform = GetComponent<RectTransform>();
         currentActiveCamera = aerialCamera;
     }
 
@@ -33,7 +40,7 @@ public class InventoryItemDragHandler : MonoBehaviour, IBeginDragHandler, IDragH
     {
         if (parentSlot == null || parentSlot.IsEmpty()) return;
 
-        originalPosition = transform.position;
+        originalPosition = rectTransform.position;
         canvasGroup.alpha = 0.6f;
         canvasGroup.blocksRaycasts = false;
 
@@ -41,11 +48,8 @@ public class InventoryItemDragHandler : MonoBehaviour, IBeginDragHandler, IDragH
         {
             dragVisual = Instantiate(dragVisualPrefab, canvasTransform);
             dragVisual.GetComponent<Image>().sprite = parentSlot.GetItemData().icon;
-
-            // 🔥 Asegura que el ítem arrastrado esté sobre todo lo demás
             dragVisual.transform.SetAsLastSibling();
         }
-
     }
 
     public void OnDrag(PointerEventData eventData)
@@ -55,7 +59,7 @@ public class InventoryItemDragHandler : MonoBehaviour, IBeginDragHandler, IDragH
         if (dragVisual != null)
             dragVisual.transform.position = Input.mousePosition;
         else
-            transform.position = Input.mousePosition;
+            rectTransform.position = Input.mousePosition;
     }
 
     public void OnEndDrag(PointerEventData eventData)
@@ -66,10 +70,45 @@ public class InventoryItemDragHandler : MonoBehaviour, IBeginDragHandler, IDragH
         if (dragVisual != null)
             Destroy(dragVisual);
         else
-            transform.position = originalPosition;
+            StartCoroutine(ReturnToSlot());
 
         if (!EventSystem.current.IsPointerOverGameObject())
-            DropItemAtMousePosition();
+        {
+            if (isSpecialCanvasActive)
+            {
+                DropItemAtMousePosition();
+            }
+            else
+            {
+                StartCoroutine(BounceBackToSlot());
+            }
+        }
+    }
+
+    private IEnumerator ReturnToSlot()
+    {
+        yield return new WaitForEndOfFrame();
+        rectTransform.position = originalPosition;
+    }
+
+    private IEnumerator BounceBackToSlot()
+    {
+        Vector3 startPos = rectTransform.position;
+        float elapsedTime = 0f;
+
+        while (elapsedTime < bounceDuration)
+        {
+            elapsedTime += Time.deltaTime;
+            float progress = elapsedTime / bounceDuration;
+            rectTransform.position = Vector3.Lerp(
+                startPos,
+                originalPosition,
+                progress
+            ) + Vector3.up * Mathf.Sin(progress * Mathf.PI) * bounceIntensity;
+            yield return null;
+        }
+
+        rectTransform.position = originalPosition;
     }
 
     private void DropItemAtMousePosition()
@@ -79,7 +118,6 @@ public class InventoryItemDragHandler : MonoBehaviour, IBeginDragHandler, IDragH
         ItemData itemData = parentSlot.GetItemData();
         if (itemData == null || itemData.worldPrefab == null) return;
 
-        // Declara 'hit' aquí (antes de usarlo en el if)
         RaycastHit hit;
         Ray ray = currentActiveCamera.ScreenPointToRay(Input.mousePosition);
 
@@ -94,17 +132,15 @@ public class InventoryItemDragHandler : MonoBehaviour, IBeginDragHandler, IDragH
                 parentSlot.RemoveQuantity(1);
             }
         }
-        else
-        {
-            // Opcional: Lógica para cuando el rayo no golpea nada
-            Vector3 spawnPosition = ray.origin + ray.direction * maxDropDistance;
-            Instantiate(itemData.worldPrefab, spawnPosition, Quaternion.identity);
-            parentSlot.RemoveQuantity(1);
-        }
     }
 
     public void SetActiveCamera(Camera activeCamera)
     {
         currentActiveCamera = activeCamera != null ? activeCamera : aerialCamera;
+    }
+
+    public void SetSpecialCanvasActive(bool isActive)
+    {
+        isSpecialCanvasActive = isActive;
     }
 }
