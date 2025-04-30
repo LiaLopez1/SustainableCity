@@ -15,5 +15,6 @@ MonoBehaviour:
   itemName: Organico
   icon: {fileID: 21300000, guid: a761a09b4d082e641811a657f1d0daba, type: 3}
   worldPrefab: {fileID: 6722645995886372014, guid: fbc555a671320144ca5678e09ff119bc, type: 3}
+  alternatePrefab: {fileID: 7262966556149411174, guid: ac51147d77d3aa34fa0519680a8dcae5, type: 3}
   description: 
   maxStack: 10

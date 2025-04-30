@@ -75,34 +75,24 @@ public class InventoryItemDragHandler : MonoBehaviour, IBeginDragHandler, IDragH
         ItemData itemData = parentSlot.GetItemData();
         if (itemData == null || itemData.worldPrefab == null) return;
 
-        if (currentActiveCamera == null)
-        {
-            Debug.LogError("No hay cámara activa asignada");
-            return;
-        }
-
-        Ray ray = currentActiveCamera.ScreenPointToRay(Input.mousePosition);
+        // Declara 'hit' aquí (antes de usarlo en el if)
         RaycastHit hit;
+        Ray ray = currentActiveCamera.ScreenPointToRay(Input.mousePosition);
 
         if (Physics.Raycast(ray, out hit, maxDropDistance, groundMask))
         {
             BowlCapacity bowl = hit.collider.GetComponent<BowlCapacity>();
-            if (bowl != null)
+            if (bowl != null && bowl.TryAddSphere())
             {
-                if (bowl.TryAddSphere())
-                {
-                    Vector3 spawnPosition = hit.point + Vector3.up * 0.1f;
-                    Instantiate(itemData.worldPrefab, spawnPosition, Quaternion.identity);
-                    parentSlot.RemoveQuantity(1);
-                }
-                return;
+                Vector3 spawnPosition = hit.point + Vector3.up * 0.1f;
+                GameObject spawnedObject = Instantiate(itemData.worldPrefab, spawnPosition, Quaternion.identity);
+                spawnedObject.AddComponent<SwitchPrefabOnClick>().Initialize(itemData);
+                parentSlot.RemoveQuantity(1);
             }
-
-            Instantiate(itemData.worldPrefab, hit.point + Vector3.up * 0.1f, Quaternion.identity);
-            parentSlot.RemoveQuantity(1);
         }
         else
         {
+            // Opcional: Lógica para cuando el rayo no golpea nada
             Vector3 spawnPosition = ray.origin + ray.direction * maxDropDistance;
             Instantiate(itemData.worldPrefab, spawnPosition, Quaternion.identity);
             parentSlot.RemoveQuantity(1);

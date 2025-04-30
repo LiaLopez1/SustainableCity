@@ -8,6 +8,7 @@ TagManager:
   - Plastic
   - Paper
   - Game1
+  - AerialCamera
   layers:
   - Default
   - TransparentFX
