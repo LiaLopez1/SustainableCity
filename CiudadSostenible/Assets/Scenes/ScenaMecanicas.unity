@@ -1760,7 +1760,7 @@ MonoBehaviour:
     m_Bits: 4294967295
   maxDropDistance: 10
   bounceDuration: 0.5
-  bounceIntensity: 10
+  bounceIntensity: 100
   aerialCamera: {fileID: 1992274644}
 --- !u!225 &601017123
 CanvasGroup:
@@ -3071,7 +3071,7 @@ MonoBehaviour:
     m_Bits: 4294967295
   maxDropDistance: 10
   bounceDuration: 0.5
-  bounceIntensity: 10
+  bounceIntensity: 100
   aerialCamera: {fileID: 1992274644}
 --- !u!225 &1159543891
 CanvasGroup:
@@ -4223,7 +4223,7 @@ MonoBehaviour:
     m_Bits: 4294967295
   maxDropDistance: 10
   bounceDuration: 0.5
-  bounceIntensity: 10
+  bounceIntensity: 100
   aerialCamera: {fileID: 1992274644}
 --- !u!225 &1611161800
 CanvasGroup:
@@ -4768,7 +4768,7 @@ MonoBehaviour:
     m_Bits: 4294967295
   maxDropDistance: 10
   bounceDuration: 0.5
-  bounceIntensity: 10
+  bounceIntensity: 100
   aerialCamera: {fileID: 1992274644}
 --- !u!225 &1865402010
 CanvasGroup:
@@ -4967,7 +4967,7 @@ MonoBehaviour:
     m_Bits: 4294967295
   maxDropDistance: 10
   bounceDuration: 0.5
-  bounceIntensity: 10
+  bounceIntensity: 100
   aerialCamera: {fileID: 1992274644}
 --- !u!225 &1947548471
 CanvasGroup:
@@ -5333,13 +5333,13 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1992274643}
   serializedVersion: 2
-  m_LocalRotation: {x: 0.7071068, y: -0, z: -0, w: 0.7071068}
-  m_LocalPosition: {x: -546.901, y: -304.479, z: -0.422}
+  m_LocalRotation: {x: 0.5696447, y: -0, z: -0, w: 0.821891}
+  m_LocalPosition: {x: -546.901, y: -304.63, z: -0.95}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
   m_Father: {fileID: 787252400}
-  m_LocalEulerAnglesHint: {x: 90, y: 0, z: 0}
+  m_LocalEulerAnglesHint: {x: 69.451, y: 0, z: 0}
 --- !u!1 &2044535720
 GameObject:
   m_ObjectHideFlags: 0
