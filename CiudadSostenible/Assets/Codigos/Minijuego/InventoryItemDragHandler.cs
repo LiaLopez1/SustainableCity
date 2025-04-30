@@ -8,11 +8,11 @@ public class InventoryItemDragHandler : MonoBehaviour, IBeginDragHandler, IDragH
 {
     [Header("Configuración")]
     public GameObject dragVisualPrefab;
-    public LayerMask groundMask; // Capa del suelo/colisión
-    public float maxDropDistance = 100f;
+    public LayerMask groundMask;
+    public float maxDropDistance = 10f;
 
     [Header("Referencias")]
-    public Camera aerialCamera; // Cámara aérea asignada manualmente
+    public Camera aerialCamera;
     private Camera currentActiveCamera;
 
     private CanvasGroup canvasGroup;
@@ -26,7 +26,7 @@ public class InventoryItemDragHandler : MonoBehaviour, IBeginDragHandler, IDragH
         canvasGroup = GetComponent<CanvasGroup>();
         parentSlot = GetComponentInParent<InventorySlot>();
         canvasTransform = GetComponentInParent<Canvas>().transform;
-        currentActiveCamera = aerialCamera; // Usamos la cámara aérea por defecto
+        currentActiveCamera = aerialCamera;
     }
 
     public void OnBeginDrag(PointerEventData eventData)
@@ -86,16 +86,27 @@ public class InventoryItemDragHandler : MonoBehaviour, IBeginDragHandler, IDragH
 
         if (Physics.Raycast(ray, out hit, maxDropDistance, groundMask))
         {
-            Vector3 spawnPosition = hit.point + Vector3.up * 0.1f;
-            Instantiate(itemData.worldPrefab, spawnPosition, Quaternion.identity);
+            BowlCapacity bowl = hit.collider.GetComponent<BowlCapacity>();
+            if (bowl != null)
+            {
+                if (bowl.TryAddSphere())
+                {
+                    Vector3 spawnPosition = hit.point + Vector3.up * 0.1f;
+                    Instantiate(itemData.worldPrefab, spawnPosition, Quaternion.identity);
+                    parentSlot.RemoveQuantity(1);
+                }
+                return;
+            }
+
+            Instantiate(itemData.worldPrefab, hit.point + Vector3.up * 0.1f, Quaternion.identity);
+            parentSlot.RemoveQuantity(1);
         }
         else
         {
             Vector3 spawnPosition = ray.origin + ray.direction * maxDropDistance;
             Instantiate(itemData.worldPrefab, spawnPosition, Quaternion.identity);
+            parentSlot.RemoveQuantity(1);
         }
-
-        parentSlot.RemoveQuantity(1);
     }
 
     public void SetActiveCamera(Camera activeCamera)
