@@ -9,6 +9,8 @@ TagManager:
   - Paper
   - Game1
   - AerialCamera
+  - ZonaDrop
+  - BolsaBasura
   layers:
   - Default
   - TransparentFX
