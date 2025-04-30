@@ -4,6 +4,7 @@ using UnityEngine;
 public class InventorySystem : MonoBehaviour
 {
     public List<InventorySlot> slots;
+    public ItemData itemPrueba;
 
     private void Start()
     {
@@ -73,5 +74,15 @@ public class InventorySystem : MonoBehaviour
 
         Debug.LogWarning($"No se encontraron {quantity} unidades de {item.itemName} para remover");
         return false;
+    }
+
+    private void Update()
+    {
+        // Solo para pruebas: presionar T agrega un ítem manualmente
+        if (Input.GetKeyDown(KeyCode.T))
+        {
+            // Asegúrate de tener una referencia al ítem de prueba
+            AddItem(itemPrueba);
+        }
     }
 }

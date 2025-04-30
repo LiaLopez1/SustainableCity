@@ -1,18 +1,19 @@
 using UnityEngine;
-using UnityEngine.UI;
 
 public class TiendaInteraction : MonoBehaviour
 {
     [Header("Referencias UI")]
-    public GameObject canvasTienda;         // Panel con botones de Vender y Comprar
-    public GameObject textoInteraccion;     // Texto: "Presiona E para interactuar"
+    public GameObject canvasTienda;         // Aquí sigue y se queda activo todo el tiempo
+    public GameObject textoInteraccion;     // Texto que aparece al acercarse
+    public GameObject panelPrincipal;       // Este es el que contiene los botones y paneles
+    public TiendaUIController tiendaUIController;
 
-    private bool jugadorDentro = false;     // Saber si el jugador está dentro del trigger
+    private bool jugadorDentro = false;
 
     void Start()
     {
-        if (canvasTienda != null)
-            canvasTienda.SetActive(false);
+        if (panelPrincipal != null)
+            panelPrincipal.SetActive(false); // Aunque esté activo en el editor, lo apagamos aquí
 
         if (textoInteraccion != null)
             textoInteraccion.SetActive(false);
@@ -22,8 +23,14 @@ public class TiendaInteraction : MonoBehaviour
     {
         if (jugadorDentro && Input.GetKeyDown(KeyCode.E))
         {
-            canvasTienda.SetActive(true);
-            textoInteraccion.SetActive(false); // Oculta el texto al abrir el menú
+            panelPrincipal.SetActive(true);
+            textoInteraccion.SetActive(false);
+            tiendaUIController?.OcultarTodosLosPaneles();
+        }
+
+        if (panelPrincipal.activeSelf && Input.GetKeyDown(KeyCode.Escape))
+        {
+            tiendaUIController?.CerrarTienda();
         }
     }
 
@@ -32,9 +39,7 @@ public class TiendaInteraction : MonoBehaviour
         if (other.CompareTag("Player"))
         {
             jugadorDentro = true;
-
-            if (textoInteraccion != null)
-                textoInteraccion.SetActive(true);
+            textoInteraccion?.SetActive(true);
         }
     }
 
@@ -43,12 +48,8 @@ public class TiendaInteraction : MonoBehaviour
         if (other.CompareTag("Player"))
         {
             jugadorDentro = false;
-
-            if (textoInteraccion != null)
-                textoInteraccion.SetActive(false);
-
-            if (canvasTienda != null)
-                canvasTienda.SetActive(false); // Cierra el canvas si se va
+            textoInteraccion?.SetActive(false);
+            tiendaUIController?.CerrarTienda();
         }
     }
 }

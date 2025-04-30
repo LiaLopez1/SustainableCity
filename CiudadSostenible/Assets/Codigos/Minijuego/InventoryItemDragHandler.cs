@@ -41,7 +41,11 @@ public class InventoryItemDragHandler : MonoBehaviour, IBeginDragHandler, IDragH
         {
             dragVisual = Instantiate(dragVisualPrefab, canvasTransform);
             dragVisual.GetComponent<Image>().sprite = parentSlot.GetItemData().icon;
+
+            // 🔥 Asegura que el ítem arrastrado esté sobre todo lo demás
+            dragVisual.transform.SetAsLastSibling();
         }
+
     }
 
     public void OnDrag(PointerEventData eventData)
