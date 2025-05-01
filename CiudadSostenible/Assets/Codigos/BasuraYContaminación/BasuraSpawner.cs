@@ -1,4 +1,4 @@
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
 using TMPro;
@@ -6,7 +6,7 @@ using TMPro;
 [System.Serializable]
 public class TipoBasura
 {
-    public string nombreTipo; // "Papel", "Pl�stico", etc.
+    public string nombreTipo; // "Papel", "Plástico", etc.
     public GameObject prefab; // Prefab de esa basura
     [Range(0f, 100f)]
     public float probabilidad; // Probabilidad individual (0 a 100%)
@@ -17,7 +17,10 @@ public class BasuraSpawner : MonoBehaviour
     [Header("Tipos de Basura")]
     public List<TipoBasura> tiposBasura;
 
-    [Header("Configuraci�n de Spawn")]
+    [Header("Progreso de Recolección")]
+    [SerializeField] private int basuraTotalRecogida = 0;
+
+    [Header("Configuración de Spawn")]
     public float alturaBasura = 0.133f;
     public float rangoMaximoX = 40f;
     public float rangoMaximoZ = 40f;
@@ -105,8 +108,15 @@ public class BasuraSpawner : MonoBehaviour
     public void RecogerBasura(string tipo)
     {
         basuraActual = Mathf.Max(0, basuraActual - 1);
+        basuraTotalRecogida++; // ⬅ ¡Aquí llevamos el progreso!
         ActualizarUI();
     }
+
+    public int GetBasuraRecogida()
+    {
+        return basuraTotalRecogida;
+    }
+
 
     void ActualizarUI()
     {

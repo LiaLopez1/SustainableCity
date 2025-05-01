@@ -21,19 +21,18 @@ public class ZonaVentaUI : MonoBehaviour
                 var item = slot.ObtenerItem();
                 int cantidad = slot.ObtenerCantidad();
 
-                // ❌ NO volver a usar: inventario.RemoveItem(item, cantidad);
+                // Aquí ya no removemos del inventario porque se hizo en el drop
 
-                totalVenta += cantidad * 10; // o el precio que definas
+                totalVenta += cantidad * 10; // Valor por unidad (puedes hacerlo dinámico)
                 slot.LimpiarSlot();
             }
         }
 
-        dineroTotal += totalVenta;
-        ActualizarUI();
+        // Aquí usamos el sistema de economía global
+        EconomiaJugador.Instance.AgregarDinero(totalVenta);
 
-        Debug.Log($"Venta completada por ${totalVenta}. Total: ${dineroTotal}");
+        Debug.Log($"Venta completada por ${totalVenta}. Dinero total actual: ${EconomiaJugador.Instance.ObtenerDinero()}");
     }
-
 
     private void ActualizarUI()
     {
