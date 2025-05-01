@@ -2,23 +2,26 @@
 using UnityEngine.EventSystems;
 using UnityEngine.UI;
 using System.Collections;
+using System.Collections.Generic;
 
 [RequireComponent(typeof(Image))]
 [RequireComponent(typeof(CanvasGroup))]
 public class InventoryItemDragHandler : MonoBehaviour, IBeginDragHandler, IDragHandler, IEndDragHandler
 {
-    [Header("Configuración")]
+    [Header("Configuración visual")]
     public GameObject dragVisualPrefab;
-    public LayerMask groundMask;
     public float maxDropDistance = 10f;
+    public LayerMask groundMask;
 
     [Header("Efecto de Rebote")]
     public float bounceDuration = 0.5f;
     public float bounceIntensity = 100f;
 
-    [Header("Referencias")]
-    public Camera aerialCamera;
+    [Header("Cámaras válidas para raycast")]
+    public List<Camera> allowedCameras = new List<Camera>();
     private Camera currentActiveCamera;
+
+    [Header("Referencias")]
     private CanvasGroup canvasGroup;
     private InventorySlot parentSlot;
     private GameObject dragVisual;
@@ -26,6 +29,7 @@ public class InventoryItemDragHandler : MonoBehaviour, IBeginDragHandler, IDragH
     private Transform canvasTransform;
     private RectTransform rectTransform;
     private bool isSpecialCanvasActive = false;
+    private SphereDropHandler sphereDropHandler;
 
     private void Awake()
     {
@@ -33,7 +37,9 @@ public class InventoryItemDragHandler : MonoBehaviour, IBeginDragHandler, IDragH
         parentSlot = GetComponentInParent<InventorySlot>();
         canvasTransform = GetComponentInParent<Canvas>().transform;
         rectTransform = GetComponent<RectTransform>();
-        currentActiveCamera = aerialCamera;
+
+        sphereDropHandler = GetComponent<SphereDropHandler>();
+        currentActiveCamera = GetActiveCameraFromList();
     }
 
     public void OnBeginDrag(PointerEventData eventData)
@@ -74,9 +80,10 @@ public class InventoryItemDragHandler : MonoBehaviour, IBeginDragHandler, IDragH
 
         if (!EventSystem.current.IsPointerOverGameObject())
         {
-            if (isSpecialCanvasActive)
+            if (isSpecialCanvasActive && sphereDropHandler != null)
             {
-                DropItemAtMousePosition();
+                UpdateCurrentActiveCamera(); // Asegura que se use la cámara correcta al soltar
+                sphereDropHandler.DropItemAtMousePosition(parentSlot, currentActiveCamera, groundMask, maxDropDistance);
             }
             else
             {
@@ -111,41 +118,21 @@ public class InventoryItemDragHandler : MonoBehaviour, IBeginDragHandler, IDragH
         rectTransform.position = originalPosition;
     }
 
-    private void DropItemAtMousePosition()
+    private Camera GetActiveCameraFromList()
     {
-        if (parentSlot.IsEmpty()) return;
-
-        ItemData itemData = parentSlot.GetItemData();
-        if (itemData == null || itemData.worldPrefab == null) return;
-
-        RaycastHit hit;
-        Ray ray = currentActiveCamera.ScreenPointToRay(Input.mousePosition);
-
-        if (Physics.Raycast(ray, out hit, maxDropDistance, groundMask))
+        foreach (Camera cam in allowedCameras)
         {
-            BowlCapacity bowl = hit.collider.GetComponent<BowlCapacity>();
-            if (bowl != null && bowl.TryAddSphere())
-            {
-                Vector3 spawnPosition = hit.point + Vector3.up * 0.1f;
-                GameObject spawnedObject = Instantiate(itemData.worldPrefab, spawnPosition, Quaternion.identity);
-
-                spawnedObject.tag = "Esfera"; // Asegúrate de mantener el tag
-                SwitchPrefabOnClick switcher = spawnedObject.AddComponent<SwitchPrefabOnClick>();
-                switcher.Initialize(itemData, bowl);
-                bowl.RegisterSphere(spawnedObject);
-                parentSlot.RemoveQuantity(1);
-            }
-            else
-            {
-                Debug.Log("❌ Bowl lleno. No se agregó la esfera.");
-            }
+            if (cam != null && cam.enabled && cam.gameObject.activeInHierarchy)
+                return cam;
         }
 
+        Debug.LogWarning("⚠️ No hay cámaras activas en la lista. Usando la primera como fallback.");
+        return allowedCameras.Count > 0 ? allowedCameras[0] : null;
     }
 
-    public void SetActiveCamera(Camera activeCamera)
+    public void UpdateCurrentActiveCamera()
     {
-        currentActiveCamera = activeCamera != null ? activeCamera : aerialCamera;
+        currentActiveCamera = GetActiveCameraFromList();
     }
 
     public void SetSpecialCanvasActive(bool isActive)
