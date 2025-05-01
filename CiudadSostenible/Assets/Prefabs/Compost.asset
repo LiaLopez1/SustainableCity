@@ -12,9 +12,10 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: d3e01e06551dd2a489f97638cf5b3c99, type: 3}
   m_Name: Compost
   m_EditorClassIdentifier: 
-  itemName: Plastic
+  itemName: Compost
   icon: {fileID: 21300000, guid: b8d60b3c847172e44a9ea59be65982f8, type: 3}
-  worldPrefab: {fileID: 7262966556149411174, guid: ac51147d77d3aa34fa0519680a8dcae5, type: 3}
+  worldPrefab: {fileID: 3903071019280364393, guid: 21667e1f8f52b5444b827cf72e70f1c5, type: 3}
   alternatePrefab: {fileID: 0}
-  itemTag: Plastic
+  itemTag: Compost
   maxStack: 10
+  puedeAparecerEnBolsa: 0

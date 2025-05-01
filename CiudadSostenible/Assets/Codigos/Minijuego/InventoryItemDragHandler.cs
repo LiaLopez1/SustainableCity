@@ -128,10 +128,19 @@ public class InventoryItemDragHandler : MonoBehaviour, IBeginDragHandler, IDragH
             {
                 Vector3 spawnPosition = hit.point + Vector3.up * 0.1f;
                 GameObject spawnedObject = Instantiate(itemData.worldPrefab, spawnPosition, Quaternion.identity);
-                spawnedObject.AddComponent<SwitchPrefabOnClick>().Initialize(itemData);
+
+                spawnedObject.tag = "Esfera"; // Asegúrate de mantener el tag
+                SwitchPrefabOnClick switcher = spawnedObject.AddComponent<SwitchPrefabOnClick>();
+                switcher.Initialize(itemData, bowl);
+                bowl.RegisterSphere(spawnedObject);
                 parentSlot.RemoveQuantity(1);
             }
+            else
+            {
+                Debug.Log("❌ Bowl lleno. No se agregó la esfera.");
+            }
         }
+
     }
 
     public void SetActiveCamera(Camera activeCamera)

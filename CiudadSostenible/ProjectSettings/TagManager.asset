@@ -11,6 +11,8 @@ TagManager:
   - AerialCamera
   - BolsaBasura
   - Caneca
+  - Compost
+  - Esfera
   layers:
   - Default
   - TransparentFX

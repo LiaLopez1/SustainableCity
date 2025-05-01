@@ -1,24 +1,36 @@
-using UnityEngine;
+ï»¿using UnityEngine;
 
 public class SwitchPrefabOnClick : MonoBehaviour
 {
-    private ItemData itemData; // Referencia al ItemData original
+    private ItemData itemData;
+    private BowlCapacity bowlRef;
     private bool isAlternate = false;
 
-    // Llama a este método al instanciar la esfera
-    public void Initialize(ItemData data)
+    public void Initialize(ItemData data, BowlCapacity bowl)
     {
         itemData = data;
+        bowlRef = bowl;
     }
 
-    private void OnMouseDown() 
+    private void OnMouseDown()
     {
         if (itemData == null || itemData.alternatePrefab == null) return;
 
-        // Cambia entre prefabs
         GameObject newPrefab = isAlternate ? itemData.worldPrefab : itemData.alternatePrefab;
-        Instantiate(newPrefab, transform.position, transform.rotation);
-        Destroy(gameObject); 
-        isAlternate = !isAlternate; // Alterna el estado
+        GameObject newObj = Instantiate(newPrefab, transform.position, transform.rotation);
+
+        // IMPORTANTE: conservar el mismo tag
+        newObj.tag = gameObject.tag;
+
+        if (bowlRef != null)
+        {
+            bowlRef.RegisterSphere(newObj);
+
+            if (!isAlternate)
+                bowlRef.NotifyAlternateState(newObj);
+        }
+
+        Destroy(gameObject);
+        isAlternate = !isAlternate;
     }
 }

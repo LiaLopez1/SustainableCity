@@ -17,7 +17,7 @@ GameObject:
   - component: {fileID: 4744045149513582167}
   m_Layer: 3
   m_Name: Apple
-  m_TagString: Inorganico
+  m_TagString: Esfera
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
