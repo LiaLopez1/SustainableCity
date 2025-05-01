@@ -16,4 +16,5 @@ MonoBehaviour:
   icon: {fileID: 21300000, guid: b8d60b3c847172e44a9ea59be65982f8, type: 3}
   worldPrefab: {fileID: 7262966556149411174, guid: ac51147d77d3aa34fa0519680a8dcae5, type: 3}
   alternatePrefab: {fileID: 0}
+  itemTag: Plastic
   maxStack: 10

@@ -42,10 +42,15 @@ public class InventorySystem : MonoBehaviour
         {
             if (slot.IsEmpty())
             {
-                int toAdd = Mathf.Min(quantity, item.maxStack);
-                slot.UpdateSlot(item, toAdd);
-                quantity -= toAdd;
-                if (quantity <= 0) return true;
+                slot.UpdateSlot(item, quantity);
+
+                // Asignar el tag del ItemData al icono
+                if (!string.IsNullOrEmpty(item.itemTag))
+                {
+                    slot.itemIcon.gameObject.tag = item.itemTag;
+                    Debug.Log($"Tag '{item.itemTag}' asignado a {item.itemName}");
+                }
+                return true;
             }
         }
 

@@ -10,6 +10,7 @@ TagManager:
   - Game1
   - AerialCamera
   - BolsaBasura
+  - Caneca
   layers:
   - Default
   - TransparentFX

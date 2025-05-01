@@ -7,5 +7,7 @@ public class ItemData : ScriptableObject
     public Sprite icon;
     public GameObject worldPrefab;
     public GameObject alternatePrefab; // Nuevo prefab para el cambio
-    public int maxStack = 10;
+    public string itemTag; //  Nuevo campo para el tag
+    public int maxStack = 10; 
+    public bool puedeAparecerEnBolsa;
 }

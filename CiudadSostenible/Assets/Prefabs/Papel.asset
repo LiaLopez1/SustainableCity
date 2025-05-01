@@ -14,3 +14,8 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   itemName: Papel
   icon: {fileID: 21300000, guid: 6159b4e6f0e72ff42ba798c2c56b78a1, type: 3}
+  worldPrefab: {fileID: 589975393376088847, guid: 0d98a336efac4964f815e9b1a9015ebe, type: 3}
+  alternatePrefab: {fileID: 0}
+  itemTag: Paper
+  maxStack: 10
+  puedeAparecerEnBolsa: 1

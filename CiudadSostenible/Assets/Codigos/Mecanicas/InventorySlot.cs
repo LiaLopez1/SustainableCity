@@ -57,8 +57,18 @@ public class InventorySlot : MonoBehaviour
 
     private void UpdateUI()
     {
-        itemIcon.sprite = currentItem.icon;
-        itemIcon.enabled = true;
+        itemIcon.sprite = currentItem?.icon;
+        itemIcon.enabled = currentItem != null;
         quantityText.text = currentQuantity > 1 ? currentQuantity.ToString() : "";
+
+        // Actualizar tag si hay ítem
+        if (currentItem != null && !string.IsNullOrEmpty(currentItem.itemTag))
+        {
+            itemIcon.gameObject.tag = currentItem.itemTag;
+        }
+        else
+        {
+            itemIcon.gameObject.tag = "Untagged";
+        }
     }
 }

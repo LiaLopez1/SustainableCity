@@ -16,4 +16,5 @@ MonoBehaviour:
   icon: {fileID: 10913, guid: 0000000000000000f000000000000000, type: 0}
   worldPrefab: {fileID: 0}
   alternatePrefab: {fileID: 0}
+  itemTag: BolsaBasura
   maxStack: 10

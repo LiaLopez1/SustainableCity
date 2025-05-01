@@ -15,5 +15,7 @@ MonoBehaviour:
   itemName: PapelSeparado
   icon: {fileID: 21300000, guid: 1ec5be8e5d5c57748b4c46567ac7fe9a, type: 3}
   worldPrefab: {fileID: 7604959947289719082, guid: 319501c53c8b3d34e9901b71f52f02c1, type: 3}
-  description: 
+  alternatePrefab: {fileID: 0}
+  itemTag: PapelSeparado
   maxStack: 10
+  puedeAparecerEnBolsa: 0
