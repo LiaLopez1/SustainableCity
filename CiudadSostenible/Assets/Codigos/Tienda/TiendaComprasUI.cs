@@ -23,7 +23,7 @@ public class TiendaComprasUI : MonoBehaviour
     }
 
 
-    public bool AñadirAlInventario(ItemData item)
+    public bool AnadirAlInventario(ItemData item)
     {
         // AddItem ya devuelve false si no hay espacio
         return inventario.AddItem(item);

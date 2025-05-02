@@ -69,7 +69,7 @@ public class ProductoComprable : MonoBehaviour
 
         if (tienda.TieneDineroSuficiente(precio))
         {
-            bool añadido = tienda.AñadirAlInventario(itemData);
+            bool añadido = tienda.AnadirAlInventario(itemData);
 
             if (añadido)
             {
