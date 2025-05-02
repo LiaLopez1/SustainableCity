@@ -83,12 +83,7 @@ public class CameraSwitch : MonoBehaviour
 
     private void NotifyDragHandlers(bool isActive)
     {
-        // Notificar a los arrastrables
         foreach (var handler in FindObjectsOfType<InventoryItemDragHandler>())
             handler.SetSpecialCanvasActive(isActive);
-
-        // Notificar a las tapas de botella
-        foreach (var cap in FindObjectsOfType<BottleCap>())
-            cap.SetCamaraEspecialActiva(isActive);
     }
 }
