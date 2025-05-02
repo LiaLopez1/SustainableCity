@@ -40,7 +40,6 @@ public class InventoryItemDragHandler : MonoBehaviour, IBeginDragHandler, IDragH
         parentSlot = GetComponentInParent<InventorySlot>();
         canvasTransform = GetComponentInParent<Canvas>().transform;
         rectTransform = GetComponent<RectTransform>();
-
         sphereDropHandler = GetComponent<SphereDropHandler>();
         currentActiveCamera = GetActiveCameraFromList();
     }
@@ -83,20 +82,23 @@ public class InventoryItemDragHandler : MonoBehaviour, IBeginDragHandler, IDragH
 
         if (!EventSystem.current.IsPointerOverGameObject())
         {
-            if (isSpecialCanvasActive && sphereDropHandler != null)
+            ItemData itemData = parentSlot.GetItemData();
+
+            if (isSpecialCanvasActive && itemData != null)
             {
                 UpdateCurrentActiveCamera();
 
-                ItemData itemData = parentSlot.GetItemData();
-                if (itemData != null && itemData.itemTag == "Botella" && botellaSpawnPoint != null)
+                if (itemData.itemTag == "Botella" && botellaSpawnPoint != null)
                 {
-                    GameObject prefab = itemData.worldPrefab;
-                    GameObject spawned = Instantiate(prefab, botellaSpawnPoint.position, Quaternion.identity);
+                    // Instanciar la botella en el punto fijo
+                    GameObject spawned = Instantiate(itemData.worldPrefab, botellaSpawnPoint.position, Quaternion.identity);
                     spawned.tag = "Botella";
+                    Debug.Log($"✅ Botella instanciada en {botellaSpawnPoint.position}");
                     parentSlot.RemoveQuantity(1);
                 }
-                else
+                else if (sphereDropHandler != null)
                 {
+                    // Usar lógica de raycast para esferas u otros
                     sphereDropHandler.DropItemAtMousePosition(parentSlot, currentActiveCamera, groundMask, maxDropDistance);
                 }
             }
