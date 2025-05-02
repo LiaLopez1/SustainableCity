@@ -86,7 +86,11 @@ PrefabInstance:
       objectReference: {fileID: 2100000, guid: 80beb2818b12e514387ae8582b4adf3d, type: 2}
     - target: {fileID: 919132149155446097, guid: b86577ba44736ac44a031b0fb7012ee0, type: 3}
       propertyPath: m_Name
-      value: PlasticBottle 1
+      value: PlasticBottle
+      objectReference: {fileID: 0}
+    - target: {fileID: 919132149155446097, guid: b86577ba44736ac44a031b0fb7012ee0, type: 3}
+      propertyPath: m_TagString
+      value: Botella
       objectReference: {fileID: 0}
     - target: {fileID: 5938655122478502940, guid: b86577ba44736ac44a031b0fb7012ee0, type: 3}
       propertyPath: m_Materials.Array.data[0]
@@ -111,7 +115,39 @@ PrefabInstance:
     - targetCorrespondingSourceObject: {fileID: 919132149155446097, guid: b86577ba44736ac44a031b0fb7012ee0, type: 3}
       insertIndex: -1
       addedObject: {fileID: 3613931004475570346}
+    - targetCorrespondingSourceObject: {fileID: 919132149155446097, guid: b86577ba44736ac44a031b0fb7012ee0, type: 3}
+      insertIndex: -1
+      addedObject: {fileID: 7350629521920048409}
+    - targetCorrespondingSourceObject: {fileID: -4388276378854778046, guid: b86577ba44736ac44a031b0fb7012ee0, type: 3}
+      insertIndex: -1
+      addedObject: {fileID: 233865454244854889}
   m_SourcePrefab: {fileID: 100100000, guid: b86577ba44736ac44a031b0fb7012ee0, type: 3}
+--- !u!1 &621027441776697923 stripped
+GameObject:
+  m_CorrespondingSourceObject: {fileID: -4388276378854778046, guid: b86577ba44736ac44a031b0fb7012ee0, type: 3}
+  m_PrefabInstance: {fileID: 5442565827800938753}
+  m_PrefabAsset: {fileID: 0}
+--- !u!65 &233865454244854889
+BoxCollider:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 621027441776697923}
+  m_Material: {fileID: 0}
+  m_IncludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_ExcludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_LayerOverridePriority: 0
+  m_IsTrigger: 0
+  m_ProvidesContacts: 0
+  m_Enabled: 1
+  serializedVersion: 3
+  m_Size: {x: 0.0045, y: 0.0045, z: 0.001}
+  m_Center: {x: -0.00000015847036, y: -0.00000011891824, z: 0.0063452497}
 --- !u!1 &5135943166415602768 stripped
 GameObject:
   m_CorrespondingSourceObject: {fileID: 919132149155446097, guid: b86577ba44736ac44a031b0fb7012ee0, type: 3}
@@ -199,3 +235,16 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   itemData: {fileID: 11400000, guid: 19dc19810c836834eb13fa16f622c538, type: 2}
+--- !u!114 &7350629521920048409
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 5135943166415602768}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 0024329a3bfffe646b999028ad47fde3, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  requiereCamaraEspecial: 1

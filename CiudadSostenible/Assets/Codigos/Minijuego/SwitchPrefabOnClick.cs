@@ -19,15 +19,16 @@ public class SwitchPrefabOnClick : MonoBehaviour
         GameObject newPrefab = isAlternate ? itemData.worldPrefab : itemData.alternatePrefab;
         GameObject newObj = Instantiate(newPrefab, transform.position, transform.rotation);
 
-        // IMPORTANTE: conservar el mismo tag
+        // Conserva el mismo tag
         newObj.tag = gameObject.tag;
 
         if (bowlRef != null)
         {
+            bowlRef.RemoveSphere(gameObject);
             bowlRef.RegisterSphere(newObj);
 
             if (!isAlternate)
-                bowlRef.NotifyAlternateState(newObj);
+                bowlRef.NotifyAlternateState(); // ✅ restaurado
         }
 
         Destroy(gameObject);

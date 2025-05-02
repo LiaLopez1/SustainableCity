@@ -31,6 +31,9 @@ public class InventoryItemDragHandler : MonoBehaviour, IBeginDragHandler, IDragH
     private bool isSpecialCanvasActive = false;
     private SphereDropHandler sphereDropHandler;
 
+    [Header("Punto fijo para botellas")]
+    public Transform botellaSpawnPoint;
+
     private void Awake()
     {
         canvasGroup = GetComponent<CanvasGroup>();
@@ -82,8 +85,20 @@ public class InventoryItemDragHandler : MonoBehaviour, IBeginDragHandler, IDragH
         {
             if (isSpecialCanvasActive && sphereDropHandler != null)
             {
-                UpdateCurrentActiveCamera(); // Asegura que se use la cámara correcta al soltar
-                sphereDropHandler.DropItemAtMousePosition(parentSlot, currentActiveCamera, groundMask, maxDropDistance);
+                UpdateCurrentActiveCamera();
+
+                ItemData itemData = parentSlot.GetItemData();
+                if (itemData != null && itemData.itemTag == "Botella" && botellaSpawnPoint != null)
+                {
+                    GameObject prefab = itemData.worldPrefab;
+                    GameObject spawned = Instantiate(prefab, botellaSpawnPoint.position, Quaternion.identity);
+                    spawned.tag = "Botella";
+                    parentSlot.RemoveQuantity(1);
+                }
+                else
+                {
+                    sphereDropHandler.DropItemAtMousePosition(parentSlot, currentActiveCamera, groundMask, maxDropDistance);
+                }
             }
             else
             {
@@ -107,11 +122,8 @@ public class InventoryItemDragHandler : MonoBehaviour, IBeginDragHandler, IDragH
         {
             elapsedTime += Time.deltaTime;
             float progress = elapsedTime / bounceDuration;
-            rectTransform.position = Vector3.Lerp(
-                startPos,
-                originalPosition,
-                progress
-            ) + Vector3.up * Mathf.Sin(progress * Mathf.PI) * bounceIntensity;
+            rectTransform.position = Vector3.Lerp(startPos, originalPosition, progress)
+                + Vector3.up * Mathf.Sin(progress * Mathf.PI) * bounceIntensity;
             yield return null;
         }
 

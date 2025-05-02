@@ -13,6 +13,7 @@ TagManager:
   - Caneca
   - Compost
   - Esfera
+  - Botella
   layers:
   - Default
   - TransparentFX

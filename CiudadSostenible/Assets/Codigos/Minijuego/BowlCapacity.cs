@@ -1,73 +1,99 @@
-﻿using UnityEngine;
+﻿using System.Collections.Generic;
+using UnityEngine;
 using TMPro;
-using System.Collections.Generic;
 
 public class BowlCapacity : MonoBehaviour
 {
     [Header("Configuración")]
-    public int maxCapacity = 2;
-    public TextMeshProUGUI fullMessageText;
-    public GameObject resultPrefab;
+    public int maxCapacity = 5;
 
-    private int currentCount = 0;
-    private int alternatedCount = 0;
+    [Header("UI")]
+    public TextMeshProUGUI fullMessage;
+
+    [Header("Prefab final a mostrar")]
+    public GameObject finalPrefab;
+
+    private List<GameObject> currentSpheres = new List<GameObject>();
+
+    private void Start()
+    {
+        if (fullMessage != null)
+            fullMessage.gameObject.SetActive(false);
+    }
 
     public bool TryAddSphere()
     {
-        if (currentCount >= maxCapacity)
-            return false;
-
-        currentCount++;
-
-        if (currentCount == maxCapacity && fullMessageText != null)
+        if (currentSpheres.Count >= maxCapacity)
         {
-            fullMessageText.gameObject.SetActive(true);
-            Invoke("HideMessage", 2f);
+            if (fullMessage != null)
+                fullMessage.gameObject.SetActive(true);
+
+            return false;
         }
+
+        if (fullMessage != null)
+            fullMessage.gameObject.SetActive(false);
 
         return true;
     }
 
     public void RegisterSphere(GameObject sphere)
     {
-        // El registro ahora es opcional pero mantenido por compatibilidad
-    }
-
-    public void NotifyAlternateState(GameObject obj)
-    {
-        alternatedCount++;
-
-        if (alternatedCount >= maxCapacity)
+        if (!currentSpheres.Contains(sphere))
         {
-            TransformAndSpawnResult();
+            currentSpheres.Add(sphere);
+            Debug.Log($"✅ Esfera registrada. Total: {currentSpheres.Count}");
+
+            if (currentSpheres.Count >= maxCapacity && fullMessage != null)
+                fullMessage.gameObject.SetActive(true);
         }
     }
 
-    private void TransformAndSpawnResult()
+    public void RemoveSphere(GameObject sphere)
     {
-        // Destruir todas las esferas con el tag "Esfera"
-        foreach (GameObject obj in GameObject.FindGameObjectsWithTag("Esfera"))
+        if (currentSpheres.Contains(sphere))
         {
-            Destroy(obj);
+            currentSpheres.Remove(sphere);
+            Debug.Log($"❌ Esfera eliminada. Total: {currentSpheres.Count}");
+
+            if (currentSpheres.Count < maxCapacity && fullMessage != null)
+                fullMessage.gameObject.SetActive(false);
+        }
+    }
+
+    public void NotifyAlternateState()
+    {
+        int alternadas = 0;
+
+        foreach (var sphere in currentSpheres)
+        {
+            if (sphere.name.Contains("Smashed") || sphere.name.Contains("Alternate"))
+            {
+                alternadas++;
+            }
         }
 
-        // Instanciar el resultado final en el centro del bowl
-        Vector3 spawnPosition = transform.position + Vector3.up * 0.5f;
-        Instantiate(resultPrefab, spawnPosition, Quaternion.identity);
+        if (alternadas == currentSpheres.Count && currentSpheres.Count > 0)
+        {
+            Debug.Log("🎉 Todas las esferas están en estado alternado. Mostrando prefab final.");
 
-        // Reset
-        currentCount = 0;
-        alternatedCount = 0;
+            // Destruir todas las esferas
+            foreach (var sphere in currentSpheres)
+            {
+                Destroy(sphere);
+            }
+
+            currentSpheres.Clear();
+
+            // Instanciar el prefab final
+            Vector3 center = transform.position + Vector3.up * 0.5f;
+            Instantiate(finalPrefab, center, Quaternion.identity);
+
+            if (fullMessage != null)
+                fullMessage.gameObject.SetActive(false);
+        }
     }
 
-    private void HideMessage()
-    {
-        if (fullMessageText != null)
-            fullMessageText.gameObject.SetActive(false);
-    }
-
-    private void OnCollisionExit(Collision collision)
-    {
-        currentCount = Mathf.Max(0, currentCount - 1);
-    }
+    public int GetCurrentCount() => currentSpheres.Count;
+    public int GetMaxCapacity() => maxCapacity;
 }
