@@ -38,7 +38,7 @@ RenderSettings:
   m_ReflectionIntensity: 1
   m_CustomReflection: {fileID: 0}
   m_Sun: {fileID: 0}
-  m_IndirectSpecularColor: {r: 0.18028393, g: 0.225715, b: 0.30692238, a: 1}
+  m_IndirectSpecularColor: {r: 0.18028387, g: 0.22571489, b: 0.30692226, a: 1}
   m_UseRadianceAmbientProbe: 0
 --- !u!157 &3
 LightmapSettings:
@@ -545,8 +545,26 @@ BoxCollider:
   m_ProvidesContacts: 0
   m_Enabled: 1
   serializedVersion: 3
-  m_Size: {x: 2817.7458, y: 741.0382, z: 1305.2794}
-  m_Center: {x: 0, y: -136.13922, z: -0.004882813}
+  m_Size: {x: 2700, y: 741.0382, z: 1420}
+  m_Center: {x: -240, y: -136.13922, z: -57.58216}
+--- !u!114 &57086192
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 57086184}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 46578128e60b76546ba7e30367c69085, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  panelUI: {fileID: 2044535720}
+  specialViewCanvas: {fileID: 554824291}
+  mainCamera: {fileID: 1412406310}
+  playerMovement: {fileID: 1235521613}
+  switchKey: 101
+  exitKey: 27
 --- !u!1 &57442542
 GameObject:
   m_ObjectHideFlags: 0
@@ -1136,13 +1154,13 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 97363988}
   serializedVersion: 2
-  m_LocalRotation: {x: 0.044943456, y: 0.95125127, z: -0.16773124, w: 0.25488707}
-  m_LocalPosition: {x: -561.318, y: -319.985, z: -33.532}
+  m_LocalRotation: {x: 0.022624105, y: 0.97094774, z: -0.10205071, w: 0.21525401}
+  m_LocalPosition: {x: -561.059, y: -320.103, z: -33.416}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
   m_Father: {fileID: 554824294}
-  m_LocalEulerAnglesHint: {x: 20, y: 150, z: 0}
+  m_LocalEulerAnglesHint: {x: 12, y: 155, z: 0}
 --- !u!81 &97363990
 AudioListener:
   m_ObjectHideFlags: 0
@@ -3377,6 +3395,8 @@ MonoBehaviour:
   - {fileID: 1992274644}
   - {fileID: 97363991}
   botellaSpawnPoint: {fileID: 795493890}
+  tapaSpawnPoint: {fileID: 435572521}
+  botellaDestinoSpawnPoint: {fileID: 1286769139}
 --- !u!225 &306887435
 CanvasGroup:
   m_ObjectHideFlags: 0
@@ -4345,7 +4365,7 @@ GameObject:
   m_Component:
   - component: {fileID: 435572521}
   m_Layer: 0
-  m_Name: BottleSpawn
+  m_Name: BottleCapSpawn2
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -4360,7 +4380,7 @@ Transform:
   m_GameObject: {fileID: 435572520}
   serializedVersion: 2
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 10.732, y: 1.044, z: -35.508}
+  m_LocalPosition: {x: 10.226, y: 1.203, z: -36.172}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
@@ -5059,7 +5079,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 0
+  m_IsActive: 1
 --- !u!223 &554824291
 Canvas:
   m_ObjectHideFlags: 0
@@ -5449,6 +5469,8 @@ MonoBehaviour:
   - {fileID: 1992274644}
   - {fileID: 97363991}
   botellaSpawnPoint: {fileID: 795493890}
+  tapaSpawnPoint: {fileID: 435572521}
+  botellaDestinoSpawnPoint: {fileID: 1286769139}
 --- !u!225 &601017123
 CanvasGroup:
   m_ObjectHideFlags: 0
@@ -6666,7 +6688,7 @@ GameObject:
   m_Component:
   - component: {fileID: 795493890}
   m_Layer: 0
-  m_Name: BottleSpawnDrop
+  m_Name: BottleSpawn1
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -7311,27 +7333,6 @@ MeshCollider:
   m_Convex: 0
   m_CookingOptions: 30
   m_Mesh: {fileID: 6329158148709259305, guid: 51c2a6f8c04803e4481eeba2e60a6d6e, type: 3}
---- !u!65 &849131584
-BoxCollider:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 849131575}
-  m_Material: {fileID: 0}
-  m_IncludeLayers:
-    serializedVersion: 2
-    m_Bits: 0
-  m_ExcludeLayers:
-    serializedVersion: 2
-    m_Bits: 0
-  m_LayerOverridePriority: 0
-  m_IsTrigger: 0
-  m_ProvidesContacts: 0
-  m_Enabled: 1
-  serializedVersion: 3
-  m_Size: {x: 160.4204, y: 164.61423, z: 102.19706}
-  m_Center: {x: 18.850462, y: -55.705338, z: 13.004536}
 --- !u!1 &849220085
 GameObject:
   m_ObjectHideFlags: 0
@@ -9059,12 +9060,15 @@ PrefabInstance:
     - targetCorrespondingSourceObject: {fileID: -5658993485245708505, guid: 51c2a6f8c04803e4481eeba2e60a6d6e, type: 3}
       insertIndex: -1
       addedObject: {fileID: 57086188}
+    - targetCorrespondingSourceObject: {fileID: -5658993485245708505, guid: 51c2a6f8c04803e4481eeba2e60a6d6e, type: 3}
+      insertIndex: -1
+      addedObject: {fileID: 57086192}
+    - targetCorrespondingSourceObject: {fileID: 1233488065980840861, guid: 51c2a6f8c04803e4481eeba2e60a6d6e, type: 3}
+      insertIndex: -1
+      addedObject: {fileID: 1390783557}
     - targetCorrespondingSourceObject: {fileID: -8006887772419742536, guid: 51c2a6f8c04803e4481eeba2e60a6d6e, type: 3}
       insertIndex: -1
       addedObject: {fileID: 849131580}
-    - targetCorrespondingSourceObject: {fileID: -8006887772419742536, guid: 51c2a6f8c04803e4481eeba2e60a6d6e, type: 3}
-      insertIndex: -1
-      addedObject: {fileID: 849131584}
     - targetCorrespondingSourceObject: {fileID: 8667651472475869228, guid: 51c2a6f8c04803e4481eeba2e60a6d6e, type: 3}
       insertIndex: -1
       addedObject: {fileID: 1444863229}
@@ -9941,6 +9945,8 @@ MonoBehaviour:
   - {fileID: 1992274644}
   - {fileID: 97363991}
   botellaSpawnPoint: {fileID: 795493890}
+  tapaSpawnPoint: {fileID: 435572521}
+  botellaDestinoSpawnPoint: {fileID: 1286769139}
 --- !u!225 &1159543891
 CanvasGroup:
   m_ObjectHideFlags: 0
@@ -11271,6 +11277,37 @@ RectTransform:
   m_AnchoredPosition: {x: 0, y: 0}
   m_SizeDelta: {x: 100, y: 100}
   m_Pivot: {x: 0.5, y: 0.5}
+--- !u!1 &1286769138
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 1286769139}
+  m_Layer: 0
+  m_Name: BottleFinalSpawn3
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &1286769139
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1286769138}
+  serializedVersion: 2
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 11.4, y: 2.031, z: -36.029}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 0}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &1290017050
 GameObject:
   m_ObjectHideFlags: 0
@@ -11875,6 +11912,33 @@ CanvasRenderer:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1380588860}
   m_CullTransparentMesh: 1
+--- !u!1 &1390783553 stripped
+GameObject:
+  m_CorrespondingSourceObject: {fileID: 1233488065980840861, guid: 51c2a6f8c04803e4481eeba2e60a6d6e, type: 3}
+  m_PrefabInstance: {fileID: 1031147416}
+  m_PrefabAsset: {fileID: 0}
+--- !u!64 &1390783557
+MeshCollider:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1390783553}
+  m_Material: {fileID: 0}
+  m_IncludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_ExcludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_LayerOverridePriority: 0
+  m_IsTrigger: 0
+  m_ProvidesContacts: 0
+  m_Enabled: 1
+  serializedVersion: 5
+  m_Convex: 0
+  m_CookingOptions: 30
+  m_Mesh: {fileID: -8161542852108719504, guid: 51c2a6f8c04803e4481eeba2e60a6d6e, type: 3}
 --- !u!1 &1412406308
 GameObject:
   m_ObjectHideFlags: 0
@@ -12141,8 +12205,8 @@ BoxCollider:
   m_ProvidesContacts: 0
   m_Enabled: 1
   serializedVersion: 3
-  m_Size: {x: 270, y: 239.52728, z: 100}
-  m_Center: {x: 40, y: -257.77606, z: 20}
+  m_Size: {x: 266.12125, y: 239.52727, z: 95.47023}
+  m_Center: {x: 41.939503, y: -257.77606, z: 22.264872}
 --- !u!114 &1444863230
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -13393,6 +13457,8 @@ MonoBehaviour:
   - {fileID: 1992274644}
   - {fileID: 97363991}
   botellaSpawnPoint: {fileID: 795493890}
+  tapaSpawnPoint: {fileID: 435572521}
+  botellaDestinoSpawnPoint: {fileID: 1286769139}
 --- !u!225 &1611161800
 CanvasGroup:
   m_ObjectHideFlags: 0
@@ -14288,6 +14354,8 @@ MonoBehaviour:
   - {fileID: 1992274644}
   - {fileID: 97363991}
   botellaSpawnPoint: {fileID: 795493890}
+  tapaSpawnPoint: {fileID: 435572521}
+  botellaDestinoSpawnPoint: {fileID: 1286769139}
 --- !u!225 &1773588550
 CanvasGroup:
   m_ObjectHideFlags: 0
@@ -14346,6 +14414,10 @@ PrefabInstance:
     serializedVersion: 3
     m_TransformParent: {fileID: 0}
     m_Modifications:
+    - target: {fileID: 2984302295532131129, guid: 2d6a30c4f9451304682be37f31fc60e0, type: 3}
+      propertyPath: cameraEspecial
+      value: 
+      objectReference: {fileID: 0}
     - target: {fileID: 5135943166415602768, guid: 2d6a30c4f9451304682be37f31fc60e0, type: 3}
       propertyPath: m_Name
       value: PlasticBottle (1)
@@ -14886,6 +14958,8 @@ MonoBehaviour:
   - {fileID: 1992274644}
   - {fileID: 97363991}
   botellaSpawnPoint: {fileID: 795493890}
+  tapaSpawnPoint: {fileID: 435572521}
+  botellaDestinoSpawnPoint: {fileID: 1286769139}
 --- !u!225 &1865402010
 CanvasGroup:
   m_ObjectHideFlags: 0
@@ -15826,6 +15900,8 @@ MonoBehaviour:
   - {fileID: 1992274644}
   - {fileID: 97363991}
   botellaSpawnPoint: {fileID: 795493890}
+  tapaSpawnPoint: {fileID: 435572521}
+  botellaDestinoSpawnPoint: {fileID: 1286769139}
 --- !u!225 &1947548471
 CanvasGroup:
   m_ObjectHideFlags: 0
@@ -17295,6 +17371,9 @@ SceneRoots:
   - {fileID: 174371609}
   - {fileID: 787252400}
   - {fileID: 554824294}
+  - {fileID: 795493890}
+  - {fileID: 435572521}
+  - {fileID: 1286769139}
   - {fileID: 153590802}
   - {fileID: 923091717}
   - {fileID: 1339169030}
@@ -17309,10 +17388,8 @@ SceneRoots:
   - {fileID: 779017333}
   - {fileID: 1513136458}
   - {fileID: 882685373}
-  - {fileID: 435572521}
   - {fileID: 1934488875}
   - {fileID: 1793346039}
   - {fileID: 96704293}
   - {fileID: 1010362375}
   - {fileID: 1509431569}
-  - {fileID: 795493890}

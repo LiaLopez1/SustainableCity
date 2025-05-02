@@ -17,11 +17,11 @@ public class InventoryItemDragHandler : MonoBehaviour, IBeginDragHandler, IDragH
     public float bounceDuration = 0.5f;
     public float bounceIntensity = 100f;
 
-    [Header("Cámaras válidas para raycast")]
+    [Header("Raycast Cameras")]
     public List<Camera> allowedCameras = new List<Camera>();
     private Camera currentActiveCamera;
 
-    [Header("Referencias")]
+    [Header("References")]
     private CanvasGroup canvasGroup;
     private InventorySlot parentSlot;
     private GameObject dragVisual;
@@ -31,8 +31,10 @@ public class InventoryItemDragHandler : MonoBehaviour, IBeginDragHandler, IDragH
     private bool isSpecialCanvasActive = false;
     private SphereDropHandler sphereDropHandler;
 
-    [Header("Punto fijo para botellas")]
-    public Transform botellaSpawnPoint;
+    [Header("Spawn Points")]
+    public Transform botellaSpawnPoint;            
+    public Transform tapaSpawnPoint;               
+    public Transform botellaDestinoSpawnPoint;     
 
     private void Awake()
     {
@@ -88,18 +90,27 @@ public class InventoryItemDragHandler : MonoBehaviour, IBeginDragHandler, IDragH
             {
                 UpdateCurrentActiveCamera();
 
-                if (itemData.itemTag == "Botella" && botellaSpawnPoint != null)
+                if (itemData.itemTag == "Botella" && botellaSpawnPoint != null && IsSecondCameraActive())
                 {
-                    // Instanciar la botella en el punto fijo
                     GameObject spawned = Instantiate(itemData.worldPrefab, botellaSpawnPoint.position, Quaternion.identity);
                     spawned.tag = "Botella";
-                    Debug.Log($"✅ Botella instanciada en {botellaSpawnPoint.position}");
                     parentSlot.RemoveQuantity(1);
+
+                    // 🔁 Asignar spawn points y tapa al BottleClickHandler
+                    BottleClickHandler handler = spawned.GetComponent<BottleClickHandler>();
+                    if (handler != null)
+                    {
+                        handler.tapaSpawnPoint = tapaSpawnPoint;
+                        handler.bottleFinalSpawnPoint = botellaDestinoSpawnPoint;
+                    }
                 }
-                else if (sphereDropHandler != null)
+                else if (itemData.itemTag == "Esfera" && IsFirstCameraActive() && sphereDropHandler != null)
                 {
-                    // Usar lógica de raycast para esferas u otros
                     sphereDropHandler.DropItemAtMousePosition(parentSlot, currentActiveCamera, groundMask, maxDropDistance);
+                }
+                else
+                {
+                    StartCoroutine(BounceBackToSlot());
                 }
             }
             else
@@ -152,5 +163,25 @@ public class InventoryItemDragHandler : MonoBehaviour, IBeginDragHandler, IDragH
     public void SetSpecialCanvasActive(bool isActive)
     {
         isSpecialCanvasActive = isActive;
+    }
+
+    public bool IsSecondCameraActive()
+    {
+        if (allowedCameras.Count >= 2)
+        {
+            Camera cam = allowedCameras[1];
+            return cam != null && cam.enabled && cam.gameObject.activeInHierarchy;
+        }
+        return false;
+    }
+
+    public bool IsFirstCameraActive()
+    {
+        if (allowedCameras.Count >= 1)
+        {
+            Camera cam = allowedCameras[0];
+            return cam != null && cam.enabled && cam.gameObject.activeInHierarchy;
+        }
+        return false;
     }
 }

@@ -13,7 +13,7 @@ MonoBehaviour:
   m_Name: Plastic
   m_EditorClassIdentifier: 
   itemName: Plastic
-  icon: {fileID: 21300000, guid: 9f454bb639d9c2245b9b96f0c6fe5891, type: 3}
+  icon: {fileID: 21300000, guid: 6c1c6dd0d8ad547ffbdf63092d53de80, type: 3}
   worldPrefab: {fileID: 5135943166415602768, guid: 2d6a30c4f9451304682be37f31fc60e0, type: 3}
   alternatePrefab: {fileID: 0}
   itemTag: Botella
