@@ -6,86 +6,91 @@ using System.Collections;
 public class ProductoComprable : MonoBehaviour
 {
     [Header("Datos del Producto")]
-    public ItemData itemData;
+    public ItemData itemData; // Ítem que se entrega al comprar
     public int precio;
-    public int basuraRequerida;
+
+    [Header("Requisito adicional")]
+    public ItemData itemRequerido;     // Ítem necesario para comprar (ej: plástico)
+    public int cantidadRequerida;      // Cantidad necesaria de ese ítem
 
     [Header("Referencias UI")]
     public Button botonComprar;
     public TextMeshProUGUI textoPrecio;
-    public TextMeshProUGUI textoProgresoBasura; // muestra "x / basuraRequerida"
+    public TextMeshProUGUI textoRequisito; // "Requiere: 5 Plástico"
     public TiendaComprasUI tienda;
 
-    private Color colorOriginal;
-    private BasuraSpawner spawner;
+    [Header("Mejoras de mundo (opcional)")]
+    public GameObject objetoAntiguo; // Máquina vieja
+    public GameObject objetoNuevo;  // Máquina mejorada
+    public bool esMejora = false;   // Si este producto es una mejora, no un ítem
+
+    private InventorySystem inventario;
     private Image imagenBoton;
+    private Color colorOriginal;
 
     void Start()
     {
-        imagenBoton = botonComprar.GetComponent<Image>(); // ¡NECESARIA!
+        imagenBoton = botonComprar.GetComponent<Image>();
 
-        if (itemData == null)
+        if (itemData == null || itemRequerido == null || tienda == null)
         {
-            Debug.LogError($"ItemData no asignado en {gameObject.name}");
+            Debug.LogError($"Faltan referencias en {gameObject.name}");
             botonComprar.interactable = false;
             return;
         }
 
+        // Mostrar precio y requisito
         imagenBoton.sprite = itemData.icon;
         textoPrecio.text = "$" + precio;
+        textoRequisito.text = $"Requiere: {cantidadRequerida} {itemRequerido.itemName}";
+
         colorOriginal = imagenBoton.color;
 
-        spawner = FindObjectOfType<BasuraSpawner>();
+        inventario = tienda.inventario;
         botonComprar.onClick.AddListener(Comprar);
-
-        ActualizarDisponibilidad();
-    }
-
-
-
-    void Update()
-    {
-        ActualizarDisponibilidad(); // chequea en tiempo real
-    }
-
-    void ActualizarDisponibilidad()
-    {
-        if (spawner == null) return;
-
-        int basuraRecogida = spawner.GetBasuraRecogida();
-        textoProgresoBasura.text = $"{basuraRecogida} / {basuraRequerida}";
-
-        bool desbloqueado = basuraRecogida >= basuraRequerida;
-
-        botonComprar.interactable = desbloqueado;
-
-        // Visual feedback: desaturar ítem si está bloqueado
-        imagenBoton.color = desbloqueado ? colorOriginal : new Color(0.5f, 0.5f, 0.5f, 1f);
     }
 
     public void Comprar()
     {
-        if (tienda == null || itemData == null) return;
-
-        if (tienda.TieneDineroSuficiente(precio))
-        {
-            bool añadido = tienda.AnadirAlInventario(itemData);
-
-            if (añadido)
-            {
-                tienda.RestarDinero(precio);
-            }
-            else
-            {
-                tienda.MostrarMensaje("¡No hay espacio en el inventario!");
-                StartCoroutine(EfectoEspasmoRojo());
-            }
-        }
-        else
+        if (!tienda.TieneDineroSuficiente(precio))
         {
             tienda.MostrarMensaje("¡Dinero insuficiente!");
             StartCoroutine(EfectoEspasmoRojo());
+            return;
         }
+
+        if (!inventario.TieneItem(itemRequerido, cantidadRequerida))
+        {
+            tienda.MostrarMensaje($"¡Faltan {itemRequerido.itemName}!");
+            StartCoroutine(EfectoEspasmoRojo());
+            return;
+        }
+
+        bool añadido = tienda.AñadirAlInventario(itemData);
+
+        if (añadido)
+        {
+            tienda.RestarDinero(precio);
+            inventario.RemoveItem(itemRequerido, cantidadRequerida);
+        }
+        else
+        {
+            tienda.MostrarMensaje("¡Sin espacio en el inventario!");
+            StartCoroutine(EfectoEspasmoRojo());
+        }
+
+        if (añadido || esMejora)
+        {
+            tienda.RestarDinero(precio);
+            inventario.RemoveItem(itemRequerido, cantidadRequerida);
+
+            if (esMejora)
+            {
+                if (objetoAntiguo != null) objetoAntiguo.SetActive(false);
+                if (objetoNuevo != null) objetoNuevo.SetActive(true);
+            }
+        }
+
     }
 
     private IEnumerator EfectoEspasmoRojo()

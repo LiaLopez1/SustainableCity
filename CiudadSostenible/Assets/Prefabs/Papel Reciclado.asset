@@ -1,0 +1,21 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: d3e01e06551dd2a489f97638cf5b3c99, type: 3}
+  m_Name: Papel Reciclado
+  m_EditorClassIdentifier: 
+  itemName: Papel Reciclado
+  icon: {fileID: 21300000, guid: 1ec5be8e5d5c57748b4c46567ac7fe9a, type: 3}
+  worldPrefab: {fileID: 7604959947289719082, guid: 319501c53c8b3d34e9901b71f52f02c1, type: 3}
+  alternatePrefab: {fileID: 0}
+  itemTag: PapelReciclado
+  maxStack: 10
+  puedeAparecerEnBolsa: 0

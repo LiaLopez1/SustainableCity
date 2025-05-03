@@ -1,11 +1,14 @@
-using UnityEngine;
+ï»¿using UnityEngine;
 
 public class TiendaInteraction : MonoBehaviour
 {
+    [Header("ConfiguraciÃ³n de la tienda")]
+    public int idTienda = 1; // Identificador: 1, 2 o 3
+
     [Header("Referencias UI")]
-    public GameObject canvasTienda;         // Aquí sigue y se queda activo todo el tiempo
-    public GameObject textoInteraccion;     // Texto que aparece al acercarse
-    public GameObject panelPrincipal;       // Este es el que contiene los botones y paneles
+    public GameObject canvasTienda;
+    public GameObject textoInteraccion;
+    public GameObject panelPrincipal;
     public TiendaUIController tiendaUIController;
 
     private bool jugadorDentro = false;
@@ -13,7 +16,7 @@ public class TiendaInteraction : MonoBehaviour
     void Start()
     {
         if (panelPrincipal != null)
-            panelPrincipal.SetActive(false); // Aunque esté activo en el editor, lo apagamos aquí
+            panelPrincipal.SetActive(false);
 
         if (textoInteraccion != null)
             textoInteraccion.SetActive(false);
@@ -23,9 +26,9 @@ public class TiendaInteraction : MonoBehaviour
     {
         if (jugadorDentro && Input.GetKeyDown(KeyCode.E))
         {
+            tiendaUIController?.EstablecerTiendaActual(idTienda);
             panelPrincipal.SetActive(true);
             textoInteraccion.SetActive(false);
-            tiendaUIController?.OcultarTodosLosPaneles();
         }
 
         if (panelPrincipal.activeSelf && Input.GetKeyDown(KeyCode.Escape))
