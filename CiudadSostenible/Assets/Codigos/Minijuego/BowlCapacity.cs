@@ -42,7 +42,6 @@ public class BowlCapacity : MonoBehaviour
         if (!currentSpheres.Contains(sphere))
         {
             currentSpheres.Add(sphere);
-            Debug.Log($"✅ Esfera registrada. Total: {currentSpheres.Count}");
 
             if (currentSpheres.Count >= maxCapacity && fullMessage != null)
                 fullMessage.gameObject.SetActive(true);
@@ -54,7 +53,6 @@ public class BowlCapacity : MonoBehaviour
         if (currentSpheres.Contains(sphere))
         {
             currentSpheres.Remove(sphere);
-            Debug.Log($"❌ Esfera eliminada. Total: {currentSpheres.Count}");
 
             if (currentSpheres.Count < maxCapacity && fullMessage != null)
                 fullMessage.gameObject.SetActive(false);
@@ -75,7 +73,6 @@ public class BowlCapacity : MonoBehaviour
 
         if (alternadas == currentSpheres.Count && currentSpheres.Count > 0)
         {
-            Debug.Log("🎉 Todas las esferas están en estado alternado. Mostrando prefab final.");
 
             // Destruir todas las esferas
             foreach (var sphere in currentSpheres)

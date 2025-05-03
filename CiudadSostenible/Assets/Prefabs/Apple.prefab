@@ -15,7 +15,7 @@ GameObject:
   - component: {fileID: 2341981826775067041}
   - component: {fileID: 3802375752575705923}
   - component: {fileID: 4744045149513582167}
-  m_Layer: 3
+  m_Layer: 0
   m_Name: Apple
   m_TagString: Esfera
   m_Icon: {fileID: 0}

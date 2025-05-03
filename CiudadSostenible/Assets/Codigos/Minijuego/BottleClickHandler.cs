@@ -1,10 +1,13 @@
 ﻿using UnityEngine;
+using System;
 
 public class BottleClickHandler : MonoBehaviour
 {
     [Header("Spawn Points")]
-    public Transform tapaSpawnPoint;            
-    public Transform bottleFinalSpawnPoint;     
+    public Transform tapaSpawnPoint;
+    public Transform bottleFinalSpawnPoint;
+
+    public Action onBotellaCompletada;
 
     private bool tapaSeparada = false;
     private bool botellaMovida = false;
@@ -17,8 +20,23 @@ public class BottleClickHandler : MonoBehaviour
             if (cap != null && tapaSpawnPoint != null)
             {
                 cap.position = tapaSpawnPoint.position;
+
+                if (cap.GetComponent<Collider>() == null)
+                {
+                    cap.gameObject.AddComponent<BoxCollider>();
+                }
+
+                Rigidbody rb = cap.GetComponent<Rigidbody>();
+                if (rb == null)
+                {
+                    rb = cap.gameObject.AddComponent<Rigidbody>();
+                }
+
+                rb.useGravity = true;
+                rb.isKinematic = false;
+
                 tapaSeparada = true;
-                Debug.Log("🧴 Tapa movida al segundo spawn.");
+                Debug.Log("🧴 Tapa separada y física activada.");
             }
             else
             {
@@ -27,16 +45,20 @@ public class BottleClickHandler : MonoBehaviour
         }
         else if (!botellaMovida)
         {
-            Transform cuerpo = transform.Find("Bottle");
-            if (cuerpo != null && bottleFinalSpawnPoint != null)
+            if (bottleFinalSpawnPoint != null)
             {
-                cuerpo.position = bottleFinalSpawnPoint.position;
-                botellaMovida = true;
-                Debug.Log("📦 Cuerpo de botella movido al tercer spawn.");
-            }
-            else
-            {
-                Debug.LogWarning("❌ No se encontró 'Bottle' o falta el tercer spawn.");
+                Transform cuerpo = transform.Find("Bottle");
+                if (cuerpo != null)
+                {
+                    cuerpo.position = bottleFinalSpawnPoint.position;
+                    botellaMovida = true;
+                    onBotellaCompletada?.Invoke();
+                    Debug.Log("📦 Cuerpo de botella movido al tercer spawn.");
+                }
+                else
+                {
+                    Debug.LogWarning("❌ No se encontró 'Bottle'.");
+                }
             }
         }
     }

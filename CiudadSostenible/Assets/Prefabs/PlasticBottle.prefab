@@ -14,7 +14,7 @@ GameObject:
   - component: {fileID: 8636542474886825870}
   m_Layer: 0
   m_Name: Bottle
-  m_TagString: Untagged
+  m_TagString: Botella
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -324,3 +324,6 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   tapaSpawnPoint: {fileID: 0}
   bottleFinalSpawnPoint: {fileID: 0}
+  receptorLayer:
+    serializedVersion: 2
+    m_Bits: 128

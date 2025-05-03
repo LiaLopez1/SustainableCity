@@ -1,6 +1,8 @@
-﻿using UnityEngine;
+﻿
+using UnityEngine;
 using UnityEngine.EventSystems;
 using UnityEngine.UI;
+using TMPro;
 using System.Collections;
 using System.Collections.Generic;
 
@@ -17,11 +19,11 @@ public class InventoryItemDragHandler : MonoBehaviour, IBeginDragHandler, IDragH
     public float bounceDuration = 0.5f;
     public float bounceIntensity = 100f;
 
-    [Header("Raycast Cameras")]
+    [Header("Cámaras válidas para raycast")]
     public List<Camera> allowedCameras = new List<Camera>();
     private Camera currentActiveCamera;
 
-    [Header("References")]
+    [Header("Referencias")]
     private CanvasGroup canvasGroup;
     private InventorySlot parentSlot;
     private GameObject dragVisual;
@@ -31,10 +33,15 @@ public class InventoryItemDragHandler : MonoBehaviour, IBeginDragHandler, IDragH
     private bool isSpecialCanvasActive = false;
     private SphereDropHandler sphereDropHandler;
 
-    [Header("Spawn Points")]
-    public Transform botellaSpawnPoint;            
-    public Transform tapaSpawnPoint;               
-    public Transform botellaDestinoSpawnPoint;     
+    [Header("Puntos de Spawn")]
+    public Transform botellaSpawnPoint;
+    public Transform tapaSpawnPoint;
+    public Transform botellaDestinoSpawnPoint;
+
+    [Header("Mensaje UI")]
+    public TextMeshProUGUI avisoTMP;
+
+    private GameObject botellaActivaEnSpawn = null;
 
     private void Awake()
     {
@@ -92,16 +99,28 @@ public class InventoryItemDragHandler : MonoBehaviour, IBeginDragHandler, IDragH
 
                 if (itemData.itemTag == "Botella" && botellaSpawnPoint != null && IsSecondCameraActive())
                 {
+                    if (IsBottleAlreadyInSpawn())
+                    {
+                        if (avisoTMP != null)
+                        {
+                            avisoTMP.gameObject.SetActive(true);
+                            StartCoroutine(HideWarningAfterSeconds(2f));
+                        }
+                        StartCoroutine(BounceBackToSlot());
+                        return;
+                    }
+
                     GameObject spawned = Instantiate(itemData.worldPrefab, botellaSpawnPoint.position, Quaternion.identity);
                     spawned.tag = "Botella";
                     parentSlot.RemoveQuantity(1);
+                    botellaActivaEnSpawn = spawned;
 
-                    // 🔁 Asignar spawn points y tapa al BottleClickHandler
                     BottleClickHandler handler = spawned.GetComponent<BottleClickHandler>();
                     if (handler != null)
                     {
                         handler.tapaSpawnPoint = tapaSpawnPoint;
                         handler.bottleFinalSpawnPoint = botellaDestinoSpawnPoint;
+                        handler.onBotellaCompletada = () => botellaActivaEnSpawn = null;
                     }
                 }
                 else if (itemData.itemTag == "Esfera" && IsFirstCameraActive() && sphereDropHandler != null)
@@ -183,5 +202,19 @@ public class InventoryItemDragHandler : MonoBehaviour, IBeginDragHandler, IDragH
             return cam != null && cam.enabled && cam.gameObject.activeInHierarchy;
         }
         return false;
+    }
+
+    private bool IsBottleAlreadyInSpawn()
+    {
+        return botellaActivaEnSpawn != null;
+    }
+
+    private IEnumerator HideWarningAfterSeconds(float seconds)
+    {
+        yield return new WaitForSeconds(seconds);
+        if (avisoTMP != null)
+        {
+            avisoTMP.gameObject.SetActive(false);
+        }
     }
 }
