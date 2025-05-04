@@ -13,7 +13,7 @@ GameObject:
   - component: {fileID: 2837203288291084161}
   - component: {fileID: 3463343911814587780}
   m_Layer: 0
-  m_Name: PlantaDecorativa
+  m_Name: Arbol
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -28,8 +28,8 @@ Transform:
   m_GameObject: {fileID: 344725899275122755}
   serializedVersion: 2
   m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
-  m_LocalPosition: {x: 0.19588733, y: 0.653, z: -29.510757}
-  m_LocalScale: {x: 0.6818, y: 0.23450439, z: 0.6818}
+  m_LocalPosition: {x: 14.608641, y: 0.42, z: -31.888985}
+  m_LocalScale: {x: 0.17559077, y: 0.42934278, z: 0.17559077}
   m_ConstrainProportionsScale: 0
   m_Children: []
   m_Father: {fileID: 0}
