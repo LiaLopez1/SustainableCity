@@ -17,10 +17,39 @@ public class ItemRecogible : MonoBehaviour
     {
         if (jugadorCerca && Input.GetKeyDown(KeyCode.E))
         {
-            if (inventario != null && itemData != null)
-            {
-                inventario.AddItem(itemData);
+            RecogerConTecla();
+        }
+    }
 
+    private void OnMouseDown()
+    {
+        // Recoger con clic solo si el tag es PlasticStrips
+        if (CompareTag("PlasticStrips"))
+        {
+            InventorySystem inv = FindObjectOfType<InventorySystem>();
+            if (inv != null && itemData != null)
+            {
+                bool recogido = inv.AddItem(itemData);
+                if (recogido)
+                {
+                    Debug.Log("✅ Recogido con clic: " + itemData.itemName);
+                    Destroy(gameObject);
+                }
+                else
+                {
+                    Debug.Log("❌ Inventario lleno.");
+                }
+            }
+        }
+    }
+
+    private void RecogerConTecla()
+    {
+        if (inventario != null && itemData != null)
+        {
+            bool recogido = inventario.AddItem(itemData);
+            if (recogido)
+            {
                 BasuraSpawner spawner = FindObjectOfType<BasuraSpawner>();
                 if (spawner != null)
                 {
@@ -46,7 +75,7 @@ public class ItemRecogible : MonoBehaviour
 
             if (uiRecolectar != null)
             {
-                uiRecolectar.MostrarMensaje("Recoger");
+                uiRecolectar.MostrarMensaje("");
             }
         }
     }

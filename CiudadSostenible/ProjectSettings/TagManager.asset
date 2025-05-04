@@ -15,6 +15,7 @@ TagManager:
   - Esfera
   - Botella
   - PlantaDecorativa
+  - PlasticStrips
   layers:
   - Default
   - TransparentFX

@@ -1,12 +1,11 @@
-﻿
-using UnityEngine;
+﻿using UnityEngine;
 
 public class ManivelaGiratoria : MonoBehaviour
 {
     [Header("Referencias")]
     public Transform manivelaVisual;
     public Camera camara;
-    public PlasticBowlCounter bowlCounter;
+    public PlasticBowlCounter bowlCounter; // Debe estar asignado o se buscará automáticamente
 
     [Header("Configuración")]
     public float sensibilidad = 1f;
@@ -37,7 +36,7 @@ public class ManivelaGiratoria : MonoBehaviour
             float nuevoAngulo = ObtenerAngulo(Input.mousePosition);
             float delta = Mathf.DeltaAngle(ultimoAngulo, nuevoAngulo);
 
-            // Solo permitir giro hacia la izquierda (negativo)
+            // Solo permitir giro hacia la izquierda
             if (delta < 0)
             {
                 float rotacion = -delta * sensibilidad;
@@ -47,11 +46,20 @@ public class ManivelaGiratoria : MonoBehaviour
                 if (rotacionAcumulada >= vueltaCompleta)
                 {
                     rotacionAcumulada = 0f;
-                    Debug.Log("🔄 Vuelta completa detectada en sentido izquierdo.");
+                    Debug.Log("🔄 Vuelta completa detectada.");
+
+                    if (bowlCounter == null)
+                    {
+                        bowlCounter = FindObjectOfType<PlasticBowlCounter>();
+                    }
 
                     if (bowlCounter != null)
                     {
-                        bowlCounter.ProcesarUnaBotella();
+                        bowlCounter.ProcesarUnaBotellaDirecto();
+                    }
+                    else
+                    {
+                        Debug.LogWarning("❌ No se encontró PlasticBowlCounter.");
                     }
                 }
             }

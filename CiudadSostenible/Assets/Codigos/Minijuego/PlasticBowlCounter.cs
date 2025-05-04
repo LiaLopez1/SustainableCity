@@ -1,5 +1,4 @@
-﻿
-using UnityEngine;
+﻿using UnityEngine;
 using TMPro;
 using System.Collections.Generic;
 
@@ -10,6 +9,7 @@ public class PlasticBowlCounter : MonoBehaviour
     public int maxCapacity = 4;
     public TextMeshProUGUI mensajeTMP;
     public Transform spawnPointProcesado;
+    public GameObject prefabProcesado; 
 
     [Header("Estado actual")]
     public int currentCount = 0;
@@ -30,27 +30,32 @@ public class PlasticBowlCounter : MonoBehaviour
         }
     }
 
-    public void ProcesarUnaBotella()
-    {
-        if (botellasQueue.Count == 0)
-        {
-            return;
-        }
 
-        GameObject botella = botellasQueue.Dequeue();
-        if (botella != null)
+    public void ProcesarUnaBotellaDirecto()
+    {
+        // Solo procesar si hay al menos una botella
+        if (currentCount <= 0) return;
+
+        // Encontrar una botella con tag dentro del bowl
+        GameObject[] botellas = GameObject.FindGameObjectsWithTag(targetTag);
+        foreach (GameObject botella in botellas)
         {
-            ItemRecogible recogible = botella.GetComponent<ItemRecogible>();
-            if (recogible != null && recogible.itemData != null && recogible.itemData.alternatePrefab != null)
+            if (GetComponent<Collider>().bounds.Contains(botella.transform.position))
             {
-                Vector3 posicion = spawnPointProcesado.position;
-                Quaternion rotacion = Quaternion.identity;
                 Destroy(botella);
-                Instantiate(recogible.itemData.alternatePrefab, posicion, rotacion);
                 currentCount = Mathf.Max(0, currentCount - 1);
+                break;
             }
         }
+
+        // Instanciar prefab fijo
+        if (prefabProcesado != null && spawnPointProcesado != null)
+        {
+            Instantiate(prefabProcesado, spawnPointProcesado.position, Quaternion.identity);
+            Debug.Log("✅ Botella procesada y objeto instanciado.");
+        }
     }
+
 
     private void OnTriggerEnter(Collider other)
     {
