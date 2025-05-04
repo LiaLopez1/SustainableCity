@@ -25,6 +25,12 @@ public class InventorySlot : MonoBehaviour
         UpdateUI();
     }
 
+    public Image GetItemIcon()
+    {
+        return itemIcon;
+    }
+
+
     public bool AddQuantity(int amount)
     {
         if (currentItem == null || amount <= 0) return false;
@@ -61,7 +67,7 @@ public class InventorySlot : MonoBehaviour
         itemIcon.enabled = currentItem != null;
         quantityText.text = currentQuantity > 1 ? currentQuantity.ToString() : "";
 
-        // Actualizar tag si hay ítem
+        // Actualizar tag del icono (importante para las canecas)
         if (currentItem != null && !string.IsNullOrEmpty(currentItem.itemTag))
         {
             itemIcon.gameObject.tag = currentItem.itemTag;
