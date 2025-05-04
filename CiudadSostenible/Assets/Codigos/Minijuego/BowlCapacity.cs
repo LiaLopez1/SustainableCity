@@ -1,6 +1,7 @@
 ﻿using System.Collections.Generic;
 using UnityEngine;
 using TMPro;
+using UnityEngine.Audio;
 
 public class BowlCapacity : MonoBehaviour
 {
@@ -13,12 +14,39 @@ public class BowlCapacity : MonoBehaviour
     [Header("Prefab final a mostrar")]
     public GameObject finalPrefab;
 
+    [Header("Sonidos")]
+    public AudioClip addSphereSound;
+    public AudioClip removeSphereSound;
+    public AudioMixerGroup sfxMixerGroup;
+
+    private AudioSource audioSource;
+
     private List<GameObject> currentSpheres = new List<GameObject>();
 
     private void Start()
     {
         if (fullMessage != null)
             fullMessage.gameObject.SetActive(false);
+
+        audioSource = GetComponent<AudioSource>();
+        if (audioSource == null)
+        {
+            audioSource = gameObject.AddComponent<AudioSource>();
+        }
+
+        if (sfxMixerGroup != null)
+        {
+            audioSource.outputAudioMixerGroup = sfxMixerGroup;
+        }
+
+    }
+
+    private void PlaySFX(AudioClip clip)
+    {
+        if (clip != null && audioSource != null)
+        {
+            audioSource.PlayOneShot(clip);
+        }
     }
 
     public bool TryAddSphere()
@@ -43,6 +71,8 @@ public class BowlCapacity : MonoBehaviour
         {
             currentSpheres.Add(sphere);
 
+            PlaySFX(addSphereSound);
+
             if (currentSpheres.Count >= maxCapacity && fullMessage != null)
                 fullMessage.gameObject.SetActive(true);
         }
@@ -53,6 +83,8 @@ public class BowlCapacity : MonoBehaviour
         if (currentSpheres.Contains(sphere))
         {
             currentSpheres.Remove(sphere);
+
+            PlaySFX(removeSphereSound);
 
             if (currentSpheres.Count < maxCapacity && fullMessage != null)
                 fullMessage.gameObject.SetActive(false);
@@ -82,6 +114,9 @@ public class BowlCapacity : MonoBehaviour
 
             Vector3 center = transform.position + Vector3.up * 0.5f;
             Instantiate(finalPrefab, center, Quaternion.identity);
+
+            PlaySFX(removeSphereSound);
+
 
             if (fullMessage != null)
                 fullMessage.gameObject.SetActive(false);
