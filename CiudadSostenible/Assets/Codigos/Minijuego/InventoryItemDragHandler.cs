@@ -45,6 +45,7 @@ public class InventoryItemDragHandler : MonoBehaviour, IBeginDragHandler, IDragH
     // 🔹 NUEVO PARA PAPER
     [Header("Configuración papel")]
     public Transform paperSpawnPoint;
+    public Transform paperDestinoSpawnPoint;
     public TextMeshProUGUI avisoPaperTMP;
     private GameObject paperEnSpawn = null;
 
@@ -105,10 +106,7 @@ public class InventoryItemDragHandler : MonoBehaviour, IBeginDragHandler, IDragH
         if (objetoSoltado != null && objetoSoltado.CompareTag("Caneca"))
         {
             CanecaReciclaje caneca = objetoSoltado.GetComponent<CanecaReciclaje>();
-            if (caneca != null)
-            {
-                return;
-            }
+            if (caneca != null) return;
         }
 
         // Caso 2: No es una caneca válida
@@ -122,7 +120,7 @@ public class InventoryItemDragHandler : MonoBehaviour, IBeginDragHandler, IDragH
 
                 if (itemData.itemTag == "Botella" && botellaSpawnPoint != null && IsSecondCameraActive())
                 {
-                    if (IsBottleAlreadyInSpawn())
+                    if (botellaActivaEnSpawn != null)
                     {
                         if (avisoTMP != null)
                         {
@@ -150,7 +148,6 @@ public class InventoryItemDragHandler : MonoBehaviour, IBeginDragHandler, IDragH
                 {
                     sphereDropHandler.DropItemAtMousePosition(parentSlot, currentActiveCamera, groundMask, maxDropDistance);
                 }
-                // 🔹 NUEVA LÓGICA PARA PAPER
                 else if (itemData.itemTag == "Paper" && paperSpawnPoint != null && IsThirdCameraActive())
                 {
                     if (paperEnSpawn != null)
@@ -168,6 +165,13 @@ public class InventoryItemDragHandler : MonoBehaviour, IBeginDragHandler, IDragH
                     papel.tag = "Paper";
                     parentSlot.RemoveQuantity(1);
                     paperEnSpawn = papel;
+
+                    PaperClickSplitter paperLogic = papel.GetComponent<PaperClickSplitter>();
+                    if (paperLogic != null)
+                    {
+                        paperLogic.paperFinalSpawnPoint = paperDestinoSpawnPoint;
+                        paperLogic.onPaperCompletado = () => paperEnSpawn = null;
+                    }
                 }
                 else
                 {
@@ -180,13 +184,16 @@ public class InventoryItemDragHandler : MonoBehaviour, IBeginDragHandler, IDragH
             }
         }
 
-        // Caso especial para bolsas de basura
-        if (parentSlot.GetItemData().itemTag == "BolsaBasura" &&
+        // Bolsas de basura
+        ItemData currentItem = parentSlot.GetItemData();
+        if (currentItem != null &&
+            currentItem.itemTag == "BolsaBasura" &&
             eventData.pointerCurrentRaycast.gameObject != null &&
             eventData.pointerCurrentRaycast.gameObject.GetComponent<DetectorBolsa>() != null)
         {
             return;
         }
+
     }
 
     public void ReturnToInventory()
@@ -241,56 +248,30 @@ public class InventoryItemDragHandler : MonoBehaviour, IBeginDragHandler, IDragH
 
     public bool IsSecondCameraActive()
     {
-        if (allowedCameras.Count >= 2)
-        {
-            Camera cam = allowedCameras[1];
-            return cam != null && cam.enabled && cam.gameObject.activeInHierarchy;
-        }
-        return false;
+        return allowedCameras.Count >= 2 && allowedCameras[1].enabled && allowedCameras[1].gameObject.activeInHierarchy;
     }
 
     public bool IsFirstCameraActive()
     {
-        if (allowedCameras.Count >= 1)
-        {
-            Camera cam = allowedCameras[0];
-            return cam != null && cam.enabled && cam.gameObject.activeInHierarchy;
-        }
-        return false;
+        return allowedCameras.Count >= 1 && allowedCameras[0].enabled && allowedCameras[0].gameObject.activeInHierarchy;
     }
 
-    // 🔹 NUEVA función para tercera cámara
     public bool IsThirdCameraActive()
     {
-        if (allowedCameras.Count >= 3)
-        {
-            Camera cam = allowedCameras[2];
-            return cam != null && cam.enabled && cam.gameObject.activeInHierarchy;
-        }
-        return false;
-    }
-
-    private bool IsBottleAlreadyInSpawn()
-    {
-        return botellaActivaEnSpawn != null;
+        return allowedCameras.Count >= 3 && allowedCameras[2].enabled && allowedCameras[2].gameObject.activeInHierarchy;
     }
 
     private IEnumerator HideWarningAfterSeconds(float seconds)
     {
         yield return new WaitForSeconds(seconds);
         if (avisoTMP != null)
-        {
             avisoTMP.gameObject.SetActive(false);
-        }
     }
 
-    // 🔹 Corutina para mensaje de papel
     private IEnumerator HideWarningTMP(TextMeshProUGUI tmp, float seconds)
     {
         yield return new WaitForSeconds(seconds);
         if (tmp != null)
-        {
             tmp.gameObject.SetActive(false);
-        }
     }
 }

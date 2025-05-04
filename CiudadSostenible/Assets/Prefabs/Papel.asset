@@ -15,7 +15,7 @@ MonoBehaviour:
   itemName: Papel
   icon: {fileID: 21300000, guid: e88e523a7798d411b916cc6fdfd7385c, type: 3}
   worldPrefab: {fileID: 7019975391380718855, guid: 4f3afa5d2e0361e4d802dc9e5842ff3e, type: 3}
-  alternatePrefab: {fileID: 0}
+  alternatePrefab: {fileID: 1166671071729041773, guid: d70e887cfa3049a468d64cf37b901489, type: 3}
   itemTag: Paper
   maxStack: 10
   puedeAparecerEnBolsa: 1
