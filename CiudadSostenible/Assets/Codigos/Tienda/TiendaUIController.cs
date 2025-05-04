@@ -1,33 +1,60 @@
-using UnityEngine;
+﻿using UnityEngine;
 
 public class TiendaUIController : MonoBehaviour
 {
-    [Header("Paneles")]
-    public GameObject panelComprar;
+    [Header("Paneles de compra")]
+    public GameObject panelTienda1;
+    public GameObject panelTienda2;
+    public GameObject panelTienda3;
+
+    [Header("Panel de venta")]
     public GameObject panelVender;
-    public GameObject canvasTienda;
+
+    [Header("Otros")]
     public GameObject panelPrincipal;
+
+    private int tiendaActual = 0; // o 0 como default
 
     private void Start()
     {
         OcultarTodosLosPaneles();
     }
 
-    public void MostrarPanelComprar()
+    public void EstablecerTiendaActual(int id)
     {
-        panelComprar.SetActive(true);
-        panelVender.SetActive(false);
+        tiendaActual = id;
+    }
+
+
+    public void MostrarPanelTienda(int id)
+    {
+        OcultarTodosLosPaneles();
+
+        switch (tiendaActual)
+        {
+            case 1:
+                panelTienda1.SetActive(true);
+                break;
+            case 2:
+                panelTienda2.SetActive(true);
+                break;
+            case 3:
+                panelTienda3.SetActive(true);
+                break;
+        }
     }
 
     public void MostrarPanelVender()
     {
+        OcultarTodosLosPaneles();
         panelVender.SetActive(true);
-        panelComprar.SetActive(false);
     }
 
     public void OcultarTodosLosPaneles()
     {
-        panelComprar.SetActive(false);
+        panelTienda1.SetActive(false);
+        panelTienda2.SetActive(false);
+        panelTienda3.SetActive(false);
         panelVender.SetActive(false);
     }
 
@@ -36,5 +63,4 @@ public class TiendaUIController : MonoBehaviour
         panelPrincipal.SetActive(false);
         OcultarTodosLosPaneles();
     }
-
 }

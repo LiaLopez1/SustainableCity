@@ -10,12 +10,12 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: d3e01e06551dd2a489f97638cf5b3c99, type: 3}
-  m_Name: BolsaBasura
+  m_Name: PlantaDecorativa
   m_EditorClassIdentifier: 
-  itemName: BolsaBasura
-  icon: {fileID: 10913, guid: 0000000000000000f000000000000000, type: 0}
+  itemName: PlantaDecorativa
+  icon: {fileID: 21300000, guid: 95d6d7d464c553e4e8da152bada6dd8f, type: 3}
   worldPrefab: {fileID: 0}
   alternatePrefab: {fileID: 0}
-  itemTag: BolsaBasura
-  maxStack: 1
+  itemTag: PlantaDecorativa
+  maxStack: 10
   puedeAparecerEnBolsa: 0

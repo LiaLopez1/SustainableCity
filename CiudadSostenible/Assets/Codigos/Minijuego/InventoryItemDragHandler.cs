@@ -43,6 +43,11 @@ public class InventoryItemDragHandler : MonoBehaviour, IBeginDragHandler, IDragH
 
     private GameObject botellaActivaEnSpawn = null;
 
+
+    public InventorySlot GetParentSlot()
+    {
+        return parentSlot;
+    }
     private void Awake()
     {
         canvasGroup = GetComponent<CanvasGroup>();
@@ -88,6 +93,43 @@ public class InventoryItemDragHandler : MonoBehaviour, IBeginDragHandler, IDragH
             Destroy(dragVisual);
         else
             StartCoroutine(ReturnToSlot());
+
+        GameObject objetoSoltado = eventData.pointerCurrentRaycast.gameObject;
+
+        // Caso 1: Se soltó sobre una caneca válida
+        if (objetoSoltado != null && objetoSoltado.CompareTag("Caneca"))
+        {
+            CanecaReciclaje caneca = objetoSoltado.GetComponent<CanecaReciclaje>();
+            if (caneca != null)
+            {
+                // La caneca ya manejará la lógica (restar cantidad, etc.)
+                return; // No hagas nada más, CanecaReciclaje se encarga
+            }
+        }
+
+        // Caso 2: No es una caneca (o es inválida)
+        if (!EventSystem.current.IsPointerOverGameObject())
+        {
+            // [Tu lógica existente para spawn en el mundo...]
+        }
+        else
+        {
+            // Vuelve al slot original (rebote o movimiento suave)
+            StartCoroutine(BounceBackToSlot());
+        }
+
+
+
+        // Caso especial para bolsas de basura
+        if (parentSlot.GetItemData().itemTag == "BolsaBasura" &&
+            eventData.pointerCurrentRaycast.gameObject != null &&
+            eventData.pointerCurrentRaycast.gameObject.GetComponent<DetectorBolsa>() != null)
+        {
+            // El DetectorBolsa ahora manejará la resta de cantidad
+            return; // Salimos sin hacer el rebote
+        }
+
+
 
         if (!EventSystem.current.IsPointerOverGameObject())
         {
@@ -138,7 +180,10 @@ public class InventoryItemDragHandler : MonoBehaviour, IBeginDragHandler, IDragH
             }
         }
     }
-
+    public void ReturnToInventory()
+    {
+        StartCoroutine(BounceBackToSlot()); // Usa tu coroutine existente
+    }
     private IEnumerator ReturnToSlot()
     {
         yield return new WaitForEndOfFrame();

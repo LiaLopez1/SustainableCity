@@ -1,4 +1,4 @@
-using System.Collections.Generic;
+ï»¿using System.Collections.Generic;
 using UnityEngine;
 
 public class InventorySystem : MonoBehaviour
@@ -21,7 +21,7 @@ public class InventorySystem : MonoBehaviour
 
     public bool AddItem(ItemData item, int quantity = 1)
     {
-        // Primero buscar slots con el mismo ítem que no estén llenos
+        // Primero buscar slots con el mismo Ã­tem que no estÃ©n llenos
         foreach (var slot in slots)
         {
             if (!slot.IsEmpty() && slot.ContainsItem(item))
@@ -37,7 +37,7 @@ public class InventorySystem : MonoBehaviour
             }
         }
 
-        // Luego buscar slots vacíos
+        // Luego buscar slots vacÃ­os
         foreach (var slot in slots)
         {
             if (slot.IsEmpty())
@@ -81,12 +81,28 @@ public class InventorySystem : MonoBehaviour
         return false;
     }
 
+    public bool TieneItem(ItemData item, int cantidad)
+    {
+        int total = 0;
+        foreach (var slot in slots)
+        {
+            if (!slot.IsEmpty() && slot.GetItemData() == item)
+            {
+                total += slot.GetQuantity(); // âœ… correcto, asÃ­ como estÃ¡ en tu script
+
+                if (total >= cantidad) return true;
+            }
+        }
+        return false;
+    }
+
+
     private void Update()
     {
-        // Solo para pruebas: presionar T agrega un ítem manualmente
+        // Solo para pruebas: presionar T agrega un Ã­tem manualmente
         if (Input.GetKeyDown(KeyCode.T))
         {
-            // Asegúrate de tener una referencia al ítem de prueba
+            // AsegÃºrate de tener una referencia al Ã­tem de prueba
             AddItem(itemPrueba);
         }
     }

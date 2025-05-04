@@ -66,5 +66,9 @@ public class TiendaComprasUI : MonoBehaviour
 
     public int ObtenerDinero() => dinero;
 
+    public bool AñadirAlInventario(ItemData item)
+    {
+        return inventario.AddItem(item); // Usa el método real que ya tienes
+    }
 
 }
