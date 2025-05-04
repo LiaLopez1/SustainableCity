@@ -66,7 +66,7 @@ public class ProductoComprable : MonoBehaviour
             return;
         }
 
-        bool añadido = tienda.AñadirAlInventario(itemData);
+        bool añadido = tienda.AnadirAlInventari(itemData);
 
         if (añadido)
         {
