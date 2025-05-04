@@ -7,10 +7,16 @@ public class BottleClickHandler : MonoBehaviour
     public Transform tapaSpawnPoint;
     public Transform bottleFinalSpawnPoint;
 
+    [Header("Configuración automática")]
+    private PlasticBowlCounter bowlCounter;
+
     public Action onBotellaCompletada;
 
     private bool tapaSeparada = false;
     private bool botellaMovida = false;
+
+    public static int posicionIndex = 0;
+    private const int maxPorFila = 7;
 
     private void OnMouseDown()
     {
@@ -22,21 +28,16 @@ public class BottleClickHandler : MonoBehaviour
                 cap.position = tapaSpawnPoint.position;
 
                 if (cap.GetComponent<Collider>() == null)
-                {
                     cap.gameObject.AddComponent<BoxCollider>();
-                }
 
                 Rigidbody rb = cap.GetComponent<Rigidbody>();
                 if (rb == null)
-                {
                     rb = cap.gameObject.AddComponent<Rigidbody>();
-                }
 
                 rb.useGravity = true;
                 rb.isKinematic = false;
 
                 tapaSeparada = true;
-                Debug.Log("🧴 Tapa separada y física activada.");
             }
             else
             {
@@ -47,13 +48,33 @@ public class BottleClickHandler : MonoBehaviour
         {
             if (bottleFinalSpawnPoint != null)
             {
+                if (bowlCounter == null)
+                {
+                    bowlCounter = FindObjectOfType<PlasticBowlCounter>();
+                }
+
+                if (bowlCounter != null && bowlCounter.IsFull())
+                {
+                    bowlCounter.MostrarMensajeFull();
+                    return;
+                }
+
+                // Reiniciar la fila si ya hay 7 botellas
+                if (posicionIndex >= maxPorFila)
+                {
+                    posicionIndex = 0;
+                }
+
                 Transform cuerpo = transform.Find("Bottle");
                 if (cuerpo != null)
                 {
-                    cuerpo.position = bottleFinalSpawnPoint.position;
+                    Vector3 offset = new Vector3(-0.2f * posicionIndex, 0f, 0f);
+                    Vector3 nuevaPosicion = bottleFinalSpawnPoint.position + offset;
+                    cuerpo.position = nuevaPosicion;
+
                     botellaMovida = true;
+                    posicionIndex++;
                     onBotellaCompletada?.Invoke();
-                    Debug.Log("📦 Cuerpo de botella movido al tercer spawn.");
                 }
                 else
                 {
