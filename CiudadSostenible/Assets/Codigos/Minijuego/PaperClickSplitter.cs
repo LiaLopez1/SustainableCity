@@ -11,13 +11,10 @@ public class PaperClickSplitter : MonoBehaviour
     public Transform paperFinalSpawnPoint;
     public Action onPaperCompletado;
 
-    private static int posicionIndex = 0;
-    private const int maxPorFila = 7;
-
     private bool yaMovido = false;
-    private bool yaProcesado = false;
+    public static int posicionIndex = 0;
 
-    private ItemData itemData;
+    private PaperBowlManager bowlManager; // ✅ Se detectará automáticamente
 
     void Start()
     {
@@ -26,7 +23,19 @@ public class PaperClickSplitter : MonoBehaviour
         tiras[1] = transform.Find("Tira3");
         tiras[2] = transform.Find("Tira2");
 
-        itemData = GetComponent<ItemRecogible>()?.itemData;
+        // 🔎 Detectar automáticamente el bowl cercano por Layer
+        Collider[] colliders = Physics.OverlapSphere(transform.position, 5f); // ajusta el radio si es necesario
+        foreach (Collider col in colliders)
+        {
+            if (col.gameObject.layer == LayerMask.NameToLayer("WaterBowl"))
+            {
+                bowlManager = col.GetComponent<PaperBowlManager>();
+                if (bowlManager != null)
+                {
+                    break;
+                }
+            }
+        }
     }
 
     void OnMouseDown()
@@ -43,8 +52,11 @@ public class PaperClickSplitter : MonoBehaviour
         }
         else if (!yaMovido && paperFinalSpawnPoint != null)
         {
-            if (posicionIndex >= maxPorFila)
-                posicionIndex = 0;
+            if (bowlManager != null && bowlManager.EstaLleno())
+            {
+                bowlManager.MostrarMensajeFull();
+                return;
+            }
 
             Vector3 offset = new Vector3(-0.1f * posicionIndex, 0f, 0f);
             transform.position = paperFinalSpawnPoint.position + offset;
@@ -55,19 +67,15 @@ public class PaperClickSplitter : MonoBehaviour
         }
     }
 
-    private void OnTriggerEnter(Collider other)
+    void OnTriggerEnter(Collider other)
     {
-        if (yaProcesado) return;
-
-        // Detecta colisión con objeto del layer WaterBowl
-        if (other.gameObject.layer == LayerMask.NameToLayer("WaterBowl"))
+        if (yaMovido && other.gameObject.layer == LayerMask.NameToLayer("WaterBowl"))
         {
-            if (itemData != null && itemData.alternatePrefab != null)
+            ItemRecogible recogible = GetComponent<ItemRecogible>();
+            if (recogible != null && recogible.itemData != null && recogible.itemData.alternatePrefab != null)
             {
-                Instantiate(itemData.alternatePrefab, transform.position, transform.rotation);
+                Instantiate(recogible.itemData.alternatePrefab, transform.position, Quaternion.identity);
                 Destroy(gameObject);
-                yaProcesado = true;
-                Debug.Log("🧻 Papel convertido tras contacto con agua.");
             }
         }
     }

@@ -16,6 +16,7 @@ TagManager:
   - Botella
   - PlantaDecorativa
   - PlasticStrips
+  - Batidor
   layers:
   - Default
   - TransparentFX
