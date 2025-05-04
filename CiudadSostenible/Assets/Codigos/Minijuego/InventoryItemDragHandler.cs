@@ -1,5 +1,4 @@
-﻿
-using UnityEngine;
+﻿using UnityEngine;
 using UnityEngine.EventSystems;
 using UnityEngine.UI;
 using TMPro;
@@ -43,11 +42,17 @@ public class InventoryItemDragHandler : MonoBehaviour, IBeginDragHandler, IDragH
 
     private GameObject botellaActivaEnSpawn = null;
 
+    // 🔹 NUEVO PARA PAPER
+    [Header("Configuración papel")]
+    public Transform paperSpawnPoint;
+    public TextMeshProUGUI avisoPaperTMP;
+    private GameObject paperEnSpawn = null;
 
     public InventorySlot GetParentSlot()
     {
         return parentSlot;
     }
+
     private void Awake()
     {
         canvasGroup = GetComponent<CanvasGroup>();
@@ -102,35 +107,11 @@ public class InventoryItemDragHandler : MonoBehaviour, IBeginDragHandler, IDragH
             CanecaReciclaje caneca = objetoSoltado.GetComponent<CanecaReciclaje>();
             if (caneca != null)
             {
-                // La caneca ya manejará la lógica (restar cantidad, etc.)
-                return; // No hagas nada más, CanecaReciclaje se encarga
+                return;
             }
         }
 
-        // Caso 2: No es una caneca (o es inválida)
-        if (!EventSystem.current.IsPointerOverGameObject())
-        {
-            // [Tu lógica existente para spawn en el mundo...]
-        }
-        else
-        {
-            // Vuelve al slot original (rebote o movimiento suave)
-            StartCoroutine(BounceBackToSlot());
-        }
-
-
-
-        // Caso especial para bolsas de basura
-        if (parentSlot.GetItemData().itemTag == "BolsaBasura" &&
-            eventData.pointerCurrentRaycast.gameObject != null &&
-            eventData.pointerCurrentRaycast.gameObject.GetComponent<DetectorBolsa>() != null)
-        {
-            // El DetectorBolsa ahora manejará la resta de cantidad
-            return; // Salimos sin hacer el rebote
-        }
-
-
-
+        // Caso 2: No es una caneca válida
         if (!EventSystem.current.IsPointerOverGameObject())
         {
             ItemData itemData = parentSlot.GetItemData();
@@ -169,6 +150,25 @@ public class InventoryItemDragHandler : MonoBehaviour, IBeginDragHandler, IDragH
                 {
                     sphereDropHandler.DropItemAtMousePosition(parentSlot, currentActiveCamera, groundMask, maxDropDistance);
                 }
+                // 🔹 NUEVA LÓGICA PARA PAPER
+                else if (itemData.itemTag == "Paper" && paperSpawnPoint != null && IsThirdCameraActive())
+                {
+                    if (paperEnSpawn != null)
+                    {
+                        if (avisoPaperTMP != null)
+                        {
+                            avisoPaperTMP.gameObject.SetActive(true);
+                            StartCoroutine(HideWarningTMP(avisoPaperTMP, 2f));
+                        }
+                        StartCoroutine(BounceBackToSlot());
+                        return;
+                    }
+
+                    GameObject papel = Instantiate(itemData.worldPrefab, paperSpawnPoint.position, Quaternion.identity);
+                    papel.tag = "Paper";
+                    parentSlot.RemoveQuantity(1);
+                    paperEnSpawn = papel;
+                }
                 else
                 {
                     StartCoroutine(BounceBackToSlot());
@@ -179,11 +179,21 @@ public class InventoryItemDragHandler : MonoBehaviour, IBeginDragHandler, IDragH
                 StartCoroutine(BounceBackToSlot());
             }
         }
+
+        // Caso especial para bolsas de basura
+        if (parentSlot.GetItemData().itemTag == "BolsaBasura" &&
+            eventData.pointerCurrentRaycast.gameObject != null &&
+            eventData.pointerCurrentRaycast.gameObject.GetComponent<DetectorBolsa>() != null)
+        {
+            return;
+        }
     }
+
     public void ReturnToInventory()
     {
-        StartCoroutine(BounceBackToSlot()); // Usa tu coroutine existente
+        StartCoroutine(BounceBackToSlot());
     }
+
     private IEnumerator ReturnToSlot()
     {
         yield return new WaitForEndOfFrame();
@@ -249,6 +259,17 @@ public class InventoryItemDragHandler : MonoBehaviour, IBeginDragHandler, IDragH
         return false;
     }
 
+    // 🔹 NUEVA función para tercera cámara
+    public bool IsThirdCameraActive()
+    {
+        if (allowedCameras.Count >= 3)
+        {
+            Camera cam = allowedCameras[2];
+            return cam != null && cam.enabled && cam.gameObject.activeInHierarchy;
+        }
+        return false;
+    }
+
     private bool IsBottleAlreadyInSpawn()
     {
         return botellaActivaEnSpawn != null;
@@ -260,6 +281,16 @@ public class InventoryItemDragHandler : MonoBehaviour, IBeginDragHandler, IDragH
         if (avisoTMP != null)
         {
             avisoTMP.gameObject.SetActive(false);
+        }
+    }
+
+    // 🔹 Corutina para mensaje de papel
+    private IEnumerator HideWarningTMP(TextMeshProUGUI tmp, float seconds)
+    {
+        yield return new WaitForSeconds(seconds);
+        if (tmp != null)
+        {
+            tmp.gameObject.SetActive(false);
         }
     }
 }

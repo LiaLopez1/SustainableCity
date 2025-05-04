@@ -71,10 +71,8 @@ public class BowlCapacity : MonoBehaviour
             }
         }
 
-        if (alternadas == currentSpheres.Count && currentSpheres.Count > 0)
+        if (currentSpheres.Count == maxCapacity && alternadas == currentSpheres.Count)
         {
-
-            // Destruir todas las esferas
             foreach (var sphere in currentSpheres)
             {
                 Destroy(sphere);
@@ -82,7 +80,6 @@ public class BowlCapacity : MonoBehaviour
 
             currentSpheres.Clear();
 
-            // Instanciar el prefab final
             Vector3 center = transform.position + Vector3.up * 0.5f;
             Instantiate(finalPrefab, center, Quaternion.identity);
 
@@ -90,6 +87,7 @@ public class BowlCapacity : MonoBehaviour
                 fullMessage.gameObject.SetActive(false);
         }
     }
+
 
     public int GetCurrentCount() => currentSpheres.Count;
     public int GetMaxCapacity() => maxCapacity;
