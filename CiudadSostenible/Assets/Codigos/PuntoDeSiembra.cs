@@ -1,191 +1,150 @@
 ﻿using UnityEngine;
+using UnityEngine.UI;
+using System.Collections;
 
-public class PuntoDeSiembra : MonoBehaviour
+public class PuntoDeSiembraSimple : MonoBehaviour
 {
-    [Header("Estados del minijuego")]
-    private bool tieneSemilla = false;
-    private bool tieneComposta = false;
-    private bool tieneAgua = false;
-    private bool minijuegoFinalizado = false;
+    [Header("Referencias a objetos en escena")]
+    public GameObject monticuloObject;          // Ya en escena, desactivado
+    public GameObject arbolPrefab;              // Se instancia
+    public Transform spawnPoint;                // Lugar donde aparece el árbol
+    public Slider sliderAgua;
 
-    [Header("Prefabs y objetos")]
-    public GameObject monticuloPrefab;
-    public GameObject retoñoPrefab;
-    public Transform puntoInstancia;
-    public GameObject sliderAguaPrefab;
+    [Header("UI de interacción")]
+    public GameObject textoPlantar;
+    public GameObject textoRegar;
 
-    private GameObject monticuloInstanciado;
-    private GameObject retoñoInstanciado;
-    private GameObject sliderAguaInstanciado;
+    [Header("ItemData necesarios")]
+    public ItemData semillaItem;
+    public ItemData compostaItem;
+    public ItemData bidonItem;
 
-    [Header("Colores")]
-    public Color colorRegado = Color.green;
-    private Renderer monticuloRenderer;
-    private Color colorOriginal;
-
-    [Header("Canvas del minijuego")]
-    public GameObject canvasPlantado; // Asigna el canvas que contiene el botón
-
-    [Header("Botón físico de Listo")]
-    public GameObject botonListo;
-
-    [Header("Cámara de minijuego")]
-    public Transform objetivoCamara; // Asigna el hijo vacío
-    public Camera camaraPlantado;   // Asigna la cámara externa
-
-    private Camera camaraOriginal;
     private bool jugadorDentro = false;
-    public GameObject textoInteraccion; // Texto flotante o UI en mundo
-    private bool minijuegoActivo = false;
-    public GameObject jugador;
+    private bool sembrado = false;
+    private bool regado = false;
 
-    private void Start()
+    private InventorySystem inventario;
+    private Coroutine drenajeAguaCoroutine;
+    private GameObject arbolInstanciado;
+
+    private const float duracionDrenaje = 150f;
+
+    void Start()
     {
-        if (botonListo != null)
-            botonListo.SetActive(true);
-
-        if (sliderAguaPrefab != null)
-            sliderAguaPrefab.SetActive(false);
-
-        if (camaraPlantado != null)
-            camaraPlantado.gameObject.SetActive(false);
-
-        if (textoInteraccion != null)
-            textoInteraccion.SetActive(false);
+        inventario = FindObjectOfType<InventorySystem>();
+        sliderAgua.gameObject.SetActive(false);
+        textoPlantar?.SetActive(false);
+        textoRegar?.SetActive(false);
+        monticuloObject?.SetActive(false);
     }
 
-    // Llamado cuando se arrastra un ítem a este punto
-    public void RecibirItem(ItemData item)
+    void Update()
     {
-        if (minijuegoFinalizado || item == null) return;
-
-        string nombre = item.itemName.ToLower();
-
-        if (nombre.Contains("Semillas") && !tieneSemilla)
+        if (jugadorDentro && Input.GetKeyDown(KeyCode.E))
         {
-            InstanciarMonticulo();
-            tieneSemilla = true;
+            if (!sembrado)
+                IntentarSembrar();
+            else if (!regado)
+                IntentarRegar();
         }
-        else if (nombre.Contains("Compost") && tieneSemilla && !tieneComposta)
+
+        if (jugadorDentro)
         {
-            AplicarComposta();
-            tieneComposta = true;
+            textoPlantar?.SetActive(!sembrado);
+            textoRegar?.SetActive(sembrado && !regado);
         }
-        else if (nombre.Contains("Bidon Plastico") && tieneSemilla && tieneComposta && !tieneAgua)
+    }
+
+    void IntentarSembrar()
+    {
+        bool quitadoSemilla = false;
+        bool quitadoComposta = false;
+
+        // Si el montículo no está activo, intentamos plantar la semilla
+        if (!monticuloObject.activeSelf)
         {
-            if (BidonDeAguaManager.Instance.EstaLleno(item))
+            quitadoSemilla = inventario.RemoveItem(semillaItem, 1);
+            if (quitadoSemilla)
+                monticuloObject.SetActive(true);
+        }
+        else
+        {
+            // Ya hay montículo, intentamos compostar si no lo habíamos hecho
+            if (arbolInstanciado == null && arbolPrefab != null && spawnPoint != null)
             {
-                AplicarAgua();
-                tieneAgua = true;
+                quitadoComposta = inventario.RemoveItem(compostaItem, 1);
+                if (quitadoComposta)
+                    arbolInstanciado = Instantiate(arbolPrefab, spawnPoint.position, Quaternion.identity);
+            }
+        }
+
+        // Si el jugador tenía ambos desde el inicio
+        if (monticuloObject.activeSelf && arbolInstanciado == null)
+        {
+            bool tieneComposta = inventario.RemoveItem(compostaItem, 1);
+            if (tieneComposta)
+            {
+                arbolInstanciado = Instantiate(arbolPrefab, spawnPoint.position, Quaternion.identity);
+            }
+        }
+
+        // Si se hizo al menos un paso válido
+        if (arbolInstanciado != null)
+        {
+            sembrado = true;
+            sliderAgua.gameObject.SetActive(true);
+            sliderAgua.value = 0;
+        }
+
+        else
+        {
+            Debug.LogWarning("No tienes semilla o no has sembrado para aplicar composta.");
+        }
+    }
+
+
+    void IntentarRegar()
+    {
+        foreach (var slot in inventario.slots)
+        {
+            ItemData item = slot.GetItemData();
+            if (item == bidonItem && BidonDeAguaManager.Instance.EstaLleno(item))
+            {
                 BidonDeAguaManager.Instance.VaciarBidon(item);
+                sliderAgua.value = 1f;
+                regado = true;
+
+                if (drenajeAguaCoroutine != null)
+                    StopCoroutine(drenajeAguaCoroutine);
+
+                drenajeAguaCoroutine = StartCoroutine(DrenarAgua());
+                Debug.Log("🌧 Árbol regado completamente.");
+                return;
             }
-            else
-            {
-                Debug.Log("Este bidón está vacío.");
-            }
         }
+
+        Debug.LogWarning("Necesitas un bidón lleno para regar.");
     }
 
-
-    private void InstanciarMonticulo()
+    IEnumerator DrenarAgua()
     {
-        if (monticuloInstanciado != null) return;
-
-        monticuloInstanciado = Instantiate(monticuloPrefab, puntoInstancia.position, Quaternion.identity);
-        monticuloRenderer = monticuloInstanciado.GetComponentInChildren<Renderer>();
-
-        if (monticuloRenderer != null)
-            colorOriginal = monticuloRenderer.material.color;
-    }
-
-    private void AplicarComposta()
-    {
-        if (monticuloInstanciado == null) return;
-
-        monticuloInstanciado.transform.position += new Vector3(0, 0.2f, 0); // Eleva ligeramente
-    }
-
-    private void AplicarAgua()
-    {
-        if (monticuloRenderer != null)
-            monticuloRenderer.material.color = colorRegado;
-    }
-
-    private void DesactivarJugador()
-    {
-        if (jugador != null)
-            jugador.SetActive(false);
-    }
-
-    private void ActivarJugador()
-    {
-        if (jugador != null)
-            jugador.SetActive(true);
-    }
-
-    public void PresionarBotonListo()
-    {
-        Debug.Log("Se presionó Listo en: " + gameObject.name);
-
-        if (minijuegoFinalizado) return;
-
-        if (tieneSemilla && tieneComposta && tieneAgua)
+        float tiempoRestante = duracionDrenaje;
+        while (tiempoRestante > 0)
         {
-            InstanciarRetoño();
-            minijuegoFinalizado = true;
-        }
-        canvasPlantado.SetActive(false);
-        DesactivarCamaraPlantado();
-        ActivarJugador();
-    }
-
-
-    private void InstanciarRetoño()
-    {
-        retoñoInstanciado = Instantiate(retoñoPrefab, puntoInstancia.position, Quaternion.identity);
-
-        if (sliderAguaPrefab != null)
-        {
-            sliderAguaInstanciado = Instantiate(sliderAguaPrefab, retoñoInstanciado.transform);
-            sliderAguaInstanciado.SetActive(true);
+            sliderAgua.value = Mathf.Lerp(0f, 1f, tiempoRestante / duracionDrenaje);
+            tiempoRestante -= Time.deltaTime;
+            yield return null;
         }
 
-        if (monticuloInstanciado != null)
-            Destroy(monticuloInstanciado);
-    }
-
-    public void ActivarCamaraPlantado()
-    {
-        ControladorPlantadoGlobal.Instance?.EstablecerPuntoActivo(this);
-        if (camaraPlantado == null || objetivoCamara == null) return;
-
-        camaraOriginal = Camera.main;
-        if (camaraOriginal != null)
-            camaraOriginal.gameObject.SetActive(false);
-
-        camaraPlantado.transform.SetPositionAndRotation(objetivoCamara.position, objetivoCamara.rotation);
-        camaraPlantado.gameObject.SetActive(true);
-
-        if (canvasPlantado != null)
-            canvasPlantado.SetActive(true); // ✅ Activa el canvas en el mismo momento
-    }
-
-    public void DesactivarCamaraPlantado()
-    {
-        if (camaraPlantado != null)
-            camaraPlantado.gameObject.SetActive(false);
-
-        if (camaraOriginal != null)
-            camaraOriginal.gameObject.SetActive(true);
+        sliderAgua.value = 0;
+        regado = false;
+        Debug.Log("💧 Agua drenada. Árbol necesita riego nuevamente.");
     }
 
     private void OnTriggerEnter(Collider other)
     {
-        if (other.CompareTag("Player") && !minijuegoFinalizado)
-        {
+        if (other.CompareTag("Player"))
             jugadorDentro = true;
-            textoInteraccion?.SetActive(true);
-        }
     }
 
     private void OnTriggerExit(Collider other)
@@ -193,24 +152,8 @@ public class PuntoDeSiembra : MonoBehaviour
         if (other.CompareTag("Player"))
         {
             jugadorDentro = false;
-            textoInteraccion?.SetActive(false);
+            textoPlantar?.SetActive(false);
+            textoRegar?.SetActive(false);
         }
     }
-
-
-    private void Update()
-    {
-        if (jugadorDentro && Input.GetKeyDown(KeyCode.E) && !minijuegoFinalizado && !minijuegoActivo)
-        {
-            ActivarCamaraPlantado();
-            textoInteraccion?.SetActive(false);
-            DesactivarJugador();
-            minijuegoActivo = true;
-        }
-    }
-
-
-    public bool EstaListo() => minijuegoFinalizado;
-
-    public GameObject ObtenerRetoño() => retoñoInstanciado;
 }

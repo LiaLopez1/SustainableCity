@@ -4,7 +4,7 @@ public class ControladorPlantadoGlobal : MonoBehaviour
 {
     public static ControladorPlantadoGlobal Instance { get; private set; }
 
-    private PuntoDeSiembra puntoActivo;
+    private PuntoDeSiembraSimple puntoActivo;
 
     private void Awake()
     {
@@ -14,17 +14,17 @@ public class ControladorPlantadoGlobal : MonoBehaviour
             Instance = this;
     }
 
-    public void EstablecerPuntoActivo(PuntoDeSiembra punto)
+    public void EstablecerPuntoActivo(PuntoDeSiembraSimple punto)
     {
         puntoActivo = punto;
     }
 
-    public void EjecutarBotonListo()
+    /*public void EjecutarBotonListo()
     {
         if (puntoActivo != null)
             puntoActivo.PresionarBotonListo();
         else
             Debug.LogWarning("No hay punto activo de siembra registrado.");
-    }
+    }*/
 
 }

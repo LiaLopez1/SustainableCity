@@ -10,11 +10,11 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: d3e01e06551dd2a489f97638cf5b3c99, type: 3}
-  m_Name: Regadora
+  m_Name: Semillas
   m_EditorClassIdentifier: 
-  itemName: Regadora
-  icon: {fileID: 21300000, guid: 43482617a633643488f4b21eb2465050, type: 3}
-  worldPrefab: {fileID: 5771033906959899160, guid: f426b4f44159c9e4eb6adaac186a261a, type: 3}
+  itemName: Semillas
+  icon: {fileID: 21300000, guid: d00ec31dc5c25b748978cef75e357b9c, type: 3}
+  worldPrefab: {fileID: 0}
   alternatePrefab: {fileID: 0}
   itemTag: 
   maxStack: 10

@@ -16,6 +16,6 @@ MonoBehaviour:
   icon: {fileID: 21300000, guid: 6984b7729f768b641a1acf163bc5849a, type: 3}
   worldPrefab: {fileID: 0}
   alternatePrefab: {fileID: 0}
-  itemTag: 
+  itemTag: BidonPlastico
   maxStack: 10
   puedeAparecerEnBolsa: 0

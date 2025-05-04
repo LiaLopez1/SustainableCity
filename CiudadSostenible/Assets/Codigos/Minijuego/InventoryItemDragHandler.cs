@@ -161,6 +161,7 @@ public class InventoryItemDragHandler : MonoBehaviour, IBeginDragHandler, IDragH
                         return;
                     }
 
+
                     GameObject papel = Instantiate(itemData.worldPrefab, paperSpawnPoint.position, Quaternion.identity);
                     papel.tag = "Paper";
                     parentSlot.RemoveQuantity(1);
@@ -193,7 +194,6 @@ public class InventoryItemDragHandler : MonoBehaviour, IBeginDragHandler, IDragH
         {
             return;
         }
-
     }
 
     public void ReturnToInventory()
