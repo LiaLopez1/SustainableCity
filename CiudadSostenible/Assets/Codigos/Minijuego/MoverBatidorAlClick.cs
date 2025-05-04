@@ -13,16 +13,18 @@ public class MoverBatidorAlClick : MonoBehaviour
 
     private bool yaMovido = false;
     private bool permitirMovimiento = false;
-    private Vector3 posicionInicial;
+    private Vector3 posicionInicialReal;
+    private Quaternion rotacionInicialReal;
+    private Vector3 posicionInicioMovimiento;
     private float ladoAnterior = 0f;
     private int vueltasCompletadas = 0;
 
     private PaperBowlManager bowlManager;
-    private List<GameObject> papelesDentroDelBowl = new List<GameObject>();
 
     private void Start()
     {
-        posicionInicial = transform.position;
+        posicionInicialReal = transform.position;
+        rotacionInicialReal = transform.rotation;
 
         Collider[] cercanos = Physics.OverlapSphere(transform.position, 10f);
         foreach (var col in cercanos)
@@ -50,14 +52,13 @@ public class MoverBatidorAlClick : MonoBehaviour
             return;
         }
 
-        transform.position = spawnPointDestino.position;
+        posicionInicioMovimiento = spawnPointDestino.position;
+
+        transform.position = posicionInicioMovimiento;
         transform.rotation = Quaternion.Euler(rotacionDeseada);
-        posicionInicial = transform.position;
 
         permitirMovimiento = true;
         yaMovido = true;
-
-        papelesDentroDelBowl = bowlManager.GetListaPapeles();
     }
 
     private void Update()
@@ -67,9 +68,9 @@ public class MoverBatidorAlClick : MonoBehaviour
             float inputX = Input.GetAxis("Mouse X");
             Vector3 nuevaPos = transform.position + Vector3.right * (-inputX) * velocidadMovimiento * Time.deltaTime;
 
-            float desplazamiento = nuevaPos.x - posicionInicial.x;
+            float desplazamiento = nuevaPos.x - posicionInicioMovimiento.x;
             desplazamiento = Mathf.Clamp(desplazamiento, -rangoMovimientoX, rangoMovimientoX);
-            transform.position = new Vector3(posicionInicial.x + desplazamiento, transform.position.y, transform.position.z);
+            transform.position = new Vector3(posicionInicioMovimiento.x + desplazamiento, transform.position.y, transform.position.z);
 
             float ladoActual = Mathf.Sign(desplazamiento);
 
@@ -80,22 +81,15 @@ public class MoverBatidorAlClick : MonoBehaviour
 
                 if (vueltasCompletadas >= 4)
                 {
-                    List<GameObject> papelesActuales = bowlManager.GetListaPapeles();
-                    if (papelesActuales.Count > 0)
-                    {
-                        GameObject papel = papelesActuales[0];
-                        if (papel != null)
-                        {
-                            Destroy(papel);
-                            vueltasCompletadas = 0;
-                        }
-                    }
+                    bowlManager.DestruirPrimerPapel();
+                    vueltasCompletadas = 0;
                 }
 
-
-                if (papelesDentroDelBowl.Count == 0)
+                if (!bowlManager.HayObjetosDentro())
                 {
-                    transform.position = posicionInicial;
+                    transform.position = posicionInicialReal;
+                    transform.rotation = rotacionInicialReal;
+
                     permitirMovimiento = false;
                     yaMovido = false;
                 }

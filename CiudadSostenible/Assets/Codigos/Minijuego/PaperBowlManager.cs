@@ -10,10 +10,15 @@ public class PaperBowlManager : MonoBehaviour
     public int maxCapacity = 2;
     public TextMeshProUGUI mensajeTMP;
 
+    [Header("Prefab al completar")]
+    public GameObject resultadoFinalPrefab;
+    public Transform resultadoSpawnPoint;
+
     [Header("Debug")]
-    public int contadorPapelesEnBowl = 0; // 🔹 contador visible
+    public int contadorPapelesEnBowl = 0;
 
     private List<GameObject> papeles = new List<GameObject>();
+    private int papelesDestruidosAcumulados = 0;
 
     public bool EstaLleno()
     {
@@ -37,6 +42,34 @@ public class PaperBowlManager : MonoBehaviour
             mensajeTMP.gameObject.SetActive(true);
             StopAllCoroutines();
             StartCoroutine(HideTMPAfterSeconds(2f));
+        }
+    }
+
+    public void DestruirPrimerPapel()
+    {
+        if (papeles.Count > 0)
+        {
+            GameObject papel = papeles[0];
+            papeles.RemoveAt(0);
+            contadorPapelesEnBowl = papeles.Count;
+
+            if (papel != null)
+                Destroy(papel);
+
+            papelesDestruidosAcumulados++;
+
+            if (papeles.Count == 0)
+                PaperClickSplitter.posicionIndex = 0;
+
+            if (papelesDestruidosAcumulados >= 2)
+            {
+                if (resultadoFinalPrefab != null && resultadoSpawnPoint != null)
+                {
+                    Instantiate(resultadoFinalPrefab, resultadoSpawnPoint.position, resultadoSpawnPoint.rotation);
+                }
+
+                papelesDestruidosAcumulados = 0;
+            }
         }
     }
 

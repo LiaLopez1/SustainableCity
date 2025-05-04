@@ -38,7 +38,7 @@ RenderSettings:
   m_ReflectionIntensity: 1
   m_CustomReflection: {fileID: 0}
   m_Sun: {fileID: 0}
-  m_IndirectSpecularColor: {r: 0.18028435, g: 0.22571555, b: 0.3069234, a: 1}
+  m_IndirectSpecularColor: {r: 0.18028387, g: 0.22571489, b: 0.30692226, a: 1}
   m_UseRadianceAmbientProbe: 0
 --- !u!157 &3
 LightmapSettings:
@@ -15825,6 +15825,37 @@ MonoBehaviour:
   m_FillOrigin: 0
   m_UseSpriteMesh: 0
   m_PixelsPerUnitMultiplier: 1
+--- !u!1 &941531506
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 941531507}
+  m_Layer: 0
+  m_Name: PaperSpawn4
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &941531507
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 941531506}
+  serializedVersion: 2
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 22.013, y: 0.806, z: -35.993}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 0}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &947118391
 GameObject:
   m_ObjectHideFlags: 0
@@ -22851,7 +22882,7 @@ Transform:
   m_GameObject: {fileID: 1349243496}
   serializedVersion: 2
   m_LocalRotation: {x: -0, y: -0, z: -0.24054967, w: 0.97063684}
-  m_LocalPosition: {x: 21.052, y: 1.521, z: -36.243}
+  m_LocalPosition: {x: 21.149, y: 1.521, z: -36.243}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
@@ -37394,6 +37425,8 @@ MonoBehaviour:
   targetTag: Paper
   maxCapacity: 2
   mensajeTMP: {fileID: 1422596860}
+  resultadoFinalPrefab: {fileID: 1291277029854165065, guid: ca3bb6f2157f5de4ca53aee4f628f2bf, type: 3}
+  resultadoSpawnPoint: {fileID: 941531507}
   contadorPapelesEnBowl: 0
 --- !u!4 &7401340484894284881
 Transform:
@@ -37832,6 +37865,7 @@ SceneRoots:
   - {fileID: 859089858}
   - {fileID: 1349243497}
   - {fileID: 1325128179}
+  - {fileID: 941531507}
   - {fileID: 1916243826}
   - {fileID: 153590802}
   - {fileID: 1339169030}
