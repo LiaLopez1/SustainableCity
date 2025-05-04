@@ -13,7 +13,7 @@ MonoBehaviour:
   m_Name: PlantaDecorativa
   m_EditorClassIdentifier: 
   itemName: PlantaDecorativa
-  icon: {fileID: 21300000, guid: 95d6d7d464c553e4e8da152bada6dd8f, type: 3}
+  icon: {fileID: 21300000, guid: 759b16bc5637a4d169d1101736b9fa07, type: 3}
   worldPrefab: {fileID: 0}
   alternatePrefab: {fileID: 0}
   itemTag: 

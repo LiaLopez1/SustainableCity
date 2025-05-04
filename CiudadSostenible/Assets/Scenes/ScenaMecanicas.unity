@@ -38,7 +38,7 @@ RenderSettings:
   m_ReflectionIntensity: 1
   m_CustomReflection: {fileID: 0}
   m_Sun: {fileID: 0}
-  m_IndirectSpecularColor: {r: 0.18028393, g: 0.225715, b: 0.30692238, a: 1}
+  m_IndirectSpecularColor: {r: 0.18028435, g: 0.22571555, b: 0.3069234, a: 1}
   m_UseRadianceAmbientProbe: 0
 --- !u!157 &3
 LightmapSettings:
@@ -711,7 +711,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   itemData: {fileID: 11400000, guid: 41235489ef7e3884080a36911350532b, type: 2}
   precio: 60
-  itemRequerido: {fileID: 11400000, guid: fb777ab8c07bd614cb44497fcf0e4310, type: 2}
+  itemRequerido: {fileID: 11400000, guid: 0ac8dbfe5ec7a484888734192e099915, type: 2}
   cantidadRequerida: 15
   botonComprar: {fileID: 65490267}
   textoPrecio: {fileID: 1176182937}
@@ -6522,7 +6522,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   itemData: {fileID: 11400000, guid: 6bca01e77894f50419429b497b890723, type: 2}
   precio: 30
-  itemRequerido: {fileID: 11400000, guid: fb777ab8c07bd614cb44497fcf0e4310, type: 2}
+  itemRequerido: {fileID: 11400000, guid: 0ac8dbfe5ec7a484888734192e099915, type: 2}
   cantidadRequerida: 10
   botonComprar: {fileID: 632032721}
   textoPrecio: {fileID: 471340690}
@@ -7086,7 +7086,7 @@ MonoBehaviour:
   m_OnCullStateChanged:
     m_PersistentCalls:
       m_Calls: []
-  m_Sprite: {fileID: 21300000, guid: 36f53886a7a4c4e9994ab922539458c7, type: 3}
+  m_Sprite: {fileID: 21300000, guid: a5f2b824dabcf544ab31c71bebfb9de4, type: 3}
   m_Type: 0
   m_PreserveAspect: 0
   m_FillCenter: 1
@@ -10088,13 +10088,13 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   tiposBasura:
   - nombreTipo: Organico
-    prefab: {fileID: 3147880471640370871, guid: a32954efec848aa4cb32366499d87ce7, type: 3}
+    prefab: {fileID: 4431844012238896248, guid: 465a114b46e1d5142ab94e031c905815, type: 3}
     probabilidad: 25
   - nombreTipo: Vidrio
     prefab: {fileID: 3138032085840502653, guid: c94daf228ccf2aa4e939f09d13e7d825, type: 3}
     probabilidad: 25
   - nombreTipo: Plastico
-    prefab: {fileID: 4196289293189380467, guid: 8a9651ff0991d05449c86729fecb34ad, type: 3}
+    prefab: {fileID: 5135943166415602768, guid: 2d6a30c4f9451304682be37f31fc60e0, type: 3}
     probabilidad: 25
   - nombreTipo: Papel
     prefab: {fileID: 589975393376088847, guid: 0d98a336efac4964f815e9b1a9015ebe, type: 3}
@@ -16192,7 +16192,7 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0.5, y: 0.5}
   m_AnchorMax: {x: 0.5, y: 0.5}
-  m_AnchoredPosition: {x: 166.32495, y: 175.70276}
+  m_AnchoredPosition: {x: 166.32495, y: 168}
   m_SizeDelta: {x: 418.0333, y: 135.3369}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &948048149
@@ -16215,7 +16215,7 @@ MonoBehaviour:
   m_OnCullStateChanged:
     m_PersistentCalls:
       m_Calls: []
-  m_Sprite: {fileID: 21300000, guid: e20504a551e74467983d74c7b08a50fc, type: 3}
+  m_Sprite: {fileID: 21300000, guid: 3053ae1e48ebce243b0d8adbf9ea540e, type: 3}
   m_Type: 0
   m_PreserveAspect: 0
   m_FillCenter: 1
@@ -21399,7 +21399,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   itemData: {fileID: 11400000, guid: c2df3a34cef0fad4690a366c2e397919, type: 2}
   precio: 10
-  itemRequerido: {fileID: 11400000, guid: fb777ab8c07bd614cb44497fcf0e4310, type: 2}
+  itemRequerido: {fileID: 11400000, guid: 41235489ef7e3884080a36911350532b, type: 2}
   cantidadRequerida: 5
   botonComprar: {fileID: 210115583}
   textoPrecio: {fileID: 1233233273}
@@ -30572,7 +30572,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: cc731d585a8f49841abbc47d8dec8207, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  textoInteraccion: {fileID: 363963179}
+  textoInteraccion: {fileID: 390929234}
 --- !u!65 &1838375002
 BoxCollider:
   m_ObjectHideFlags: 0

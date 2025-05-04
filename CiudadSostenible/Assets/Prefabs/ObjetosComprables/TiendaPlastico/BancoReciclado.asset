@@ -13,7 +13,7 @@ MonoBehaviour:
   m_Name: BancoReciclado
   m_EditorClassIdentifier: 
   itemName: Banco Reciclado
-  icon: {fileID: 21300000, guid: a453b62339f4d1f488c4b3282c717279, type: 3}
+  icon: {fileID: 21300000, guid: ffa37b008d30c4a92b8e50d43ef9cfb7, type: 3}
   worldPrefab: {fileID: 0}
   alternatePrefab: {fileID: 0}
   itemTag: 

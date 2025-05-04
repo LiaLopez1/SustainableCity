@@ -13,7 +13,7 @@ MonoBehaviour:
   m_Name: PapelDecorativo
   m_EditorClassIdentifier: 
   itemName: Papel Decorativo
-  icon: {fileID: 21300000, guid: b547732cb8fd54e4c9549a69a0e9b437, type: 3}
+  icon: {fileID: 21300000, guid: 4196803c7e3434745b9af09d6dfbf4ad, type: 3}
   worldPrefab: {fileID: 0}
   alternatePrefab: {fileID: 0}
   itemTag: 

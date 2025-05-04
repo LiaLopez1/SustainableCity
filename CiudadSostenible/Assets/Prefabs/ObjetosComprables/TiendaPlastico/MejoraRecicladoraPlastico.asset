@@ -13,7 +13,7 @@ MonoBehaviour:
   m_Name: MejoraRecicladoraPlastico
   m_EditorClassIdentifier: 
   itemName: Mejora Recicladora Plastico
-  icon: {fileID: 21300000, guid: 57e3c6562bd97f54f9683055fb23dcf0, type: 3}
+  icon: {fileID: 21300000, guid: 35d484d4f428345ac8ed84a2d371b2f5, type: 3}
   worldPrefab: {fileID: 0}
   alternatePrefab: {fileID: 0}
   itemTag: 
