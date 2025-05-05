@@ -21,7 +21,6 @@ public class InventorySystem : MonoBehaviour
 
     public bool AddItem(ItemData item, int quantity = 1)
     {
-        // Primero buscar slots con el mismo ítem que no estén llenos
         foreach (var slot in slots)
         {
             if (!slot.IsEmpty() && slot.ContainsItem(item))
@@ -37,19 +36,11 @@ public class InventorySystem : MonoBehaviour
             }
         }
 
-        // Luego buscar slots vacíos
         foreach (var slot in slots)
         {
             if (slot.IsEmpty())
             {
                 slot.UpdateSlot(item, quantity);
-
-                // Asignar el tag del ItemData al icono
-                if (!string.IsNullOrEmpty(item.itemTag))
-                {
-                    slot.itemIcon.gameObject.tag = item.itemTag;
-                    Debug.Log($"Tag '{item.itemTag}' asignado a {item.itemName}");
-                }
                 return true;
             }
         }
@@ -57,6 +48,7 @@ public class InventorySystem : MonoBehaviour
         Debug.LogWarning($"No hay espacio para {quantity} unidades de {item.itemName}");
         return false;
     }
+
 
     public bool RemoveItem(ItemData item, int quantity = 1)
     {

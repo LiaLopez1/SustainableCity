@@ -17,7 +17,7 @@ MonoBehaviour:
   worldPrefab: {fileID: 0}
   alternatePrefab: {fileID: 0}
   itemTag: BolsaBasura
-  maxStack: 1
+  maxStack: 10
   puedeAparecerEnBolsa: 0
   activaMision: 0
   progresoMision: 0

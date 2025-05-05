@@ -51,14 +51,21 @@ public class DetectorBolsa : MonoBehaviour, IDropHandler
         bolsaActual = eventData.pointerDrag;
         bolsaYaAbierta = true;
 
+        // 🟢 Generar contenido antes de limpiar
         LimpiarSlotsCompletamente();
         GenerarElementosAleatorios();
 
-        imagenBolsaAbierta.SetActive(true);
-        botonReinicio.gameObject.SetActive(false); // 🔁 Asegurarse de ocultarlo inicialmente
+        // 🧼 Luego limpiar inventario (como ya funciona normalmente)
+        InventorySlot slotOriginal = bolsaActual.GetComponentInParent<InventorySlot>();
+        if (slotOriginal != null)
+        {
+            slotOriginal.RemoveQuantity(1); // 🔥 Esto automáticamente limpia si llega a 0
+        }
 
-        Destroy(bolsaActual);
+        imagenBolsaAbierta.SetActive(true);
+        botonReinicio.gameObject.SetActive(false);
     }
+
 
     private void GenerarElementosAleatorios()
     {

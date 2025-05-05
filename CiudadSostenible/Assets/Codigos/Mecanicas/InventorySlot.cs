@@ -60,12 +60,19 @@ public class InventorySlot : MonoBehaviour
         if (currentItem == null || currentQuantity < amount) return false;
 
         currentQuantity -= amount;
+
         if (currentQuantity <= 0)
-            ClearSlot();
+        {
+            ClearSlot(); // ✅ Limpiar como cualquier otro ítem
+        }
         else
+        {
             UpdateUI();
+        }
+
         return true;
     }
+
 
     public void ClearSlot()
     {

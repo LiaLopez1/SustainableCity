@@ -1,4 +1,4 @@
-using UnityEngine;
+Ôªøusing UnityEngine;
 using UnityEngine.EventSystems;
 using TMPro;
 using System.Collections.Generic;
@@ -38,7 +38,7 @@ public class CanecaReciclaje : MonoBehaviour, IDropHandler
             material.textoContador.text = $"{material.cantidadActual}/{material.cantidadMaxima}";
             material.botonRecompensa.SetActive(false);
             
-            // Configurar el evento del botÛn
+            // Configurar el evento del bot√≥n
             Button btn = material.botonRecompensa.GetComponent<Button>();
             if (btn != null)
             {
@@ -54,7 +54,7 @@ public class CanecaReciclaje : MonoBehaviour, IDropHandler
         // 1. Intentar obtener el InventorySlot (para inventario normal)
         InventorySlot slotOrigen = itemArrastrado.GetComponentInParent<InventorySlot>();
 
-        // 2. Procesar seg˙n el tipo de Ìtem
+        // 2. Procesar seg√∫n el tipo de √≠tem
         if (slotOrigen != null)
         {
             ProcesarInventarioNormal(slotOrigen, itemArrastrado);
@@ -89,7 +89,7 @@ public class CanecaReciclaje : MonoBehaviour, IDropHandler
             }
         }
 
-        // Si no coincide con ning˙n material, regresar al inventario
+        // Si no coincide con ning√∫n material, regresar al inventario
         InventoryItemDragHandler dragHandler = item.GetComponent<InventoryItemDragHandler>();
         if (dragHandler != null) dragHandler.ReturnToInventory();
     }
@@ -114,12 +114,20 @@ public class CanecaReciclaje : MonoBehaviour, IDropHandler
     }
     private void ReclamarRecompensa(MaterialReciclable material)
     {
-        if (material.estaCompleto && material.recompensa != null)
+        if (!material.estaCompleto || material.recompensa == null)
         {
-            // AÒadir el Ìtem al inventario (1 unidad)
-            inventarioNormal.AddItem(material.recompensa, 1);
+            return;
+        }
 
-            // Reiniciar contador
+        if (inventarioNormal == null)
+        {
+            return;
+        }
+
+        bool agregado = inventarioNormal.AddItem(material.recompensa, 1);
+
+        if (agregado)
+        {
             material.cantidadActual = 0;
             material.estaCompleto = false;
             material.textoContador.text = $"{material.cantidadActual}/{material.cantidadMaxima}";
@@ -127,7 +135,8 @@ public class CanecaReciclaje : MonoBehaviour, IDropHandler
         }
         else
         {
-            Debug.LogWarning("No hay recompensa definida o el material no est· completo.");
+            Debug.LogWarning("‚ùå No se pudo agregar la recompensa al inventario. Tal vez est√° lleno.");
         }
     }
+
 }
