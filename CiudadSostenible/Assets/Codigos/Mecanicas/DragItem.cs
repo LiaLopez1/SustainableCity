@@ -1,4 +1,4 @@
-using UnityEngine;
+Ôªøusing UnityEngine;
 using UnityEngine.EventSystems;
 using UnityEngine.UI;
 
@@ -8,17 +8,20 @@ public class DragItem : MonoBehaviour, IBeginDragHandler, IDragHandler, IEndDrag
     private CanvasGroup canvasGroup;
     private Transform parentOriginal;
     private Image itemImage;
+    private InventorySlot slotOriginal;
 
     void Awake()
     {
         rectTransform = GetComponent<RectTransform>();
         canvasGroup = GetComponent<CanvasGroup>();
         itemImage = GetComponent<Image>();
-        parentOriginal = transform.parent;
     }
 
     public void OnBeginDrag(PointerEventData eventData)
     {
+        parentOriginal = transform.parent;
+        slotOriginal = parentOriginal.GetComponent<InventorySlot>(); // Guardar referencia al slot
+
         canvasGroup.alpha = 0.6f;
         canvasGroup.blocksRaycasts = false;
         transform.SetParent(GetComponentInParent<Canvas>().transform);
@@ -34,19 +37,23 @@ public class DragItem : MonoBehaviour, IBeginDragHandler, IDragHandler, IEndDrag
         canvasGroup.alpha = 1f;
         canvasGroup.blocksRaycasts = true;
 
-        // Validar caneca
         if (eventData.pointerEnter != null && eventData.pointerEnter.CompareTag("Caneca"))
         {
-            // Verificar si el tag del Ìtem coincide con la caneca
             if (eventData.pointerEnter.name.Contains(gameObject.tag))
             {
+                // üßπ Limpiar slot antes de destruir
+                if (slotOriginal != null)
+                {
+                    slotOriginal.ClearSlot();
+                }
+
                 Destroy(gameObject);
-                Debug.Log($"Õtem {gameObject.tag} eliminado en caneca correcta");
+                Debug.Log($"√çtem {gameObject.tag} eliminado en caneca correcta");
             }
             else
             {
                 ResetPosition();
-                Debug.LogWarning("°Caneca incorrecta!");
+                Debug.LogWarning("¬°Caneca incorrecta!");
             }
         }
         else

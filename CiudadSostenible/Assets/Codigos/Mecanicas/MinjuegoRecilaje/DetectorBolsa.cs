@@ -1,7 +1,9 @@
 ﻿using UnityEngine;
 using UnityEngine.UI;
 using UnityEngine.EventSystems;
+using System.Collections;
 using System.Collections.Generic;
+using TMPro;
 
 public class DetectorBolsa : MonoBehaviour, IDropHandler
 {
@@ -14,10 +16,19 @@ public class DetectorBolsa : MonoBehaviour, IDropHandler
     [Header("Configuración")]
     public int cantidadSlots = 5;
 
+    [Header("Mensaje de error")]
+    public TextMeshProUGUI mensajeErrorTMP; // Asignar desde el Inspector
+    public float duracionMensaje = 2f;
+
+    private bool bolsaYaAbierta = false;
+    private GameObject bolsaActual;
+
     void Start()
     {
         botonReinicio.onClick.AddListener(ReiniciarTotalmente);
         botonReinicio.gameObject.SetActive(false);
+        if (mensajeErrorTMP != null)
+            mensajeErrorTMP.gameObject.SetActive(false);
     }
 
     public void OnDrop(PointerEventData eventData)
@@ -25,16 +36,28 @@ public class DetectorBolsa : MonoBehaviour, IDropHandler
         if (eventData.pointerDrag == null || !eventData.pointerDrag.CompareTag("BolsaBasura"))
             return;
 
-        // 1. Limpieza total antes de generar
-        LimpiarSlotsCompletamente();
+        if (bolsaYaAbierta)
+        {
+            InventoryItemDragHandler handler = eventData.pointerDrag.GetComponent<InventoryItemDragHandler>();
+            if (handler != null)
+                handler.ReturnToInventory();
 
-        // 2. Generar nuevos ítems
+            if (mensajeErrorTMP != null)
+                StartCoroutine(MostrarMensajeTemporal());
+
+            return;
+        }
+
+        bolsaActual = eventData.pointerDrag;
+        bolsaYaAbierta = true;
+
+        LimpiarSlotsCompletamente();
         GenerarElementosAleatorios();
 
-        // 3. Ocultar bolsa y mostrar UI
-        eventData.pointerDrag.SetActive(false);
         imagenBolsaAbierta.SetActive(true);
-        botonReinicio.gameObject.SetActive(true);
+        botonReinicio.gameObject.SetActive(false); // 🔁 Asegurarse de ocultarlo inicialmente
+
+        Destroy(bolsaActual);
     }
 
     private void GenerarElementosAleatorios()
@@ -43,17 +66,17 @@ public class DetectorBolsa : MonoBehaviour, IDropHandler
         {
             if (itemsPosibles.Count == 0) break;
 
-            // Crear nuevo objeto para el ítem
             GameObject itemIcon = new GameObject("ItemIcon");
             itemIcon.transform.SetParent(slotsContainer.GetChild(i));
             itemIcon.transform.localPosition = Vector3.zero;
 
-            // Añadir componentes necesarios
             Image icono = itemIcon.AddComponent<Image>();
             itemIcon.AddComponent<DragItem>();
             itemIcon.AddComponent<CanvasGroup>();
 
-            // Asignar ítem aleatorio
+            // Agregar detector de destrucción
+            itemIcon.AddComponent<ObjetoEnBolsa>().detector = this;
+
             ItemData item = itemsPosibles[Random.Range(0, itemsPosibles.Count)];
             icono.sprite = item.icon;
             itemIcon.tag = item.itemTag;
@@ -64,7 +87,6 @@ public class DetectorBolsa : MonoBehaviour, IDropHandler
     {
         foreach (Transform slot in slotsContainer)
         {
-            // Destruir todos los hijos del slot
             foreach (Transform child in slot)
             {
                 Destroy(child.gameObject);
@@ -72,10 +94,30 @@ public class DetectorBolsa : MonoBehaviour, IDropHandler
         }
     }
 
+    public void RevisarSiBolsaEstaVacia()
+    {
+        foreach (Transform slot in slotsContainer)
+        {
+            if (slot.childCount > 0)
+                return; // Todavía hay objetos
+        }
+
+        // Si llegó aquí, todos los slots están vacíos
+        botonReinicio.gameObject.SetActive(true);
+    }
+
     public void ReiniciarTotalmente()
     {
         LimpiarSlotsCompletamente();
         imagenBolsaAbierta.SetActive(false);
         botonReinicio.gameObject.SetActive(false);
+        bolsaYaAbierta = false;
+    }
+
+    private IEnumerator MostrarMensajeTemporal()
+    {
+        mensajeErrorTMP.gameObject.SetActive(true);
+        yield return new WaitForSeconds(duracionMensaje);
+        mensajeErrorTMP.gameObject.SetActive(false);
     }
 }
