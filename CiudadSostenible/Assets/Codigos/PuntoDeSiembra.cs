@@ -1,6 +1,7 @@
 ﻿using UnityEngine;
 using UnityEngine.UI;
 using System.Collections;
+using static UnityEditor.Progress;
 
 public class PuntoDeSiembraSimple : MonoBehaviour
 {
@@ -28,6 +29,7 @@ public class PuntoDeSiembraSimple : MonoBehaviour
     private GameObject arbolInstanciado;
 
     private const float duracionDrenaje = 150f;
+    private Coroutine crecimientoCoroutine;
 
     void Start()
     {
@@ -74,7 +76,8 @@ public class PuntoDeSiembraSimple : MonoBehaviour
             {
                 quitadoComposta = inventario.RemoveItem(compostaItem, 1);
                 if (quitadoComposta)
-                    arbolInstanciado = Instantiate(arbolPrefab, spawnPoint.position, Quaternion.identity);
+                    arbolInstanciado = Instantiate(arbolPrefab, spawnPoint.position, spawnPoint.rotation);
+
             }
         }
 
@@ -84,7 +87,8 @@ public class PuntoDeSiembraSimple : MonoBehaviour
             bool tieneComposta = inventario.RemoveItem(compostaItem, 1);
             if (tieneComposta)
             {
-                arbolInstanciado = Instantiate(arbolPrefab, spawnPoint.position, Quaternion.identity);
+                arbolInstanciado = Instantiate(arbolPrefab, spawnPoint.position, spawnPoint.rotation);
+
             }
         }
 
@@ -117,7 +121,12 @@ public class PuntoDeSiembraSimple : MonoBehaviour
                 if (drenajeAguaCoroutine != null)
                     StopCoroutine(drenajeAguaCoroutine);
 
+                if (crecimientoCoroutine != null)
+                    StopCoroutine(crecimientoCoroutine);
+
                 drenajeAguaCoroutine = StartCoroutine(DrenarAgua());
+                crecimientoCoroutine = StartCoroutine(EsperarCrecimiento());
+
                 Debug.Log("🌧 Árbol regado completamente.");
                 return;
             }
@@ -125,6 +134,7 @@ public class PuntoDeSiembraSimple : MonoBehaviour
 
         Debug.LogWarning("Necesitas un bidón lleno para regar.");
     }
+
 
     IEnumerator DrenarAgua()
     {
@@ -156,4 +166,16 @@ public class PuntoDeSiembraSimple : MonoBehaviour
             textoRegar?.SetActive(false);
         }
     }
+    IEnumerator EsperarCrecimiento()
+    {
+        yield return new WaitForSeconds(300f); // 5 minutos
+
+        if (sliderAgua.value >= 0.5f && arbolInstanciado != null)
+        {
+            arbolInstanciado.transform.localScale = new Vector3(25f, 25f, 25f);
+            Debug.Log("🌳 ¡El árbol ha crecido completamente!");
+        }
+    }
+
+
 }

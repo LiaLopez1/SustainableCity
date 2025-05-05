@@ -169,7 +169,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   monticuloObject: {fileID: 953541053}
-  arbolPrefab: {fileID: 344725899275122755, guid: 2aa852f6b10f66346b1fed445ea19a83, type: 3}
+  arbolPrefab: {fileID: 5243303819073193642, guid: 9450435b8bc8892498167e8e58d63c45, type: 3}
   spawnPoint: {fileID: 801189080}
   sliderAgua: {fileID: 759222323}
   textoPlantar: {fileID: 948048147}
@@ -650,7 +650,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   itemData: {fileID: 11400000, guid: 41235489ef7e3884080a36911350532b, type: 2}
   precio: 60
-  itemRequerido: {fileID: 11400000, guid: 0ac8dbfe5ec7a484888734192e099915, type: 2}
+  itemRequerido: {fileID: 11400000, guid: e59d97127e03a5947962477c8156d7de, type: 2}
   cantidadRequerida: 15
   botonComprar: {fileID: 65490267}
   textoPrecio: {fileID: 1176182937}
@@ -3423,7 +3423,7 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0.5, y: 0.5}
   m_AnchorMax: {x: 0.5, y: 0.5}
-  m_AnchoredPosition: {x: 663, y: -292}
+  m_AnchoredPosition: {x: 598.00024, y: -292}
   m_SizeDelta: {x: 200, y: 50}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &163669354
@@ -6550,7 +6550,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   itemData: {fileID: 11400000, guid: 6bca01e77894f50419429b497b890723, type: 2}
   precio: 30
-  itemRequerido: {fileID: 11400000, guid: 0ac8dbfe5ec7a484888734192e099915, type: 2}
+  itemRequerido: {fileID: 11400000, guid: e59d97127e03a5947962477c8156d7de, type: 2}
   cantidadRequerida: 10
   botonComprar: {fileID: 632032721}
   textoPrecio: {fileID: 471340690}
@@ -7746,7 +7746,7 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0.5, y: 0.5}
   m_AnchorMax: {x: 0.5, y: 0.5}
-  m_AnchoredPosition: {x: 663, y: -282}
+  m_AnchoredPosition: {x: 596.0001, y: -282}
   m_SizeDelta: {x: 200, y: 50}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &423058972
@@ -8606,7 +8606,7 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0.5, y: 0.5}
   m_AnchorMax: {x: 0.5, y: 0.5}
-  m_AnchoredPosition: {x: 663, y: -287}
+  m_AnchoredPosition: {x: 594, y: -287}
   m_SizeDelta: {x: 200, y: 50}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &485323520
@@ -8742,7 +8742,7 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0.5, y: 0.5}
   m_AnchorMax: {x: 0.5, y: 0.5}
-  m_AnchoredPosition: {x: 659, y: 5}
+  m_AnchoredPosition: {x: 592.0001, y: 5}
   m_SizeDelta: {x: 200, y: 50}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &491642328
@@ -13702,7 +13702,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   monticuloObject: {fileID: 1727422900}
-  arbolPrefab: {fileID: 344725899275122755, guid: 2aa852f6b10f66346b1fed445ea19a83, type: 3}
+  arbolPrefab: {fileID: 5243303819073193642, guid: 9450435b8bc8892498167e8e58d63c45, type: 3}
   spawnPoint: {fileID: 1220908229}
   sliderAgua: {fileID: 1744583334}
   textoPlantar: {fileID: 948048147}
@@ -13755,13 +13755,13 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 801189079}
   serializedVersion: 2
-  m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
+  m_LocalRotation: {x: -0.7071068, y: 0, z: 0, w: 0.7071068}
   m_LocalPosition: {x: -9.810002, y: 0.167, z: 14.770008}
   m_LocalScale: {x: 0.02813222, y: 0.0029831487, z: 0.007779774}
   m_ConstrainProportionsScale: 0
   m_Children: []
   m_Father: {fileID: 359193260}
-  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+  m_LocalEulerAnglesHint: {x: -90, y: 0, z: 0}
 --- !u!1 &805322941
 GameObject:
   m_ObjectHideFlags: 0
@@ -14062,7 +14062,7 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0.5, y: 0.5}
   m_AnchorMax: {x: 0.5, y: 0.5}
-  m_AnchoredPosition: {x: 659, y: 5}
+  m_AnchoredPosition: {x: 594.00024, y: 5}
   m_SizeDelta: {x: 200, y: 50}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &821483757
@@ -20477,7 +20477,7 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0.5, y: 0.5}
   m_AnchorMax: {x: 0.5, y: 0.5}
-  m_AnchoredPosition: {x: 665, y: 304}
+  m_AnchoredPosition: {x: 598, y: 304}
   m_SizeDelta: {x: 200, y: 50}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &1177567647
@@ -20893,7 +20893,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   monticuloObject: {fileID: 78036519}
-  arbolPrefab: {fileID: 344725899275122755, guid: 2aa852f6b10f66346b1fed445ea19a83, type: 3}
+  arbolPrefab: {fileID: 5243303819073193642, guid: 9450435b8bc8892498167e8e58d63c45, type: 3}
   spawnPoint: {fileID: 2005756423}
   sliderAgua: {fileID: 1670339184}
   textoPlantar: {fileID: 948048147}
@@ -21688,13 +21688,13 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1220908228}
   serializedVersion: 2
-  m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
+  m_LocalRotation: {x: -0.7071068, y: 0, z: 0, w: 0.7071068}
   m_LocalPosition: {x: -9.810002, y: 0.167, z: 21.40001}
   m_LocalScale: {x: 0.02813222, y: 0.0029831487, z: 0.007779774}
   m_ConstrainProportionsScale: 0
   m_Children: []
   m_Father: {fileID: 359193260}
-  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+  m_LocalEulerAnglesHint: {x: -90, y: 0, z: 0}
 --- !u!1 &1223955006
 GameObject:
   m_ObjectHideFlags: 0
@@ -21747,7 +21747,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   itemData: {fileID: 11400000, guid: c2df3a34cef0fad4690a366c2e397919, type: 2}
   precio: 10
-  itemRequerido: {fileID: 11400000, guid: 41235489ef7e3884080a36911350532b, type: 2}
+  itemRequerido: {fileID: 11400000, guid: e59d97127e03a5947962477c8156d7de, type: 2}
   cantidadRequerida: 5
   botonComprar: {fileID: 210115583}
   textoPrecio: {fileID: 1233233273}
@@ -22303,7 +22303,7 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0.5, y: 0.5}
   m_AnchorMax: {x: 0.5, y: 0.5}
-  m_AnchoredPosition: {x: 665, y: 304}
+  m_AnchoredPosition: {x: 600, y: 304}
   m_SizeDelta: {x: 200, y: 50}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &1271761541
@@ -23868,7 +23868,7 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0.5, y: 0.5}
   m_AnchorMax: {x: 0.5, y: 0.5}
-  m_AnchoredPosition: {x: 665, y: 304}
+  m_AnchoredPosition: {x: 595.9998, y: 304}
   m_SizeDelta: {x: 200, y: 50}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &1374876348
@@ -24004,7 +24004,7 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0.5, y: 0.5}
   m_AnchorMax: {x: 0.5, y: 0.5}
-  m_AnchoredPosition: {x: 659, y: 5}
+  m_AnchoredPosition: {x: 589.9998, y: 5}
   m_SizeDelta: {x: 200, y: 50}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &1377952008
@@ -25440,7 +25440,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   monticuloObject: {fileID: 1844308289}
-  arbolPrefab: {fileID: 344725899275122755, guid: 2aa852f6b10f66346b1fed445ea19a83, type: 3}
+  arbolPrefab: {fileID: 5243303819073193642, guid: 9450435b8bc8892498167e8e58d63c45, type: 3}
   spawnPoint: {fileID: 1585645896}
   sliderAgua: {fileID: 1706596067}
   textoPlantar: {fileID: 948048147}
@@ -27847,13 +27847,13 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1585645895}
   serializedVersion: 2
-  m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
+  m_LocalRotation: {x: -0.7071068, y: 0, z: 0, w: 0.7071068}
   m_LocalPosition: {x: -7.470008, y: 0.167, z: 14.770016}
   m_LocalScale: {x: 0.02813222, y: 0.0029831487, z: 0.007779774}
   m_ConstrainProportionsScale: 0
   m_Children: []
   m_Father: {fileID: 359193260}
-  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+  m_LocalEulerAnglesHint: {x: -90, y: 0, z: 0}
 --- !u!1 &1594932475
 GameObject:
   m_ObjectHideFlags: 0
@@ -29581,13 +29581,13 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1682160008}
   serializedVersion: 2
-  m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
+  m_LocalRotation: {x: -0.7071068, y: 0, z: 0, w: 0.7071068}
   m_LocalPosition: {x: -7.470004, y: 0.167, z: 21.40001}
   m_LocalScale: {x: 0.02813222, y: 0.0029831487, z: 0.007779774}
   m_ConstrainProportionsScale: 0
   m_Children: []
   m_Father: {fileID: 359193260}
-  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+  m_LocalEulerAnglesHint: {x: -90, y: 0, z: 0}
 --- !u!1 &1683822601
 GameObject:
   m_ObjectHideFlags: 0
@@ -31607,7 +31607,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   monticuloObject: {fileID: 6899408970660858064}
-  arbolPrefab: {fileID: 344725899275122755, guid: 2aa852f6b10f66346b1fed445ea19a83, type: 3}
+  arbolPrefab: {fileID: 5243303819073193642, guid: 9450435b8bc8892498167e8e58d63c45, type: 3}
   spawnPoint: {fileID: 1682160009}
   sliderAgua: {fileID: 149729079}
   textoPlantar: {fileID: 948048147}
@@ -33690,7 +33690,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   monticuloObject: {fileID: 2057450824}
-  arbolPrefab: {fileID: 344725899275122755, guid: 2aa852f6b10f66346b1fed445ea19a83, type: 3}
+  arbolPrefab: {fileID: 5243303819073193642, guid: 9450435b8bc8892498167e8e58d63c45, type: 3}
   spawnPoint: {fileID: 2013405653}
   sliderAgua: {fileID: 484861948}
   textoPlantar: {fileID: 948048147}
@@ -34458,13 +34458,13 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 2005756422}
   serializedVersion: 2
-  m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
+  m_LocalRotation: {x: -0.7071068, y: 0, z: 0, w: 0.7071068}
   m_LocalPosition: {x: -9.810002, y: 0.167, z: 18.020008}
   m_LocalScale: {x: 0.02813222, y: 0.0029831487, z: 0.007779774}
   m_ConstrainProportionsScale: 0
   m_Children: []
   m_Father: {fileID: 359193260}
-  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+  m_LocalEulerAnglesHint: {x: -90, y: 0, z: 0}
 --- !u!1 &2013405652
 GameObject:
   m_ObjectHideFlags: 0
@@ -34489,13 +34489,13 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 2013405652}
   serializedVersion: 2
-  m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
+  m_LocalRotation: {x: -0.7071068, y: 0, z: 0, w: 0.7071068}
   m_LocalPosition: {x: -7.470004, y: 0.167, z: 18.020008}
   m_LocalScale: {x: 0.02813222, y: 0.0029831487, z: 0.007779774}
   m_ConstrainProportionsScale: 0
   m_Children: []
   m_Father: {fileID: 359193260}
-  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+  m_LocalEulerAnglesHint: {x: -90, y: 0, z: 0}
 --- !u!1 &2015560711
 GameObject:
   m_ObjectHideFlags: 0
@@ -36717,6 +36717,7 @@ GameObject:
   - component: {fileID: 1798995102287894397}
   - component: {fileID: 7963989161707843616}
   - component: {fileID: 5131433507149602069}
+  - component: {fileID: 7963989161707843617}
   m_Layer: 0
   m_Name: Caneca1
   m_TagString: Untagged
@@ -37232,6 +37233,7 @@ GameObject:
   - component: {fileID: 5975448419235839869}
   - component: {fileID: 643320278018962318}
   - component: {fileID: 1143684694006463283}
+  - component: {fileID: 5975448419235839870}
   m_Layer: 0
   m_Name: Cerca2
   m_TagString: Untagged
@@ -37988,6 +37990,10 @@ PrefabInstance:
       propertyPath: m_Name
       value: MejoraPapel
       objectReference: {fileID: 0}
+    - target: {fileID: 8254987105932870335, guid: b5031d63dad0d474d8ec67cfb0f40aa8, type: 3}
+      propertyPath: m_IsActive
+      value: 0
+      objectReference: {fileID: 0}
     - target: {fileID: 8488066722216662025, guid: b5031d63dad0d474d8ec67cfb0f40aa8, type: 3}
       propertyPath: m_LocalPosition.x
       value: 21.54
@@ -38404,6 +38410,28 @@ Transform:
   m_Children: []
   m_Father: {fileID: 4411137232071632847}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!64 &5975448419235839870
+MeshCollider:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 3101841125493674126}
+  m_Material: {fileID: 0}
+  m_IncludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_ExcludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_LayerOverridePriority: 0
+  m_IsTrigger: 0
+  m_ProvidesContacts: 0
+  m_Enabled: 1
+  serializedVersion: 5
+  m_Convex: 0
+  m_CookingOptions: 30
+  m_Mesh: {fileID: -8860717320005752453, guid: ca7e39ef0594c84498ab426ca735e997, type: 3}
 --- !u!1 &6055252848966256242
 GameObject:
   m_ObjectHideFlags: 0
@@ -39208,6 +39236,28 @@ MeshFilter:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1323007453342727648}
+  m_Mesh: {fileID: 4644836802154433142, guid: ca7e39ef0594c84498ab426ca735e997, type: 3}
+--- !u!64 &7963989161707843617
+MeshCollider:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1323007453342727648}
+  m_Material: {fileID: 0}
+  m_IncludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_ExcludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_LayerOverridePriority: 0
+  m_IsTrigger: 0
+  m_ProvidesContacts: 0
+  m_Enabled: 1
+  serializedVersion: 5
+  m_Convex: 0
+  m_CookingOptions: 30
   m_Mesh: {fileID: 4644836802154433142, guid: ca7e39ef0594c84498ab426ca735e997, type: 3}
 --- !u!1 &7989254718703142787
 GameObject:

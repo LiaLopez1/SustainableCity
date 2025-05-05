@@ -42,7 +42,7 @@ public class ProductoComprable : MonoBehaviour
         // Mostrar precio y requisito
         imagenBoton.sprite = itemData.icon;
         textoPrecio.text = "$" + precio;
-        textoRequisito.text = $"Requiere: {cantidadRequerida} {itemRequerido.itemName}";
+        textoRequisito.text = $"{cantidadRequerida} {itemRequerido.itemName}";
 
         colorOriginal = imagenBoton.color;
 
