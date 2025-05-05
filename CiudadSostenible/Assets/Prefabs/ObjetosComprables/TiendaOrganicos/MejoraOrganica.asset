@@ -13,7 +13,7 @@ MonoBehaviour:
   m_Name: MejoraOrganica
   m_EditorClassIdentifier: 
   itemName: MejoraOrganica
-  icon: {fileID: 21300000, guid: 461aaebc504abbf40a3537f98e7f870a, type: 3}
+  icon: {fileID: 21300000, guid: c989ac66130924b4085bb99b38877a71, type: 3}
   worldPrefab: {fileID: 0}
   alternatePrefab: {fileID: 0}
   itemTag: 

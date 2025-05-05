@@ -13,7 +13,7 @@ MonoBehaviour:
   m_Name: Semillas
   m_EditorClassIdentifier: 
   itemName: Semillas
-  icon: {fileID: 21300000, guid: d00ec31dc5c25b748978cef75e357b9c, type: 3}
+  icon: {fileID: 21300000, guid: 70911c294a33a431c861c7ce9dfd3245, type: 3}
   worldPrefab: {fileID: 0}
   alternatePrefab: {fileID: 0}
   itemTag: 
