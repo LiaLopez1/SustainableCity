@@ -17,5 +17,7 @@ MonoBehaviour:
   worldPrefab: {fileID: 737771779228914925, guid: adee759e0345b4d46b5cab18c1e54f9d, type: 3}
   alternatePrefab: {fileID: 0}
   itemTag: NoAprovechables
-  maxStack: 1
+  maxStack: 10
   puedeAparecerEnBolsa: 0
+  activaMision: 0
+  progresoMision: 0

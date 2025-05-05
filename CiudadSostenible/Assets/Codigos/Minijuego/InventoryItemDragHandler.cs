@@ -43,11 +43,8 @@ public class InventoryItemDragHandler : MonoBehaviour, IBeginDragHandler, IDragH
     public TextMeshProUGUI avisoPaperTMP;
     private GameObject paperEnSpawn = null;
 
-    [Header("Spawn no aprovechables")]
-    public Transform noAprovechablesSpawnPoint;
-
-    private static int posicionNoAprovechable = 0;
-    private const int maxPorFilaNoAprovechable = 3;
+    [Header("Manager no aprovechables")]
+    public NoAprovechablesManager noAprovechablesManager;
 
     private GameObject botellaActivaEnSpawn = null;
 
@@ -61,11 +58,6 @@ public class InventoryItemDragHandler : MonoBehaviour, IBeginDragHandler, IDragH
         rectTransform = GetComponent<RectTransform>();
         sphereDropHandler = GetComponent<SphereDropHandler>();
         currentActiveCamera = GetActiveCameraFromList();
-    }
-
-    public void ResetearPosicionNoAprovechables()
-    {
-        posicionNoAprovechable = 0;
     }
 
     public void OnBeginDrag(PointerEventData eventData)
@@ -120,29 +112,72 @@ public class InventoryItemDragHandler : MonoBehaviour, IBeginDragHandler, IDragH
             {
                 UpdateCurrentActiveCamera();
 
-                if (itemData.itemTag == "NoAprovechables" && noAprovechablesSpawnPoint != null && IsFourthCameraActive())
+                if (itemData.itemTag == "Botella" && botellaSpawnPoint != null && IsSecondCameraActive())
                 {
-                    CamionFullCapacity camion = FindObjectOfType<CamionFullCapacity>();
-                    if (camion != null && camion.EstaLleno)
+                    if (botellaActivaEnSpawn != null)
                     {
-                        if (camion.mensajeTMP != null)
+                        StartCoroutine(BounceBackToSlot());
+                        return;
+                    }
+
+                    GameObject spawned = Instantiate(itemData.worldPrefab, botellaSpawnPoint.position, Quaternion.identity);
+                    spawned.tag = "Botella";
+                    parentSlot.RemoveQuantity(1);
+                    botellaActivaEnSpawn = spawned;
+
+                    BottleClickHandler handler = spawned.GetComponent<BottleClickHandler>();
+                    if (handler != null)
+                    {
+                        handler.tapaSpawnPoint = tapaSpawnPoint;
+                        handler.bottleFinalSpawnPoint = botellaDestinoSpawnPoint;
+                        handler.onBotellaCompletada = () => botellaActivaEnSpawn = null;
+                    }
+                }
+                else if (itemData.itemTag == "Esfera" && IsFirstCameraActive() && sphereDropHandler != null)
+                {
+                    sphereDropHandler.DropItemAtMousePosition(parentSlot, currentActiveCamera, groundMask, maxDropDistance);
+                }
+                else if (itemData.itemTag == "Paper" && paperSpawnPoint != null && IsThirdCameraActive())
+                {
+                    if (paperEnSpawn != null)
+                    {
+                        if (avisoPaperTMP != null)
                         {
-                            camion.mensajeTMP.gameObject.SetActive(true);
-                            StartCoroutine(HideWarningTMP(camion.mensajeTMP, 2f));
+                            avisoPaperTMP.gameObject.SetActive(true);
+                            StartCoroutine(HideWarningTMP(avisoPaperTMP, 2f));
                         }
                         StartCoroutine(BounceBackToSlot());
                         return;
                     }
 
-                    Vector3 basePos = noAprovechablesSpawnPoint.position;
+                    GameObject papel = Instantiate(itemData.worldPrefab, paperSpawnPoint.position, Quaternion.identity);
+                    papel.tag = "Paper";
+                    parentSlot.RemoveQuantity(1);
+                    paperEnSpawn = papel;
 
-                    int fila = posicionNoAprovechable / maxPorFilaNoAprovechable;
-                    int columna = posicionNoAprovechable % maxPorFilaNoAprovechable;
+                    PaperClickSplitter paperLogic = papel.GetComponent<PaperClickSplitter>();
+                    if (paperLogic != null)
+                    {
+                        paperLogic.paperFinalSpawnPoint = paperDestinoSpawnPoint;
+                        paperLogic.onPaperCompletado = () => paperEnSpawn = null;
+                    }
+                }
+                else if (itemData.itemTag == "NoAprovechables" && IsFourthCameraActive())
+                {
+                    if (noAprovechablesManager == null)
+                    {
+                        Debug.LogWarning("⚠️ No se asignó el NoAprovechablesManager.");
+                        StartCoroutine(BounceBackToSlot());
+                        return;
+                    }
 
-                    float offsetX = 0.5f * columna;
-                    float offsetZ = fila == 0 ? 0f : -0.5f;
+                    if (!noAprovechablesManager.PuedeRecibirObjeto())
+                    {
+                        StartCoroutine(BounceBackToSlot());
+                        return;
+                    }
 
-                    Vector3 spawnPos = new Vector3(basePos.x + offsetX, basePos.y, basePos.z + offsetZ);
+                    Vector3 spawnPos = noAprovechablesManager.CalcularPosicionSpawn();
 
                     GameObject basura = Instantiate(
                         itemData.worldPrefab,
@@ -152,13 +187,18 @@ public class InventoryItemDragHandler : MonoBehaviour, IBeginDragHandler, IDragH
 
                     basura.tag = "NoAprovechables";
                     parentSlot.RemoveQuantity(1);
+                }
 
-                    posicionNoAprovechable++;
-                    return;
+
+                else
+                {
+                    StartCoroutine(BounceBackToSlot());
                 }
             }
-
-            StartCoroutine(BounceBackToSlot());
+            else
+            {
+                StartCoroutine(BounceBackToSlot());
+            }
         }
     }
 

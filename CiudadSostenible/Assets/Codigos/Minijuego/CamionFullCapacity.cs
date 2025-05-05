@@ -1,38 +1,37 @@
-using UnityEngine;
+ï»¿using UnityEngine;
 using TMPro;
 using System.Collections;
 using System.Collections.Generic;
 
 public class CamionFullCapacity : MonoBehaviour
 {
-    [Header("Configuración")]
+    [Header("ConfiguraciÃ³n")]
     public string targetTag = "NoAprovechables";
-    public int capacidadMaxima = 7;
+    public int capacidadMaxima = 6;
     public TextMeshProUGUI mensajeTMP;
 
-    [Header("Movimiento del camión")]
+    [Header("Movimiento del camiÃ³n")]
     public Transform objetoPadreAMover;
     public float desplazamientoEnX = 10f;
     public float velocidadMovimiento = 0.2f;
 
-    [Header("Cambio de cámara")]
+    [Header("Cambio de cÃ¡mara")]
     public Camera mainCamera;
     public Canvas specialCanvas;
     public PlayerMove playerMovement;
+
+    [Header("Gestor externo")]
+    public NoAprovechablesManager noAprovechablesManager;
 
     [Header("Estado actual")]
     private HashSet<GameObject> bolsasDentro = new HashSet<GameObject>();
     private Vector3 posicionInicial;
     public bool EstaLleno => bolsasDentro.Count >= capacidadMaxima;
 
-    private InventoryItemDragHandler dragHandler;
-
     private void Start()
     {
         if (objetoPadreAMover != null)
             posicionInicial = objetoPadreAMover.position;
-
-        dragHandler = FindObjectOfType<InventoryItemDragHandler>();
     }
 
     private void OnTriggerEnter(Collider other)
@@ -44,8 +43,6 @@ public class CamionFullCapacity : MonoBehaviour
             if (!bolsasDentro.Contains(raiz))
             {
                 bolsasDentro.Add(raiz);
-
-                // Hacer hija del camión
                 raiz.transform.SetParent(this.transform, true);
 
                 if (bolsasDentro.Count >= capacidadMaxima)
@@ -92,12 +89,10 @@ public class CamionFullCapacity : MonoBehaviour
     private IEnumerator PrepararSalidaCamion()
     {
         yield return new WaitForSeconds(2f); // Delay antes de arrancar
-
         yield return StartCoroutine(MoverCamion());
-
         CambiarACamaraPrincipal();
 
-        // Destruir hijos con tag "NoAprovechables"
+        // Destruir solo hijos con tag "NoAprovechables"
         List<Transform> hijosParaDestruir = new List<Transform>();
         foreach (Transform hijo in transform)
         {
@@ -114,17 +109,15 @@ public class CamionFullCapacity : MonoBehaviour
 
         bolsasDentro.Clear();
 
-        // Esperar 1 minuto
-        yield return new WaitForSeconds(60f);
-
-        // Volver a posición original
-        yield return StartCoroutine(RetornarAPosicionInicial());
-
-        // Reiniciar lógica de filas
-        if (dragHandler != null)
+        // âœ… Reinicia la lÃ³gica del spawn de bolsas
+        if (noAprovechablesManager != null)
         {
-            dragHandler.ResetearPosicionNoAprovechables();
+            noAprovechablesManager.ReiniciarPosiciones();
         }
+
+        // Esperar 1 minuto antes de regresar
+        yield return new WaitForSeconds(5f);
+        yield return StartCoroutine(RetornarAPosicionInicial());
     }
 
     private IEnumerator MoverCamion()
