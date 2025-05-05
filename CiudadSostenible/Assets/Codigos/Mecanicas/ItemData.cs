@@ -10,4 +10,8 @@ public class ItemData : ScriptableObject
     public string itemTag; //  Nuevo campo para el tag
     public int maxStack = 10; 
     public bool puedeAparecerEnBolsa;
+
+    [Header("Misiones")]
+    public bool activaMision;
+    public int progresoMision;
 }

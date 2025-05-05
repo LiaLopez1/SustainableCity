@@ -23,6 +23,13 @@ public class InventorySlot : MonoBehaviour
         currentItem = item;
         currentQuantity = quantity;
         UpdateUI();
+
+        // Informar al MissionManager
+        MissionManager manager = FindObjectOfType<MissionManager>();
+        if (manager != null)
+        {
+            manager.AgregarProgreso(item, quantity);
+        }
     }
 
     public Image GetItemIcon()
@@ -37,6 +44,14 @@ public class InventorySlot : MonoBehaviour
 
         currentQuantity += amount;
         UpdateUI();
+
+        // Informar al MissionManager
+        MissionManager manager = FindObjectOfType<MissionManager>();
+        if (manager != null)
+        {
+            manager.AgregarProgreso(currentItem, amount);
+        }
+
         return true;
     }
 
