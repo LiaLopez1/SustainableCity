@@ -116,6 +116,12 @@ public class InventoryItemDragHandler : MonoBehaviour, IBeginDragHandler, IDragH
                 {
                     if (botellaActivaEnSpawn != null)
                     {
+                        if (avisoPaperTMP != null)
+                        {
+                            avisoPaperTMP.gameObject.SetActive(true);
+                            StartCoroutine(HideWarningTMP(avisoPaperTMP, 2f));
+                        }
+
                         StartCoroutine(BounceBackToSlot());
                         return;
                     }
@@ -133,6 +139,7 @@ public class InventoryItemDragHandler : MonoBehaviour, IBeginDragHandler, IDragH
                         handler.onBotellaCompletada = () => botellaActivaEnSpawn = null;
                     }
                 }
+
                 else if (itemData.itemTag == "Esfera" && IsFirstCameraActive() && sphereDropHandler != null)
                 {
                     sphereDropHandler.DropItemAtMousePosition(parentSlot, currentActiveCamera, groundMask, maxDropDistance);

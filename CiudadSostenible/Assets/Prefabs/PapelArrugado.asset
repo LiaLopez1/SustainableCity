@@ -10,14 +10,14 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: d3e01e06551dd2a489f97638cf5b3c99, type: 3}
-  m_Name: BolsaBasura
+  m_Name: PapelArrugado
   m_EditorClassIdentifier: 
-  itemName: BolsaBasura
-  icon: {fileID: 21300000, guid: 9ac6d9d3e6363de459cf7f9e27bb9467, type: 3}
-  worldPrefab: {fileID: 0}
+  itemName: Papel
+  icon: {fileID: 21300000, guid: e88e523a7798d411b916cc6fdfd7385c, type: 3}
+  worldPrefab: {fileID: 7019975391380718855, guid: 4f3afa5d2e0361e4d802dc9e5842ff3e, type: 3}
   alternatePrefab: {fileID: 0}
-  itemTag: BolsaBasura
-  maxStack: 1
-  puedeAparecerEnBolsa: 0
+  itemTag: Paper
+  maxStack: 10
+  puedeAparecerEnBolsa: 1
   activaMision: 0
   progresoMision: 0

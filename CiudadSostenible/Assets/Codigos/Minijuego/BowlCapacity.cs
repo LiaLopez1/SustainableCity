@@ -2,6 +2,7 @@
 using UnityEngine;
 using TMPro;
 using UnityEngine.Audio;
+using System.Collections;
 
 public class BowlCapacity : MonoBehaviour
 {
@@ -54,10 +55,14 @@ public class BowlCapacity : MonoBehaviour
         if (currentSpheres.Count >= maxCapacity)
         {
             if (fullMessage != null)
+            {
                 fullMessage.gameObject.SetActive(true);
+                StartCoroutine(HideTMPAfterDelay(2f)); // Oculta después de 2 segundos
+            }
 
             return false;
         }
+
 
         if (fullMessage != null)
             fullMessage.gameObject.SetActive(false);
@@ -122,7 +127,12 @@ public class BowlCapacity : MonoBehaviour
                 fullMessage.gameObject.SetActive(false);
         }
     }
-
+    private IEnumerator HideTMPAfterDelay(float seconds)
+    {
+        yield return new WaitForSeconds(seconds);
+        if (fullMessage != null)
+            fullMessage.gameObject.SetActive(false);
+    }
 
     public int GetCurrentCount() => currentSpheres.Count;
     public int GetMaxCapacity() => maxCapacity;

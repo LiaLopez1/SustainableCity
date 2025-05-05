@@ -10,14 +10,14 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: d3e01e06551dd2a489f97638cf5b3c99, type: 3}
-  m_Name: BolsaBasura
+  m_Name: PescadoNA
   m_EditorClassIdentifier: 
-  itemName: BolsaBasura
-  icon: {fileID: 21300000, guid: 9ac6d9d3e6363de459cf7f9e27bb9467, type: 3}
-  worldPrefab: {fileID: 0}
+  itemName: PescadoNA
+  icon: {fileID: 21300000, guid: a13f46f7bfabc9d4a9acfbc1ffcf0ec9, type: 3}
+  worldPrefab: {fileID: 737771779228914925, guid: adee759e0345b4d46b5cab18c1e54f9d, type: 3}
   alternatePrefab: {fileID: 0}
-  itemTag: BolsaBasura
-  maxStack: 1
-  puedeAparecerEnBolsa: 0
+  itemTag: NoAprovechables
+  maxStack: 10
+  puedeAparecerEnBolsa: 1
   activaMision: 0
   progresoMision: 0
