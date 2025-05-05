@@ -17,6 +17,7 @@ TagManager:
   - PlantaDecorativa
   - PlasticStrips
   - Batidor
+  - NoAprovechables
   layers:
   - Default
   - TransparentFX

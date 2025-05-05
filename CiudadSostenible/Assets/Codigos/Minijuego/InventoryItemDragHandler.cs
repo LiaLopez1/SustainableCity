@@ -37,22 +37,21 @@ public class InventoryItemDragHandler : MonoBehaviour, IBeginDragHandler, IDragH
     public Transform tapaSpawnPoint;
     public Transform botellaDestinoSpawnPoint;
 
-    [Header("Mensaje UI")]
-    public TextMeshProUGUI avisoTMP;
-
-    private GameObject botellaActivaEnSpawn = null;
-
-    // 🔹 NUEVO PARA PAPER
     [Header("Configuración papel")]
     public Transform paperSpawnPoint;
     public Transform paperDestinoSpawnPoint;
     public TextMeshProUGUI avisoPaperTMP;
     private GameObject paperEnSpawn = null;
 
-    public InventorySlot GetParentSlot()
-    {
-        return parentSlot;
-    }
+    [Header("Spawn no aprovechables")]
+    public Transform noAprovechablesSpawnPoint;
+
+    private static int posicionNoAprovechable = 0;
+    private const int maxPorFilaNoAprovechable = 3;
+
+    private GameObject botellaActivaEnSpawn = null;
+
+    public InventorySlot GetParentSlot() => parentSlot;
 
     private void Awake()
     {
@@ -102,14 +101,12 @@ public class InventoryItemDragHandler : MonoBehaviour, IBeginDragHandler, IDragH
 
         GameObject objetoSoltado = eventData.pointerCurrentRaycast.gameObject;
 
-        // Caso 1: Se soltó sobre una caneca válida
         if (objetoSoltado != null && objetoSoltado.CompareTag("Caneca"))
         {
             CanecaReciclaje caneca = objetoSoltado.GetComponent<CanecaReciclaje>();
             if (caneca != null) return;
         }
 
-        // Caso 2: No es una caneca válida
         if (!EventSystem.current.IsPointerOverGameObject())
         {
             ItemData itemData = parentSlot.GetItemData();
@@ -122,11 +119,6 @@ public class InventoryItemDragHandler : MonoBehaviour, IBeginDragHandler, IDragH
                 {
                     if (botellaActivaEnSpawn != null)
                     {
-                        if (avisoTMP != null)
-                        {
-                            avisoTMP.gameObject.SetActive(true);
-                            StartCoroutine(HideWarningAfterSeconds(2f));
-                        }
                         StartCoroutine(BounceBackToSlot());
                         return;
                     }
@@ -161,7 +153,6 @@ public class InventoryItemDragHandler : MonoBehaviour, IBeginDragHandler, IDragH
                         return;
                     }
 
-
                     GameObject papel = Instantiate(itemData.worldPrefab, paperSpawnPoint.position, Quaternion.identity);
                     papel.tag = "Paper";
                     parentSlot.RemoveQuantity(1);
@@ -174,6 +165,41 @@ public class InventoryItemDragHandler : MonoBehaviour, IBeginDragHandler, IDragH
                         paperLogic.onPaperCompletado = () => paperEnSpawn = null;
                     }
                 }
+                else if (itemData.itemTag == "NoAprovechables" && noAprovechablesSpawnPoint != null && IsFourthCameraActive())
+                {
+                    CamionFullCapacity camion = FindObjectOfType<CamionFullCapacity>();
+                    if (camion != null && camion.EstaLleno)
+                    {
+                        if (camion.mensajeTMP != null)
+                        {
+                            camion.mensajeTMP.gameObject.SetActive(true);
+                            StartCoroutine(HideWarningTMP(camion.mensajeTMP, 2f));
+                        }
+                        StartCoroutine(BounceBackToSlot());
+                        return;
+                    }
+
+                    Vector3 basePos = noAprovechablesSpawnPoint.position;
+
+                    int fila = posicionNoAprovechable / maxPorFilaNoAprovechable;
+                    int columna = posicionNoAprovechable % maxPorFilaNoAprovechable;
+
+                    float offsetX = 0.5f * columna;
+                    float offsetZ = fila == 0 ? 0f : -0.5f;
+
+                    Vector3 spawnPos = new Vector3(basePos.x + offsetX, basePos.y, basePos.z + offsetZ);
+
+                    GameObject basura = Instantiate(
+                        itemData.worldPrefab,
+                        spawnPos,
+                        Quaternion.Euler(-90f, 0f, 0f)
+                    );
+
+                    basura.tag = "NoAprovechables";
+                    parentSlot.RemoveQuantity(1);
+
+                    posicionNoAprovechable++;
+                }
                 else
                 {
                     StartCoroutine(BounceBackToSlot());
@@ -183,16 +209,6 @@ public class InventoryItemDragHandler : MonoBehaviour, IBeginDragHandler, IDragH
             {
                 StartCoroutine(BounceBackToSlot());
             }
-        }
-
-        // Bolsas de basura
-        ItemData currentItem = parentSlot.GetItemData();
-        if (currentItem != null &&
-            currentItem.itemTag == "BolsaBasura" &&
-            eventData.pointerCurrentRaycast.gameObject != null &&
-            eventData.pointerCurrentRaycast.gameObject.GetComponent<DetectorBolsa>() != null)
-        {
-            return;
         }
     }
 
@@ -246,14 +262,14 @@ public class InventoryItemDragHandler : MonoBehaviour, IBeginDragHandler, IDragH
         isSpecialCanvasActive = isActive;
     }
 
-    public bool IsSecondCameraActive()
-    {
-        return allowedCameras.Count >= 2 && allowedCameras[1].enabled && allowedCameras[1].gameObject.activeInHierarchy;
-    }
-
     public bool IsFirstCameraActive()
     {
         return allowedCameras.Count >= 1 && allowedCameras[0].enabled && allowedCameras[0].gameObject.activeInHierarchy;
+    }
+
+    public bool IsSecondCameraActive()
+    {
+        return allowedCameras.Count >= 2 && allowedCameras[1].enabled && allowedCameras[1].gameObject.activeInHierarchy;
     }
 
     public bool IsThirdCameraActive()
@@ -261,11 +277,9 @@ public class InventoryItemDragHandler : MonoBehaviour, IBeginDragHandler, IDragH
         return allowedCameras.Count >= 3 && allowedCameras[2].enabled && allowedCameras[2].gameObject.activeInHierarchy;
     }
 
-    private IEnumerator HideWarningAfterSeconds(float seconds)
+    public bool IsFourthCameraActive()
     {
-        yield return new WaitForSeconds(seconds);
-        if (avisoTMP != null)
-            avisoTMP.gameObject.SetActive(false);
+        return allowedCameras.Count >= 4 && allowedCameras[3].enabled && allowedCameras[3].gameObject.activeInHierarchy;
     }
 
     private IEnumerator HideWarningTMP(TextMeshProUGUI tmp, float seconds)
