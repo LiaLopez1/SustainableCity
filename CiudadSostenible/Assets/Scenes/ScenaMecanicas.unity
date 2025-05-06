@@ -38,7 +38,7 @@ RenderSettings:
   m_ReflectionIntensity: 1
   m_CustomReflection: {fileID: 0}
   m_Sun: {fileID: 0}
-  m_IndirectSpecularColor: {r: 0.18028387, g: 0.22571489, b: 0.30692226, a: 1}
+  m_IndirectSpecularColor: {r: 0.18028435, g: 0.22571555, b: 0.3069234, a: 1}
   m_UseRadianceAmbientProbe: 0
 --- !u!157 &3
 LightmapSettings:
@@ -2998,7 +2998,7 @@ MonoBehaviour:
   m_OnCullStateChanged:
     m_PersistentCalls:
       m_Calls: []
-  m_Sprite: {fileID: 0}
+  m_Sprite: {fileID: 21300000, guid: 3036c7feb1b4c4792b8cfba7d12a0fd7, type: 3}
   m_Type: 0
   m_PreserveAspect: 0
   m_FillCenter: 1
@@ -9695,7 +9695,7 @@ MonoBehaviour:
   m_OnCullStateChanged:
     m_PersistentCalls:
       m_Calls: []
-  m_Sprite: {fileID: 0}
+  m_Sprite: {fileID: 21300000, guid: 3036c7feb1b4c4792b8cfba7d12a0fd7, type: 3}
   m_Type: 0
   m_PreserveAspect: 0
   m_FillCenter: 1
@@ -11125,15 +11125,6 @@ MonoBehaviour:
   rangoMaximoZ: 40
   cantidadMaximaBasura: 20
   tiempoTotalGeneracion: 60
-  sliderSuciedad: {fileID: 1896017441}
-  sliderFillImage: {fileID: 2082480516}
-  imagenEstado: {fileID: 1380588862}
-  colorNormal: {r: 0.5686275, g: 0.79607844, b: 0.94509804, a: 1}
-  colorAdvertencia: {r: 0.8745098, g: 0.5254902, b: 0.1764706, a: 1}
-  colorPeligro: {r: 1, g: 0.08235294, b: 0.09803922, a: 1}
-  imagenNormal: {fileID: 21300000, guid: 986cf144787f94c8bb8a181c6d553517, type: 3}
-  imagenAdvertencia: {fileID: 21300000, guid: 693bd8df663b344139a45431ba6db287, type: 3}
-  imagenPeligro: {fileID: 21300000, guid: c5682918a6bb042e1acd51354345f7c7, type: 3}
 --- !u!4 &573575324
 Transform:
   m_ObjectHideFlags: 0
@@ -12375,7 +12366,7 @@ MonoBehaviour:
   m_OnCullStateChanged:
     m_PersistentCalls:
       m_Calls: []
-  m_Sprite: {fileID: 0}
+  m_Sprite: {fileID: 21300000, guid: 3036c7feb1b4c4792b8cfba7d12a0fd7, type: 3}
   m_Type: 0
   m_PreserveAspect: 0
   m_FillCenter: 1
@@ -14055,7 +14046,7 @@ MonoBehaviour:
   m_OnCullStateChanged:
     m_PersistentCalls:
       m_Calls: []
-  m_Sprite: {fileID: 0}
+  m_Sprite: {fileID: 21300000, guid: 3036c7feb1b4c4792b8cfba7d12a0fd7, type: 3}
   m_Type: 0
   m_PreserveAspect: 0
   m_FillCenter: 1
@@ -14618,7 +14609,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 2b1ee38be47fa8e4ba94076f00f29efa, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  inventario: {fileID: 0}
+  inventario: {fileID: 778765610}
   textoDinero: {fileID: 159000097}
   textoAdvertencia: {fileID: 1795072662}
   dinero: 0
@@ -15586,7 +15577,7 @@ MonoBehaviour:
   m_OnCullStateChanged:
     m_PersistentCalls:
       m_Calls: []
-  m_Sprite: {fileID: 0}
+  m_Sprite: {fileID: 21300000, guid: 3036c7feb1b4c4792b8cfba7d12a0fd7, type: 3}
   m_Type: 0
   m_PreserveAspect: 0
   m_FillCenter: 1
@@ -24439,7 +24430,7 @@ MonoBehaviour:
   m_OnCullStateChanged:
     m_PersistentCalls:
       m_Calls: []
-  m_Sprite: {fileID: 0}
+  m_Sprite: {fileID: 21300000, guid: 3036c7feb1b4c4792b8cfba7d12a0fd7, type: 3}
   m_Type: 0
   m_PreserveAspect: 0
   m_FillCenter: 1
@@ -32401,7 +32392,7 @@ MonoBehaviour:
   m_OnCullStateChanged:
     m_PersistentCalls:
       m_Calls: []
-  m_Sprite: {fileID: 0}
+  m_Sprite: {fileID: 21300000, guid: 3036c7feb1b4c4792b8cfba7d12a0fd7, type: 3}
   m_Type: 0
   m_PreserveAspect: 0
   m_FillCenter: 1
@@ -33552,6 +33543,111 @@ RectTransform:
   m_AnchoredPosition: {x: 0, y: -0.00079345703}
   m_SizeDelta: {x: 100, y: 100}
   m_Pivot: {x: 0.5, y: 0.5}
+--- !u!1 &1837165107
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 1837165109}
+  - component: {fileID: 1837165108}
+  m_Layer: 0
+  m_Name: ProgressManager
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!114 &1837165108
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1837165107}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 128b3ac39b218db4cb4cdb22e0e4d67f, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  missionManager: {fileID: 232660742}
+  sliderContaminacion: {fileID: 1896017441}
+  imagenEstado: {fileID: 1380588862}
+  totalMisiones: 15
+  colorNormal: {r: 0, g: 1, b: 0.95917225, a: 1}
+  colorAdvertencia: {r: 1, g: 0.50181097, b: 0, a: 1}
+  colorPeligro: {r: 1, g: 0, b: 0, a: 1}
+  imagenNormal: {fileID: 21300000, guid: 986cf144787f94c8bb8a181c6d553517, type: 3}
+  imagenAdvertencia: {fileID: 21300000, guid: 693bd8df663b344139a45431ba6db287, type: 3}
+  imagenPeligro: {fileID: 21300000, guid: c5682918a6bb042e1acd51354345f7c7, type: 3}
+  shopItems:
+  - itemButton: {fileID: 1308242521}
+    misionRequerida: 1
+    colorBloqueado: {r: 0.38679248, g: 0.38679248, b: 0.38679248, a: 0.5019608}
+    desbloqueado: 0
+  - itemButton: {fileID: 849220087}
+    misionRequerida: 3
+    colorBloqueado: {r: 0.3882353, g: 0.3882353, b: 0.3882353, a: 0.5019608}
+    desbloqueado: 0
+  - itemButton: {fileID: 1855944802}
+    misionRequerida: 6
+    colorBloqueado: {r: 0.3882353, g: 0.3882353, b: 0.3882353, a: 0.5019608}
+    desbloqueado: 0
+  - itemButton: {fileID: 210115583}
+    misionRequerida: 1
+    colorBloqueado: {r: 0.3882353, g: 0.3882353, b: 0.3882353, a: 0.5019608}
+    desbloqueado: 0
+  - itemButton: {fileID: 632032721}
+    misionRequerida: 3
+    colorBloqueado: {r: 0.3882353, g: 0.3882353, b: 0.3882353, a: 0.5019608}
+    desbloqueado: 0
+  - itemButton: {fileID: 65490267}
+    misionRequerida: 6
+    colorBloqueado: {r: 0.3882353, g: 0.3882353, b: 0.3882353, a: 0.5019608}
+    desbloqueado: 0
+  - itemButton: {fileID: 903911836}
+    misionRequerida: 1
+    colorBloqueado: {r: 0.3882353, g: 0.3882353, b: 0.3882353, a: 0.5019608}
+    desbloqueado: 0
+  - itemButton: {fileID: 1051300761}
+    misionRequerida: 3
+    colorBloqueado: {r: 0.3882353, g: 0.3882353, b: 0.3882353, a: 0.5019608}
+    desbloqueado: 0
+  - itemButton: {fileID: 128142381}
+    misionRequerida: 6
+    colorBloqueado: {r: 0.3882353, g: 0.3882353, b: 0.3882353, a: 0.5019608}
+    desbloqueado: 0
+  maquinas:
+  - cameraSwitches:
+    - {fileID: 331444239}
+    misionRequerida: 3
+    desbloqueado: 0
+  - cameraSwitches:
+    - {fileID: 681195115}
+    misionRequerida: 6
+    desbloqueado: 0
+  - cameraSwitches:
+    - {fileID: 1390783561}
+    - {fileID: 1444863230}
+    misionRequerida: 9
+    desbloqueado: 0
+--- !u!4 &1837165109
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1837165107}
+  serializedVersion: 2
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 21.316654, y: 0.5413941, z: -34.530815}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 0}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &1838374993 stripped
 GameObject:
   m_CorrespondingSourceObject: {fileID: 919132149155446097, guid: b5506df6c71929040ad57fcbc723fe2d, type: 3}
@@ -34507,7 +34603,7 @@ MonoBehaviour:
   - {fileID: 60378523}
   - {fileID: 107370776}
   textoDinero: {fileID: 159000097}
-  inventario: {fileID: 0}
+  inventario: {fileID: 778765610}
 --- !u!1 &1896017439
 GameObject:
   m_ObjectHideFlags: 0
@@ -34899,7 +34995,7 @@ MonoBehaviour:
   m_OnCullStateChanged:
     m_PersistentCalls:
       m_Calls: []
-  m_Sprite: {fileID: 0}
+  m_Sprite: {fileID: 21300000, guid: 3036c7feb1b4c4792b8cfba7d12a0fd7, type: 3}
   m_Type: 0
   m_PreserveAspect: 0
   m_FillCenter: 1
@@ -37036,7 +37132,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 2b1ee38be47fa8e4ba94076f00f29efa, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  inventario: {fileID: 0}
+  inventario: {fileID: 778765610}
   textoDinero: {fileID: 159000097}
   textoAdvertencia: {fileID: 360489175}
   dinero: 0
@@ -37786,7 +37882,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 2b1ee38be47fa8e4ba94076f00f29efa, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  inventario: {fileID: 0}
+  inventario: {fileID: 778765610}
   textoDinero: {fileID: 159000097}
   textoAdvertencia: {fileID: 1134361128}
   dinero: 0
@@ -39018,7 +39114,6 @@ Transform:
   - {fileID: 7319950198892909552}
   - {fileID: 5691350282260527601}
   - {fileID: 4411137232071632847}
-  - {fileID: 6799494252384283265}
   - {fileID: 9101217355825315582}
   - {fileID: 1726564101458011821}
   - {fileID: 5841782442683271426}
@@ -41721,16 +41816,16 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 2922629124543195870}
   serializedVersion: 2
-  m_LocalRotation: {x: 0, y: -0, z: -0, w: 1}
-  m_LocalPosition: {x: -0.41, y: 0, z: 0}
-  m_LocalScale: {x: 0.01, y: 0.01, z: 0.01}
+  m_LocalRotation: {x: 0, y: -0.7071068, z: -0, w: 0.7071068}
+  m_LocalPosition: {x: 0, y: -0.2, z: -22.789999}
+  m_LocalScale: {x: 0.010000002, y: 0.01, z: 0.010000002}
   m_ConstrainProportionsScale: 0
   m_Children:
   - {fileID: 7401340484894284881}
   - {fileID: 23558286974017811}
   - {fileID: 7081936824138498231}
   - {fileID: 1829122446048404626}
-  m_Father: {fileID: 543450652353064276}
+  m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!4 &6826170891006724001
 Transform:
@@ -42443,6 +42538,7 @@ SceneRoots:
   - {fileID: 1424118046}
   - {fileID: 2140869049}
   - {fileID: 1916243826}
+  - {fileID: 6799494252384283265}
   - {fileID: 153590802}
   - {fileID: 1339169030}
   - {fileID: 911556692}
@@ -42480,3 +42576,4 @@ SceneRoots:
   - {fileID: 1522880040}
   - {fileID: 817469880}
   - {fileID: 1967724038}
+  - {fileID: 1837165109}
