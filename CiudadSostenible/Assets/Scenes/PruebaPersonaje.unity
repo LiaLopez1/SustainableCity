@@ -38,7 +38,7 @@ RenderSettings:
   m_ReflectionIntensity: 1
   m_CustomReflection: {fileID: 0}
   m_Sun: {fileID: 0}
-  m_IndirectSpecularColor: {r: 0, g: 0, b: 0, a: 1}
+  m_IndirectSpecularColor: {r: 0.18028435, g: 0.22571555, b: 0.3069234, a: 1}
   m_UseRadianceAmbientProbe: 0
 --- !u!157 &3
 LightmapSettings:
@@ -3552,17 +3552,15 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 7e58e3d94900d1542a3161bc62d51233, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  monticuloPrefab: {fileID: 1037874684}
-  "reto\xF1oPrefab": {fileID: 344725899275122755, guid: 2aa852f6b10f66346b1fed445ea19a83, type: 3}
-  puntoInstancia: {fileID: 65507390}
-  sliderAguaPrefab: {fileID: 848601842}
-  colorRegado: {r: 0.6037736, g: 0.6037736, b: 0.6037736, a: 1}
-  canvasPlantado: {fileID: 2132900809}
-  botonListo: {fileID: 1290030278}
-  objetivoCamara: {fileID: 972612826}
-  camaraPlantado: {fileID: 890637298}
-  textoInteraccion: {fileID: 1242181580}
-  jugador: {fileID: 1812119496}
+  monticuloObject: {fileID: 0}
+  arbolPrefab: {fileID: 0}
+  spawnPoint: {fileID: 0}
+  sliderAgua: {fileID: 0}
+  textoPlantar: {fileID: 0}
+  textoRegar: {fileID: 0}
+  semillaItem: {fileID: 0}
+  compostaItem: {fileID: 0}
+  bidonItem: {fileID: 0}
 --- !u!1 &230603578
 GameObject:
   m_ObjectHideFlags: 0
@@ -6522,8 +6520,9 @@ MonoBehaviour:
     completada: 0
     marcarComoCompletaDesdeEditor: 0
     fueMostradaAlJugador: 0
-  missionTextHUD: {fileID: 2146306606}
-  triggerBloqueoMaquina: {fileID: 1998914757}
+  missionTitleHUD: {fileID: 2146306606}
+  missionProgressHUD: {fileID: 1942023189}
+  misionesCompletadas: 0
 --- !u!224 &354567033
 RectTransform:
   m_ObjectHideFlags: 0
@@ -6638,6 +6637,7 @@ RectTransform:
   m_ConstrainProportionsScale: 0
   m_Children:
   - {fileID: 1965998377}
+  - {fileID: 1942023187}
   - {fileID: 1267188358}
   - {fileID: 1998914758}
   - {fileID: 795606981}
@@ -7060,10 +7060,10 @@ MonoBehaviour:
   botellaSpawnPoint: {fileID: 302695907}
   tapaSpawnPoint: {fileID: 130779347}
   botellaDestinoSpawnPoint: {fileID: 1965058847}
-  avisoTMP: {fileID: 2110263903}
   paperSpawnPoint: {fileID: 600612831}
   paperDestinoSpawnPoint: {fileID: 614637351}
   avisoPaperTMP: {fileID: 2110263903}
+  noAprovechablesManager: {fileID: 0}
 --- !u!225 &407300538
 CanvasGroup:
   m_ObjectHideFlags: 0
@@ -9217,10 +9217,10 @@ MonoBehaviour:
   botellaSpawnPoint: {fileID: 302695907}
   tapaSpawnPoint: {fileID: 130779347}
   botellaDestinoSpawnPoint: {fileID: 1965058847}
-  avisoTMP: {fileID: 2110263903}
   paperSpawnPoint: {fileID: 600612831}
   paperDestinoSpawnPoint: {fileID: 614637351}
   avisoPaperTMP: {fileID: 2110263903}
+  noAprovechablesManager: {fileID: 0}
 --- !u!225 &571670503
 CanvasGroup:
   m_ObjectHideFlags: 0
@@ -9884,17 +9884,15 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 7e58e3d94900d1542a3161bc62d51233, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  monticuloPrefab: {fileID: 1304441472}
-  "reto\xF1oPrefab": {fileID: 344725899275122755, guid: 2aa852f6b10f66346b1fed445ea19a83, type: 3}
-  puntoInstancia: {fileID: 202163665}
-  sliderAguaPrefab: {fileID: 705900137}
-  colorRegado: {r: 0.6037736, g: 0.6037736, b: 0.6037736, a: 1}
-  canvasPlantado: {fileID: 2132900809}
-  botonListo: {fileID: 1290030278}
-  objetivoCamara: {fileID: 70762905}
-  camaraPlantado: {fileID: 890637298}
-  textoInteraccion: {fileID: 1242181580}
-  jugador: {fileID: 1812119496}
+  monticuloObject: {fileID: 0}
+  arbolPrefab: {fileID: 0}
+  spawnPoint: {fileID: 0}
+  sliderAgua: {fileID: 0}
+  textoPlantar: {fileID: 0}
+  textoRegar: {fileID: 0}
+  semillaItem: {fileID: 0}
+  compostaItem: {fileID: 0}
+  bidonItem: {fileID: 0}
 --- !u!1 &614104112
 GameObject:
   m_ObjectHideFlags: 0
@@ -14477,10 +14475,10 @@ MonoBehaviour:
   botellaSpawnPoint: {fileID: 302695907}
   tapaSpawnPoint: {fileID: 130779347}
   botellaDestinoSpawnPoint: {fileID: 1965058847}
-  avisoTMP: {fileID: 2110263903}
   paperSpawnPoint: {fileID: 600612831}
   paperDestinoSpawnPoint: {fileID: 614637351}
   avisoPaperTMP: {fileID: 2110263903}
+  noAprovechablesManager: {fileID: 0}
 --- !u!225 &925465767
 CanvasGroup:
   m_ObjectHideFlags: 0
@@ -17223,17 +17221,15 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 7e58e3d94900d1542a3161bc62d51233, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  monticuloPrefab: {fileID: 1411901949}
-  "reto\xF1oPrefab": {fileID: 344725899275122755, guid: 2aa852f6b10f66346b1fed445ea19a83, type: 3}
-  puntoInstancia: {fileID: 468348092}
-  sliderAguaPrefab: {fileID: 938512603}
-  colorRegado: {r: 0.6037736, g: 0.6037736, b: 0.6037736, a: 1}
-  canvasPlantado: {fileID: 2132900809}
-  botonListo: {fileID: 1290030278}
-  objetivoCamara: {fileID: 1749660293}
-  camaraPlantado: {fileID: 890637298}
-  textoInteraccion: {fileID: 1242181580}
-  jugador: {fileID: 1812119496}
+  monticuloObject: {fileID: 0}
+  arbolPrefab: {fileID: 0}
+  spawnPoint: {fileID: 0}
+  sliderAgua: {fileID: 0}
+  textoPlantar: {fileID: 0}
+  textoRegar: {fileID: 0}
+  semillaItem: {fileID: 0}
+  compostaItem: {fileID: 0}
+  bidonItem: {fileID: 0}
 --- !u!1 &1066363147
 GameObject:
   m_ObjectHideFlags: 0
@@ -19230,17 +19226,15 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 7e58e3d94900d1542a3161bc62d51233, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  monticuloPrefab: {fileID: 1238855357}
-  "reto\xF1oPrefab": {fileID: 344725899275122755, guid: 2aa852f6b10f66346b1fed445ea19a83, type: 3}
-  puntoInstancia: {fileID: 1759832510}
-  sliderAguaPrefab: {fileID: 2044010995}
-  colorRegado: {r: 0.6037736, g: 0.6037736, b: 0.6037736, a: 1}
-  canvasPlantado: {fileID: 2132900809}
-  botonListo: {fileID: 1290030278}
-  objetivoCamara: {fileID: 1645846868}
-  camaraPlantado: {fileID: 890637298}
-  textoInteraccion: {fileID: 1242181580}
-  jugador: {fileID: 1812119496}
+  monticuloObject: {fileID: 0}
+  arbolPrefab: {fileID: 0}
+  spawnPoint: {fileID: 0}
+  sliderAgua: {fileID: 0}
+  textoPlantar: {fileID: 0}
+  textoRegar: {fileID: 0}
+  semillaItem: {fileID: 0}
+  compostaItem: {fileID: 0}
+  bidonItem: {fileID: 0}
 --- !u!1 &1172452413
 GameObject:
   m_ObjectHideFlags: 0
@@ -23940,10 +23934,10 @@ MonoBehaviour:
   botellaSpawnPoint: {fileID: 302695907}
   tapaSpawnPoint: {fileID: 130779347}
   botellaDestinoSpawnPoint: {fileID: 1965058847}
-  avisoTMP: {fileID: 2110263903}
   paperSpawnPoint: {fileID: 600612831}
   paperDestinoSpawnPoint: {fileID: 614637351}
   avisoPaperTMP: {fileID: 2110263903}
+  noAprovechablesManager: {fileID: 0}
 --- !u!225 &1396941186
 CanvasGroup:
   m_ObjectHideFlags: 0
@@ -28707,10 +28701,10 @@ MonoBehaviour:
   botellaSpawnPoint: {fileID: 302695907}
   tapaSpawnPoint: {fileID: 130779347}
   botellaDestinoSpawnPoint: {fileID: 1965058847}
-  avisoTMP: {fileID: 2110263903}
   paperSpawnPoint: {fileID: 600612831}
   paperDestinoSpawnPoint: {fileID: 614637351}
   avisoPaperTMP: {fileID: 2110263903}
+  noAprovechablesManager: {fileID: 0}
 --- !u!225 &1630295740
 CanvasGroup:
   m_ObjectHideFlags: 0
@@ -32218,17 +32212,15 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 7e58e3d94900d1542a3161bc62d51233, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  monticuloPrefab: {fileID: 1395675424}
-  "reto\xF1oPrefab": {fileID: 344725899275122755, guid: 2aa852f6b10f66346b1fed445ea19a83, type: 3}
-  puntoInstancia: {fileID: 2120015979}
-  sliderAguaPrefab: {fileID: 2062711250}
-  colorRegado: {r: 0.6037736, g: 0.6037736, b: 0.6037736, a: 1}
-  canvasPlantado: {fileID: 2132900809}
-  botonListo: {fileID: 1290030278}
-  objetivoCamara: {fileID: 1314904002}
-  camaraPlantado: {fileID: 890637298}
-  textoInteraccion: {fileID: 1242181580}
-  jugador: {fileID: 1812119496}
+  monticuloObject: {fileID: 0}
+  arbolPrefab: {fileID: 0}
+  spawnPoint: {fileID: 0}
+  sliderAgua: {fileID: 0}
+  textoPlantar: {fileID: 0}
+  textoRegar: {fileID: 0}
+  semillaItem: {fileID: 0}
+  compostaItem: {fileID: 0}
+  bidonItem: {fileID: 0}
 --- !u!1 &1804271320
 GameObject:
   m_ObjectHideFlags: 0
@@ -33216,10 +33208,10 @@ MonoBehaviour:
   botellaSpawnPoint: {fileID: 302695907}
   tapaSpawnPoint: {fileID: 130779347}
   botellaDestinoSpawnPoint: {fileID: 1965058847}
-  avisoTMP: {fileID: 2110263903}
   paperSpawnPoint: {fileID: 600612831}
   paperDestinoSpawnPoint: {fileID: 614637351}
   avisoPaperTMP: {fileID: 2110263903}
+  noAprovechablesManager: {fileID: 0}
 --- !u!114 &1846633892
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -34381,6 +34373,140 @@ CanvasRenderer:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1936043649}
   m_CullTransparentMesh: 1
+--- !u!1 &1942023186
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 1942023187}
+  - component: {fileID: 1942023188}
+  - component: {fileID: 1942023189}
+  m_Layer: 0
+  m_Name: TextoProgreso
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!224 &1942023187
+RectTransform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1942023186}
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 362450483}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+  m_AnchorMin: {x: 0.5, y: 0.5}
+  m_AnchorMax: {x: 0.5, y: 0.5}
+  m_AnchoredPosition: {x: -705, y: 321}
+  m_SizeDelta: {x: 200, y: 50}
+  m_Pivot: {x: 0.5, y: 0.5}
+--- !u!222 &1942023188
+CanvasRenderer:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1942023186}
+  m_CullTransparentMesh: 1
+--- !u!114 &1942023189
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1942023186}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: f4688fdb7df04437aeb418b961361dc5, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  m_Material: {fileID: 0}
+  m_Color: {r: 1, g: 1, b: 1, a: 1}
+  m_RaycastTarget: 1
+  m_RaycastPadding: {x: 0, y: 0, z: 0, w: 0}
+  m_Maskable: 1
+  m_OnCullStateChanged:
+    m_PersistentCalls:
+      m_Calls: []
+  m_text: New Text
+  m_isRightToLeft: 0
+  m_fontAsset: {fileID: 11400000, guid: 8f586378b4e144a9851e7b34d9b748ee, type: 2}
+  m_sharedMaterial: {fileID: 2180264, guid: 8f586378b4e144a9851e7b34d9b748ee, type: 2}
+  m_fontSharedMaterials: []
+  m_fontMaterial: {fileID: 0}
+  m_fontMaterials: []
+  m_fontColor32:
+    serializedVersion: 2
+    rgba: 4294967295
+  m_fontColor: {r: 1, g: 1, b: 1, a: 1}
+  m_enableVertexGradient: 0
+  m_colorMode: 3
+  m_fontColorGradient:
+    topLeft: {r: 1, g: 1, b: 1, a: 1}
+    topRight: {r: 1, g: 1, b: 1, a: 1}
+    bottomLeft: {r: 1, g: 1, b: 1, a: 1}
+    bottomRight: {r: 1, g: 1, b: 1, a: 1}
+  m_fontColorGradientPreset: {fileID: 0}
+  m_spriteAsset: {fileID: 0}
+  m_tintAllSprites: 0
+  m_StyleSheet: {fileID: 0}
+  m_TextStyleHashCode: -1183493901
+  m_overrideHtmlColors: 0
+  m_faceColor:
+    serializedVersion: 2
+    rgba: 4294967295
+  m_fontSize: 36
+  m_fontSizeBase: 36
+  m_fontWeight: 400
+  m_enableAutoSizing: 0
+  m_fontSizeMin: 18
+  m_fontSizeMax: 72
+  m_fontStyle: 0
+  m_HorizontalAlignment: 1
+  m_VerticalAlignment: 256
+  m_textAlignment: 65535
+  m_characterSpacing: 0
+  m_wordSpacing: 0
+  m_lineSpacing: 0
+  m_lineSpacingMax: 0
+  m_paragraphSpacing: 0
+  m_charWidthMaxAdj: 0
+  m_enableWordWrapping: 1
+  m_wordWrappingRatios: 0.4
+  m_overflowMode: 0
+  m_linkedTextComponent: {fileID: 0}
+  parentLinkedComponent: {fileID: 0}
+  m_enableKerning: 1
+  m_enableExtraPadding: 0
+  checkPaddingRequired: 0
+  m_isRichText: 1
+  m_parseCtrlCharacters: 1
+  m_isOrthographic: 1
+  m_isCullingEnabled: 0
+  m_horizontalMapping: 0
+  m_verticalMapping: 0
+  m_uvLineOffset: 0
+  m_geometrySortingOrder: 0
+  m_IsTextObjectScaleStatic: 0
+  m_VertexBufferAutoSizeReduction: 0
+  m_useMaxVisibleDescender: 1
+  m_pageToDisplay: 1
+  m_margin: {x: 0, y: 0, z: 0, w: 0}
+  m_isUsingLegacyAnimationComponent: 0
+  m_isVolumetricText: 0
+  m_hasFontAssetChanged: 0
+  m_baseMaterial: {fileID: 0}
+  m_maskOffset: {x: 0, y: 0, z: 0, w: 0}
 --- !u!1 &1947866768
 GameObject:
   m_ObjectHideFlags: 0
@@ -35457,10 +35583,10 @@ MonoBehaviour:
   botellaSpawnPoint: {fileID: 302695907}
   tapaSpawnPoint: {fileID: 130779347}
   botellaDestinoSpawnPoint: {fileID: 1965058847}
-  avisoTMP: {fileID: 2110263903}
   paperSpawnPoint: {fileID: 600612831}
   paperDestinoSpawnPoint: {fileID: 614637351}
   avisoPaperTMP: {fileID: 2110263903}
+  noAprovechablesManager: {fileID: 0}
 --- !u!225 &1996492599
 CanvasGroup:
   m_ObjectHideFlags: 0
@@ -35629,7 +35755,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!224 &1998914758
 RectTransform:
   m_ObjectHideFlags: 0
@@ -36040,6 +36166,8 @@ MonoBehaviour:
   slotsContainer: {fileID: 1820742398}
   botonReinicio: {fileID: 332962764}
   cantidadSlots: 5
+  mensajeErrorTMP: {fileID: 0}
+  duracionMensaje: 2
 --- !u!114 &2001540059
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -37268,17 +37396,15 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 7e58e3d94900d1542a3161bc62d51233, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  monticuloPrefab: {fileID: 97452341}
-  "reto\xF1oPrefab": {fileID: 344725899275122755, guid: 2aa852f6b10f66346b1fed445ea19a83, type: 3}
-  puntoInstancia: {fileID: 44864309}
-  sliderAguaPrefab: {fileID: 1368053129}
-  colorRegado: {r: 0.6037736, g: 0.6037736, b: 0.6037736, a: 1}
-  canvasPlantado: {fileID: 2132900809}
-  botonListo: {fileID: 1290030278}
-  objetivoCamara: {fileID: 1486395274}
-  camaraPlantado: {fileID: 890637298}
-  textoInteraccion: {fileID: 1242181580}
-  jugador: {fileID: 1812119496}
+  monticuloObject: {fileID: 0}
+  arbolPrefab: {fileID: 0}
+  spawnPoint: {fileID: 0}
+  sliderAgua: {fileID: 0}
+  textoPlantar: {fileID: 0}
+  textoRegar: {fileID: 0}
+  semillaItem: {fileID: 0}
+  compostaItem: {fileID: 0}
+  bidonItem: {fileID: 0}
 --- !u!1001 &2058498915
 PrefabInstance:
   m_ObjectHideFlags: 0

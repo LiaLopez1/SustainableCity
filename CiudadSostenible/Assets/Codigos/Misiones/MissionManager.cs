@@ -28,9 +28,12 @@ public class MissionManager : MonoBehaviour
 
     public List<Mission> misiones;
 
-    public TextMeshProUGUI missionTextHUD; // HUD visible constantemente (opcional)
+    public TextMeshProUGUI missionTitleHUD; // Para "MISIÓN:"
+    public TextMeshProUGUI missionProgressHUD; // Para el progreso tipo (2/5)
 
-    public GameObject triggerBloqueoMaquina; // Para desbloqueo condicional
+    public int misionesCompletadas = 0;
+
+    //public GameObject triggerBloqueoMaquina; // Para desbloqueo condicional
 
     private int misionActualIndex = 0;
 
@@ -88,9 +91,10 @@ public class MissionManager : MonoBehaviour
             if (todosCompletos)
             {
                 misionActual.completada = true;
+                misionesCompletadas++; // ← Incrementa el contador
                 misionActualIndex++;
 
-                VerificarDesbloqueos();
+                //VerificarDesbloqueos();
                 MostrarMisionActual();
 
                 if (uiController != null)
@@ -111,27 +115,44 @@ public class MissionManager : MonoBehaviour
         }
         else
         {
-            if (missionTextHUD != null)
-                missionTextHUD.text = "¡Todas las misiones completadas!";
+            if (missionTitleHUD != null)
+                missionTitleHUD.text = "¡Todas las misiones completadas!";
+
+            if (missionProgressHUD != null)
+                missionProgressHUD.text = "";
         }
     }
 
-    void ActualizarTextoHUD()
+
+    public void ActualizarTextoHUD()
     {
         if (misionActualIndex >= misiones.Count) return;
 
         Mission m = misiones[misionActualIndex];
 
-        string texto = "MISIÓN:\n";
-        foreach (var req in m.requisitos)
-        {
-            texto += $"Recolecta {req.cantidadObjetivo} x {req.item.itemName} " +
-                     $"({req.cantidadActual}/{req.cantidadObjetivo})\n";
-        }
+        if (missionTitleHUD != null)
+            missionTitleHUD.text = $"MISIÓN: {m.nombreMision}";
 
-        if (missionTextHUD != null)
-            missionTextHUD.text = texto;
+        if (missionProgressHUD != null)
+        {
+            // Mostrar el progreso SOLO si ya fue mostrada al jugador
+            if (m.fueMostradaAlJugador)
+            {
+                string progreso = "";
+                foreach (var req in m.requisitos)
+                {
+                    progreso += $"{req.cantidadActual}/{req.cantidadObjetivo}\n";
+                }
+                missionProgressHUD.text = progreso;
+            }
+            else
+            {
+                missionProgressHUD.text = ""; // Ocultar hasta que se muestre la misión
+            }
+        }
     }
+
+
 
     public Mission ObtenerMisionActual()
     {
@@ -141,12 +162,12 @@ public class MissionManager : MonoBehaviour
             return null;
     }
 
-    void VerificarDesbloqueos()
+    /*void VerificarDesbloqueos()
     {
         // Ejemplo: desbloquear máquina cuando se completa la misión 0
         if (misionActualIndex > 0 && triggerBloqueoMaquina != null)
         {
             triggerBloqueoMaquina.SetActive(false);
         }
-    }
+    }*/
 }

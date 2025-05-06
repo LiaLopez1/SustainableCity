@@ -1,4 +1,4 @@
-using UnityEngine;
+﻿using UnityEngine;
 using TMPro;
 using UnityEngine.UI;
 
@@ -18,7 +18,7 @@ public class MissionUIController : MonoBehaviour
         // Buscar el MissionManager en la escena
         missionManager = FindObjectOfType<MissionManager>();
 
-        // Asegurarse de que el panel est� oculto al inicio
+        // Asegurarse de que el panel está oculto al inicio
         panelMision.SetActive(false);
         botonCerrar.onClick.AddListener(CerrarPanel);
     }
@@ -34,10 +34,14 @@ public class MissionUIController : MonoBehaviour
         textoExplicacion.text = mision.descripcion;
 
         panelMision.SetActive(true);
-        imageExclamacion.SetActive(false); // Ocultamos el �cono de exclamaci�n
+        imageExclamacion.SetActive(false); // Ocultamos el ícono de exclamación
 
         mision.fueMostradaAlJugador = true;
+
+        // ⬇️ Llama inmediatamente al refresco del HUD
+        missionManager.ActualizarTextoHUD(); // <-- AÑADE ESTA LÍNEA
     }
+
 
     public void CerrarPanel()
     {
@@ -45,15 +49,22 @@ public class MissionUIController : MonoBehaviour
     }
 
     public void ActualizarExclamacion()
+{
+    if (missionManager == null)
     {
-        var mision = missionManager.ObtenerMisionActual();
-        if (mision != null && !mision.fueMostradaAlJugador)
-        {
-            imageExclamacion.SetActive(true);
-        }
-        else
-        {
-            imageExclamacion.SetActive(false);
-        }
+        missionManager = FindObjectOfType<MissionManager>();
+        if (missionManager == null) return;
     }
+
+    var mision = missionManager.ObtenerMisionActual();
+    if (mision != null && !mision.fueMostradaAlJugador)
+    {
+        imageExclamacion.SetActive(true);
+    }
+    else
+    {
+        imageExclamacion.SetActive(false);
+    }
+}
+
 }
