@@ -91,15 +91,16 @@ public class MissionManager : MonoBehaviour
             if (todosCompletos)
             {
                 misionActual.completada = true;
-                misionesCompletadas++; // ← Incrementa el contador
+                misionesCompletadas++;
                 misionActualIndex++;
 
                 //VerificarDesbloqueos();
-                MostrarMisionActual();
+                MostrarMisionActual(); // Cambia a la nueva misión
 
                 if (uiController != null)
-                    uiController.ActualizarExclamacion();
+                    uiController.ActualizarExclamacion(); // Ahora se basa en la nueva misión
             }
+
             else
             {
                 ActualizarTextoHUD();
