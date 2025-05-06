@@ -7057,6 +7057,8 @@ MonoBehaviour:
   - {fileID: 500182903}
   - {fileID: 687148770}
   - {fileID: 1778496261}
+  botonUnico: {fileID: 0}
+  imagenesPorCamara: []
   botellaSpawnPoint: {fileID: 302695907}
   tapaSpawnPoint: {fileID: 130779347}
   botellaDestinoSpawnPoint: {fileID: 1965058847}
@@ -9214,6 +9216,8 @@ MonoBehaviour:
   - {fileID: 500182903}
   - {fileID: 687148770}
   - {fileID: 1778496261}
+  botonUnico: {fileID: 0}
+  imagenesPorCamara: []
   botellaSpawnPoint: {fileID: 302695907}
   tapaSpawnPoint: {fileID: 130779347}
   botellaDestinoSpawnPoint: {fileID: 1965058847}
@@ -9406,15 +9410,21 @@ MonoBehaviour:
     textoContador: {fileID: 1458247154}
     botonRecompensa: {fileID: 832583182}
     recompensa: {fileID: 11400000, guid: fb777ab8c07bd614cb44497fcf0e4310, type: 2}
+    tipoMaterial: 
     estaCompleto: 0
+    bloqueoEntrada: 0
   - tagMaterial: Botella
     cantidadActual: 0
     cantidadMaxima: 10
     textoContador: {fileID: 1177982639}
     botonRecompensa: {fileID: 284208105}
     recompensa: {fileID: 11400000, guid: 3ef38d8ced651784ba6379012f0a9eaf, type: 2}
+    tipoMaterial: 
     estaCompleto: 0
+    bloqueoEntrada: 0
   inventarioNormal: {fileID: 129903582}
+  mensajeInventarioLleno: {fileID: 0}
+  duracionMensaje: 2
 --- !u!114 &573767430
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -14472,6 +14482,8 @@ MonoBehaviour:
   - {fileID: 500182903}
   - {fileID: 687148770}
   - {fileID: 1778496261}
+  botonUnico: {fileID: 0}
+  imagenesPorCamara: []
   botellaSpawnPoint: {fileID: 302695907}
   tapaSpawnPoint: {fileID: 130779347}
   botellaDestinoSpawnPoint: {fileID: 1965058847}
@@ -21633,8 +21645,12 @@ MonoBehaviour:
     textoContador: {fileID: 1546594307}
     botonRecompensa: {fileID: 192865391}
     recompensa: {fileID: 11400000, guid: e7c3f37cb730cc24a894498c0cd27cd4, type: 2}
+    tipoMaterial: 
     estaCompleto: 0
+    bloqueoEntrada: 0
   inventarioNormal: {fileID: 129903582}
+  mensajeInventarioLleno: {fileID: 0}
+  duracionMensaje: 2
 --- !u!114 &1280663749
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -23686,6 +23702,8 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   materiales: []
   inventarioNormal: {fileID: 0}
+  mensajeInventarioLleno: {fileID: 0}
+  duracionMensaje: 2
 --- !u!114 &1376699350
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -23931,6 +23949,8 @@ MonoBehaviour:
   - {fileID: 500182903}
   - {fileID: 687148770}
   - {fileID: 1778496261}
+  botonUnico: {fileID: 0}
+  imagenesPorCamara: []
   botellaSpawnPoint: {fileID: 302695907}
   tapaSpawnPoint: {fileID: 130779347}
   botellaDestinoSpawnPoint: {fileID: 1965058847}
@@ -28698,6 +28718,8 @@ MonoBehaviour:
   - {fileID: 500182903}
   - {fileID: 687148770}
   - {fileID: 1778496261}
+  botonUnico: {fileID: 0}
+  imagenesPorCamara: []
   botellaSpawnPoint: {fileID: 302695907}
   tapaSpawnPoint: {fileID: 130779347}
   botellaDestinoSpawnPoint: {fileID: 1965058847}
@@ -33205,6 +33227,8 @@ MonoBehaviour:
   - {fileID: 500182903}
   - {fileID: 687148770}
   - {fileID: 1778496261}
+  botonUnico: {fileID: 0}
+  imagenesPorCamara: []
   botellaSpawnPoint: {fileID: 302695907}
   tapaSpawnPoint: {fileID: 130779347}
   botellaDestinoSpawnPoint: {fileID: 1965058847}
@@ -35580,6 +35604,8 @@ MonoBehaviour:
   - {fileID: 500182903}
   - {fileID: 687148770}
   - {fileID: 1778496261}
+  botonUnico: {fileID: 0}
+  imagenesPorCamara: []
   botellaSpawnPoint: {fileID: 302695907}
   tapaSpawnPoint: {fileID: 130779347}
   botellaDestinoSpawnPoint: {fileID: 1965058847}
