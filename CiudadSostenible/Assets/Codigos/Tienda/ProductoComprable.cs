@@ -28,6 +28,7 @@ public class ProductoComprable : MonoBehaviour
     private Image imagenBoton;
     private Color colorOriginal;
 
+
     void Start()
     {
         imagenBoton = botonComprar.GetComponent<Image>();
@@ -66,7 +67,7 @@ public class ProductoComprable : MonoBehaviour
             return;
         }
 
-        bool añadido = tienda.AnadirAlInventari(itemData);
+        bool añadido = tienda.AnadirAlInventario(itemData);
 
         if (añadido)
         {
