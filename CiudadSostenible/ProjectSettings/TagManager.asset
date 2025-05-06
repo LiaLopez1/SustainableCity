@@ -18,6 +18,7 @@ TagManager:
   - PlasticStrips
   - Batidor
   - NoAprovechables
+  - MCompost
   layers:
   - Default
   - TransparentFX

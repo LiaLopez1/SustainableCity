@@ -137,7 +137,7 @@ public class CanecaReciclaje : MonoBehaviour, IDropHandler
         if (inventarioNormal == null)
             return;
 
-        bool agregado = inventarioNormal.AddItem(material.recompensa, 5);
+        bool agregado = inventarioNormal.AddItem(material.recompensa, 1);
 
         if (agregado)
         {
