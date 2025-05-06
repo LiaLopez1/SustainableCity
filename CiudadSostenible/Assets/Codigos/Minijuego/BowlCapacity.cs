@@ -57,7 +57,7 @@ public class BowlCapacity : MonoBehaviour
             if (fullMessage != null)
             {
                 fullMessage.gameObject.SetActive(true);
-                StartCoroutine(HideTMPAfterDelay(2f)); // Oculta después de 2 segundos
+                StartCoroutine(HideTMPAfterDelay(0.5f)); 
             }
 
             return false;

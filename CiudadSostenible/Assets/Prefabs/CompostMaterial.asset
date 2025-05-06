@@ -13,7 +13,7 @@ MonoBehaviour:
   m_Name: CompostMaterial
   m_EditorClassIdentifier: 
   itemName: MaterialCompost
-  icon: {fileID: 21300000, guid: 4dac3e9c3cb3d8b41a662d7417b4280a, type: 3}
+  icon: {fileID: 21300000, guid: 5fd55e7f2cee7af45bb6d194d39172df, type: 3}
   worldPrefab: {fileID: 0}
   alternatePrefab: {fileID: 0}
   itemTag: MCompost

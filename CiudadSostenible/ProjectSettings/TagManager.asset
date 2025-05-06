@@ -19,6 +19,7 @@ TagManager:
   - Batidor
   - NoAprovechables
   - MCompost
+  - Apple
   layers:
   - Default
   - TransparentFX
