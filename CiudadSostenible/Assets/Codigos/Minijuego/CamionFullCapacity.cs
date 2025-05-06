@@ -7,7 +7,7 @@ public class CamionFullCapacity : MonoBehaviour
 {
     [Header("Configuración")]
     public string targetTag = "NoAprovechables";
-    public int capacidadMaxima = 6;
+    public int capacidadMaxima = 67;
     public TextMeshProUGUI mensajeTMP;
 
     [Header("Movimiento del camión")]
@@ -116,7 +116,7 @@ public class CamionFullCapacity : MonoBehaviour
         }
 
         // Esperar 1 minuto antes de regresar
-        yield return new WaitForSeconds(5f);
+        yield return new WaitForSeconds(60f);
         yield return StartCoroutine(RetornarAPosicionInicial());
     }
 

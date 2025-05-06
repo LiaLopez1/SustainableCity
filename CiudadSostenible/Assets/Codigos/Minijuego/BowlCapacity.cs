@@ -57,7 +57,7 @@ public class BowlCapacity : MonoBehaviour
             if (fullMessage != null)
             {
                 fullMessage.gameObject.SetActive(true);
-                StartCoroutine(HideTMPAfterDelay(0.5f)); 
+                StartCoroutine(HideTMPAfterDelay(1f)); 
             }
 
             return false;
