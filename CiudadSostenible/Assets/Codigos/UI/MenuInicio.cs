@@ -62,7 +62,7 @@ public class MenuInicio : MonoBehaviour
         {
             SalirDelJuego();
         }
-        else if (Input.anyKeyDown)
+        else if (Input.GetKeyDown(KeyCode.S))
         {
             IniciarPantallaCarga();
         }
@@ -136,12 +136,6 @@ public class MenuInicio : MonoBehaviour
             color.a = alpha;
             textMesh.color = color;
         }
-    }
-
-    void IniciarJuego()
-    {
-        StopAllCoroutines();
-        SceneManager.LoadScene(escena);
     }
 
     public void IniciarPantallaCarga()

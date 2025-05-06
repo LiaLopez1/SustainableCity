@@ -11,6 +11,9 @@ public class TypewriterEffect : MonoBehaviour
     public AudioClip typeSound;
     [Range(0.1f, 1f)] public float soundVolume = 0.5f;
 
+    [Header("Control de entrada")]
+    public bool clicsPermitidos = false; // ← NUEVO
+
     private TMP_Text textComponent;
     private string fullText;
     private AudioSource audioSource;
@@ -25,13 +28,12 @@ public class TypewriterEffect : MonoBehaviour
 
         if (typeSound != null)
         {
-            // Configuración optimizada del AudioSource
             audioSource = gameObject.AddComponent<AudioSource>();
             audioSource.playOnAwake = false;
             audioSource.volume = soundVolume;
             audioSource.loop = false;
-            audioSource.priority = 0; // Máxima prioridad
-            audioSource.spatialBlend = 0f; // 2D completo
+            audioSource.priority = 0;
+            audioSource.spatialBlend = 0f;
             audioSource.bypassEffects = true;
             audioSource.bypassListenerEffects = true;
             audioSource.bypassReverbZones = true;
@@ -41,6 +43,14 @@ public class TypewriterEffect : MonoBehaviour
     void Start()
     {
         StartTyping();
+    }
+
+    void Update()
+    {
+        if (clicsPermitidos && isTyping && Input.GetMouseButtonDown(0))
+        {
+            SkipToEnd();
+        }
     }
 
     public void StartTyping()
@@ -55,48 +65,48 @@ public class TypewriterEffect : MonoBehaviour
         typingCoroutine = StartCoroutine(TypeText());
     }
 
+
     IEnumerator TypeText()
     {
-        isTyping = true;
-        textComponent.text = "";
-
-        // Precargar el sonido antes del delay
-        if (typeSound != null)
+        if (typeSound != null && audioSource != null)
         {
             audioSource.clip = typeSound;
+            audioSource.loop = true;
             audioSource.Play();
-            audioSource.Pause();
         }
 
         yield return new WaitForSeconds(startDelay);
 
-        for (int i = 0; i <= fullText.Length; i++)
+        for (int i = 0; i < fullText.Length; i++)
         {
-            textComponent.text = fullText.Substring(0, i);
-
-            if (typeSound != null && i < fullText.Length && !char.IsWhiteSpace(fullText[i]))
-            {
-                // Reproducción optimizada del sonido
-                audioSource.UnPause();
-                audioSource.time = 0f; // Reiniciar el sonido
-                audioSource.Play();
-
-                // Pausar inmediatamente para preparar el próximo sonido
-                audioSource.Pause();
-            }
+            textComponent.text += fullText[i];
 
             yield return new WaitForSeconds(1f / charsPerSecond);
         }
 
         isTyping = false;
+
+        if (audioSource != null && audioSource.isPlaying)
+            audioSource.Stop();
     }
 
     public void RestartAnimation()
     {
         if (typingCoroutine != null)
-        {
             StopCoroutine(typingCoroutine);
-        }
+
+        textComponent.text = "";
+        isTyping = true;
         typingCoroutine = StartCoroutine(TypeText());
+    }
+
+    public void SkipToEnd()
+    {
+        StopAllCoroutines();
+        textComponent.text = fullText;
+        isTyping = false;
+
+        if (audioSource != null && audioSource.isPlaying)
+            audioSource.Stop();
     }
 }

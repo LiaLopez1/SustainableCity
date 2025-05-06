@@ -12,7 +12,6 @@ public class PantallaCarga : MonoBehaviour
     [Header("Canvas de Cinemática")]
     public GameObject cinematicCanvas;
     public GameObject[] cinematicElements;
-    public Button skipButton;
 
     [Header("Configuración")]
     public float totalCarga = 10f;
@@ -20,14 +19,15 @@ public class PantallaCarga : MonoBehaviour
     public float fadeDuration = 0.5f;
     public float tiempoCinematica = 2f;
     public Slider progresoSlider;
+    public float timeCarta = 5f;
+    public int escenaACargar = 1;
 
     private int indiceActual = 0;
     private CanvasGroup[] canvasGroups;
     private CanvasGroup[] cinematicCanvasGroups;
     private float tiempotranscurido = 0f;
     private bool cargaCompleta;
-    private bool skipCinematic = false;
-    public int escenaACargar=1;
+    private bool cinematicEnProgreso = false;
 
     void Start()
     {
@@ -53,9 +53,27 @@ public class PantallaCarga : MonoBehaviour
             progresoSlider.minValue = 0f;
             progresoSlider.maxValue = 1f;
             progresoSlider.value = 0f;
+            progresoSlider.interactable = false;
         }
 
         InitializeCinematicCanvas();
+    }
+
+    void Update()
+    {
+        if (cinematicEnProgreso || cargaCompleta || IsTransitioning())
+            return;
+
+        // Ignorar clics si hay una transición en progreso
+        if (Input.GetMouseButtonDown(0) && IsTransitioning())
+        {
+            return;
+        }
+    }
+
+    private bool IsTransitioning()
+    {
+        return tiempotranscurido > 0f && tiempotranscurido < totalCarga;
     }
 
     void InitializeCinematicCanvas()
@@ -90,7 +108,7 @@ public class PantallaCarga : MonoBehaviour
 
     public void IniciarSecuenciaCarga(int escenacarga)
     {
-        if (pantallasContenido.Length == 0)
+        if (pantallasContenido == null || pantallasContenido.Length == 0)
         {
             SceneManager.LoadScene(escenacarga);
             return;
@@ -134,58 +152,45 @@ public class PantallaCarga : MonoBehaviour
 
     private IEnumerator ShowCinematicAndLoad()
     {
+        cinematicEnProgreso = true;
+        // Ocultar pantalla de carga
         if (pantallasContenido.Length > 0)
         {
             yield return StartCoroutine(OcultarPantalla(indiceActual));
         }
 
+        // Mostrar canvas de cinemática
         if (cinematicCanvas != null)
         {
             cinematicCanvas.SetActive(true);
-            if (skipButton != null) skipButton.gameObject.SetActive(true);
 
+            // Mostrar elementos de cinemática uno por uno
             for (int i = 0; i < cinematicElements.Length; i++)
             {
-                if (skipCinematic) break;
-
                 if (cinematicElements[i] != null)
                 {
                     yield return StartCoroutine(MostrarElementoCinematica(i));
 
-                    float tiempoNecesario = tiempoCinematica;
-                    TypewriterEffect[] typewriters = cinematicElements[i].GetComponentsInChildren<TypewriterEffect>();
-                    foreach (var tw in typewriters)
-                    {
-                        if (tw != null)
-                        {
-                            float tiempoTexto = tw.startDelay + (tw.GetComponent<TMP_Text>().text.Length / tw.charsPerSecond);
-                            if (tiempoTexto > tiempoNecesario)
-                            {
-                                tiempoNecesario = tiempoTexto;
-                            }
-                        }
-                    }
+                    // Duración personalizada si es el segundo elemento
+                    float tiempoEspera = (i == 1) ? timeCarta : tiempoCinematica;
+                    yield return new WaitForSeconds(tiempoEspera);
 
-                    float tiempoEspera = 0f;
-                    while (tiempoEspera < tiempoNecesario && !skipCinematic)
-                    {
-                        tiempoEspera += Time.deltaTime;
-                        yield return null;
-                    }
-
-                    if (i < cinematicElements.Length - 1 && !skipCinematic)
+                    if (i < cinematicElements.Length - 1) // No ocultar el último
                     {
                         yield return StartCoroutine(OcultarElementoCinematica(i));
                     }
                 }
             }
-
-            if (skipButton != null) skipButton.gameObject.SetActive(false);
         }
 
+        // Cargar escena después de la cinemática
         SceneManager.LoadScene(escenaACargar);
     }
 
+    public void SkipEscena()
+    {
+        SceneManager.LoadScene(escenaACargar);
+    }
 
     private IEnumerator MostrarElementoCinematica(int index)
     {
@@ -239,6 +244,10 @@ public class PantallaCarga : MonoBehaviour
         if (indice < 0 || indice >= pantallasContenido.Length || pantallasContenido[indice] == null)
             yield break;
 
+        // Deshabilitar interacción
+        canvasGroups[indice].interactable = false;
+        canvasGroups[indice].blocksRaycasts = false;
+
         pantallasContenido[indice].SetActive(true);
         CanvasGroup cg = canvasGroups[indice];
 
@@ -251,6 +260,10 @@ public class PantallaCarga : MonoBehaviour
         }
 
         cg.alpha = 1f;
+
+        // Habilitar interacción solo cuando termine
+        //canvasGroups[indice].interactable = true;
+        //canvasGroups[indice].blocksRaycasts = true;
     }
 
     private IEnumerator OcultarPantalla(int indice)
