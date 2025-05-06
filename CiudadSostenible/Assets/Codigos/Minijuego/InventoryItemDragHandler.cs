@@ -1,4 +1,5 @@
-﻿using UnityEngine;
+﻿
+using UnityEngine;
 using UnityEngine.EventSystems;
 using UnityEngine.UI;
 using TMPro;
@@ -21,6 +22,12 @@ public class InventoryItemDragHandler : MonoBehaviour, IBeginDragHandler, IDragH
     [Header("Cámaras válidas para raycast")]
     public List<Camera> allowedCameras = new List<Camera>();
     private Camera currentActiveCamera;
+
+    [Header("Botón único + imágenes por cámara")]
+    public Button botonUnico;
+    public List<GameObject> imagenesPorCamara = new List<GameObject>();
+    private int camaraActivaIndex = -1;
+    private bool imagenVisible = false;
 
     [Header("Referencias")]
     private CanvasGroup canvasGroup;
@@ -58,6 +65,23 @@ public class InventoryItemDragHandler : MonoBehaviour, IBeginDragHandler, IDragH
         rectTransform = GetComponent<RectTransform>();
         sphereDropHandler = GetComponent<SphereDropHandler>();
         currentActiveCamera = GetActiveCameraFromList();
+
+        foreach (var img in imagenesPorCamara)
+        {
+            if (img != null)
+                img.SetActive(false);
+        }
+    }
+
+    private void Start()
+    {
+        if (botonUnico != null)
+        {
+            botonUnico.onClick.AddListener(ToggleImagenActiva);
+            botonUnico.gameObject.SetActive(false);
+        }
+
+        StartCoroutine(VerificarCamaraActivaCadaFrame());
     }
 
     public void OnBeginDrag(PointerEventData eventData)
@@ -139,7 +163,6 @@ public class InventoryItemDragHandler : MonoBehaviour, IBeginDragHandler, IDragH
                         handler.onBotellaCompletada = () => botellaActivaEnSpawn = null;
                     }
                 }
-
                 else if (itemData.itemTag == "Esfera" && IsFirstCameraActive() && sphereDropHandler != null)
                 {
                     sphereDropHandler.DropItemAtMousePosition(parentSlot, currentActiveCamera, groundMask, maxDropDistance);
@@ -195,8 +218,6 @@ public class InventoryItemDragHandler : MonoBehaviour, IBeginDragHandler, IDragH
                     basura.tag = "NoAprovechables";
                     parentSlot.RemoveQuantity(1);
                 }
-
-
                 else
                 {
                     StartCoroutine(BounceBackToSlot());
@@ -209,10 +230,61 @@ public class InventoryItemDragHandler : MonoBehaviour, IBeginDragHandler, IDragH
         }
     }
 
-    public void ReturnToInventory()
+    private void ToggleImagenActiva()
     {
-        StartCoroutine(BounceBackToSlot());
+        if (camaraActivaIndex < 0 || camaraActivaIndex >= imagenesPorCamara.Count)
+            return;
+
+        imagenVisible = !imagenVisible;
+        OcultarTodasLasImagenes();
+
+        if (imagenVisible && imagenesPorCamara[camaraActivaIndex] != null)
+        {
+            imagenesPorCamara[camaraActivaIndex].SetActive(true);
+        }
     }
+
+    private void OcultarTodasLasImagenes()
+    {
+        foreach (var img in imagenesPorCamara)
+        {
+            if (img != null) img.SetActive(false);
+        }
+    }
+
+    private IEnumerator VerificarCamaraActivaCadaFrame()
+    {
+        while (true)
+        {
+            int nuevaCamaraActiva = -1;
+
+            for (int i = 0; i < allowedCameras.Count; i++)
+            {
+                if (allowedCameras[i] != null &&
+                    allowedCameras[i].enabled &&
+                    allowedCameras[i].gameObject.activeInHierarchy)
+                {
+                    nuevaCamaraActiva = i;
+                    break;
+                }
+            }
+
+            if (nuevaCamaraActiva != camaraActivaIndex)
+            {
+                imagenVisible = false;
+                OcultarTodasLasImagenes();
+            }
+
+            camaraActivaIndex = nuevaCamaraActiva;
+
+            if (botonUnico != null)
+                botonUnico.gameObject.SetActive(camaraActivaIndex != -1);
+
+            yield return new WaitForSeconds(0.1f);
+        }
+    }
+
+    public void ReturnToInventory() => StartCoroutine(BounceBackToSlot());
 
     private IEnumerator ReturnToSlot()
     {
@@ -244,7 +316,6 @@ public class InventoryItemDragHandler : MonoBehaviour, IBeginDragHandler, IDragH
             if (cam != null && cam.enabled && cam.gameObject.activeInHierarchy)
                 return cam;
         }
-
         Debug.LogWarning("⚠️ No hay cámaras activas en la lista. Usando la primera como fallback.");
         return allowedCameras.Count > 0 ? allowedCameras[0] : null;
     }
@@ -259,25 +330,10 @@ public class InventoryItemDragHandler : MonoBehaviour, IBeginDragHandler, IDragH
         isSpecialCanvasActive = isActive;
     }
 
-    public bool IsFirstCameraActive()
-    {
-        return allowedCameras.Count >= 1 && allowedCameras[0].enabled && allowedCameras[0].gameObject.activeInHierarchy;
-    }
-
-    public bool IsSecondCameraActive()
-    {
-        return allowedCameras.Count >= 2 && allowedCameras[1].enabled && allowedCameras[1].gameObject.activeInHierarchy;
-    }
-
-    public bool IsThirdCameraActive()
-    {
-        return allowedCameras.Count >= 3 && allowedCameras[2].enabled && allowedCameras[2].gameObject.activeInHierarchy;
-    }
-
-    public bool IsFourthCameraActive()
-    {
-        return allowedCameras.Count >= 4 && allowedCameras[3].enabled && allowedCameras[3].gameObject.activeInHierarchy;
-    }
+    public bool IsFirstCameraActive() => allowedCameras.Count >= 1 && allowedCameras[0].enabled && allowedCameras[0].gameObject.activeInHierarchy;
+    public bool IsSecondCameraActive() => allowedCameras.Count >= 2 && allowedCameras[1].enabled && allowedCameras[1].gameObject.activeInHierarchy;
+    public bool IsThirdCameraActive() => allowedCameras.Count >= 3 && allowedCameras[2].enabled && allowedCameras[2].gameObject.activeInHierarchy;
+    public bool IsFourthCameraActive() => allowedCameras.Count >= 4 && allowedCameras[3].enabled && allowedCameras[3].gameObject.activeInHierarchy;
 
     private IEnumerator HideWarningTMP(TextMeshProUGUI tmp, float seconds)
     {
