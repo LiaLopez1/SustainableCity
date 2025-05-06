@@ -26,6 +26,7 @@ public class ProgresoMundo : MonoBehaviour
     public List<ShopItem> shopItems;
 
     [Header("Máquinas Interactuables")]
+    public GameObject panelCompartido;
     public List<MaquinaInteractuable> maquinas;
 
     private Image fillImage;
@@ -155,4 +156,18 @@ public class ProgresoMundo : MonoBehaviour
             }
         }
     }
+
+    public bool MaquinaEstaDesbloqueada(GameObject maquinaGO)
+    {
+        foreach (var maquina in maquinas)
+        {
+            if (maquina.desbloqueado && maquina.cameraSwitches.Exists(cs => cs.gameObject == maquinaGO))
+            {
+                return true;
+            }
+        }
+        return false;
+    }
+
+
 }

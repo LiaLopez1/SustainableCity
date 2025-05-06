@@ -62,22 +62,28 @@ public class VentaSlot : MonoBehaviour, IDropHandler
         var slotOrigen = dragItem.GetComponentInParent<InventorySlot>();
         if (slotOrigen == null || slotOrigen.IsEmpty()) return;
 
-        // Justo después de obtener el item desde el slotOrigen:
         var item = slotOrigen.GetItemData();
 
-        // Nueva línea: descontar 1 unidad del inventario real
-        slotOrigen.RemoveQuantity(1); // Ya existe esta función en InventorySlot.cs
-
-
+        // Si la casilla está vacía, aceptamos el ítem
         if (EstaVacio())
         {
-            ConfigurarSlot(item, 1); // ✅ Ahora sí funciona después de limpiar
+            ConfigurarSlot(item, 1);
+            slotOrigen.RemoveQuantity(1);
         }
+        // Si la casilla ya tiene el mismo tipo, sumamos
         else if (item == currentItem)
         {
             cantidad++;
             ActualizarUI();
+            slotOrigen.RemoveQuantity(1);
+        }
+        // Si es diferente, rechazamos
+        else
+        {
+            Debug.Log("No se puede colocar un objeto diferente en esta casilla.");
+            // Aquí puedes mostrar un mensaje de advertencia visual
         }
     }
+
 
 }

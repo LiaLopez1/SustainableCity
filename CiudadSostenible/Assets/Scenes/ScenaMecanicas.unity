@@ -33621,7 +33621,7 @@ GameObject:
   - component: {fileID: 1837165109}
   - component: {fileID: 1837165108}
   m_Layer: 0
-  m_Name: ProgressManager
+  m_Name: --ProgressManager--
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -33686,6 +33686,7 @@ MonoBehaviour:
     misionRequerida: 6
     colorBloqueado: {r: 0.3882353, g: 0.3882353, b: 0.3882353, a: 0.5019608}
     desbloqueado: 0
+  panelCompartido: {fileID: 2044535720}
   maquinas:
   - cameraSwitches:
     - {fileID: 331444239}
@@ -45535,23 +45536,7 @@ SceneRoots:
   - {fileID: 554824294}
   - {fileID: 1379105726}
   - {fileID: 1890860425}
-  - {fileID: 795493890}
-  - {fileID: 435572521}
-  - {fileID: 1286769139}
-  - {fileID: 1692745887}
-  - {fileID: 859089858}
-  - {fileID: 1349243497}
-  - {fileID: 1325128179}
-  - {fileID: 941531507}
-  - {fileID: 176724893}
-  - {fileID: 1597614758}
-  - {fileID: 631487239}
-  - {fileID: 345637711}
-  - {fileID: 1424118046}
-  - {fileID: 2140869049}
-  - {fileID: 1916243826}
   - {fileID: 6799494252384283265}
-  - {fileID: 153590802}
   - {fileID: 1339169030}
   - {fileID: 911556692}
   - {fileID: 8616520877464558697}
@@ -45585,3 +45570,5 @@ SceneRoots:
   - {fileID: 817469880}
   - {fileID: 1967724038}
   - {fileID: 1837165109}
+  - {fileID: 562630921}
+  - {fileID: 543450652727315173}
