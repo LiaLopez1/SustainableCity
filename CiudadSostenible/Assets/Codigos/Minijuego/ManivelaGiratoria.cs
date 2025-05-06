@@ -5,7 +5,7 @@ public class ManivelaGiratoria : MonoBehaviour
     [Header("Referencias")]
     public Transform manivelaVisual;
     public Camera camara;
-    public PlasticBowlCounter bowlCounter; // Debe estar asignado o se buscará automáticamente
+    public PlasticBowlCounter bowlCounter;
 
     [Header("Configuración")]
     public float sensibilidad = 1f;
@@ -46,7 +46,6 @@ public class ManivelaGiratoria : MonoBehaviour
                 if (rotacionAcumulada >= vueltaCompleta)
                 {
                     rotacionAcumulada = 0f;
-                    Debug.Log("🔄 Vuelta completa detectada.");
 
                     if (bowlCounter == null)
                     {

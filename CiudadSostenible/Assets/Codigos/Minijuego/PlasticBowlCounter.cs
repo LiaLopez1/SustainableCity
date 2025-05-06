@@ -52,7 +52,6 @@ public class PlasticBowlCounter : MonoBehaviour
         if (prefabProcesado != null && spawnPointProcesado != null)
         {
             Instantiate(prefabProcesado, spawnPointProcesado.position, Quaternion.identity);
-            Debug.Log("✅ Botella procesada y objeto instanciado.");
         }
     }
 

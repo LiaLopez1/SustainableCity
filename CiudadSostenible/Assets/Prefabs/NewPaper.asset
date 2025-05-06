@@ -16,6 +16,8 @@ MonoBehaviour:
   icon: {fileID: 21300000, guid: a2e4a93ffb9d3524d870b40bf976bada, type: 3}
   worldPrefab: {fileID: 1291277029854165065, guid: ca3bb6f2157f5de4ca53aee4f628f2bf, type: 3}
   alternatePrefab: {fileID: 0}
-  itemTag: Paper
+  itemTag: 
   maxStack: 10
   puedeAparecerEnBolsa: 0
+  activaMision: 0
+  progresoMision: 0
