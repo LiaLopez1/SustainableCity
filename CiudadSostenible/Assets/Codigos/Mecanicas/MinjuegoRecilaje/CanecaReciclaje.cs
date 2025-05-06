@@ -3,6 +3,7 @@ using UnityEngine.EventSystems;
 using TMPro;
 using System.Collections.Generic;
 using UnityEngine.UI;
+using System.Collections;
 
 public class CanecaReciclaje : MonoBehaviour, IDropHandler
 {
@@ -15,9 +16,10 @@ public class CanecaReciclaje : MonoBehaviour, IDropHandler
         public TextMeshProUGUI textoContador;
         public GameObject botonRecompensa;
         public ItemData recompensa;
+        public string tipoMaterial;
 
         [HideInInspector] public bool estaCompleto;
-
+        [HideInInspector] public bool bloqueoEntrada = false; // NUEVO: bloqueo al llenarse
     }
 
     [Header("Materiales")]
@@ -25,6 +27,10 @@ public class CanecaReciclaje : MonoBehaviour, IDropHandler
 
     [Header("Referencias")]
     public InventorySystem inventarioNormal;
+
+    [Header("Mensaje si inventario está lleno")]
+    public TextMeshProUGUI mensajeInventarioLleno;
+    public float duracionMensaje = 2f;
 
     void Start()
     {
@@ -35,10 +41,11 @@ public class CanecaReciclaje : MonoBehaviour, IDropHandler
     {
         foreach (var material in materiales)
         {
-            material.textoContador.text = $"{material.cantidadActual}/{material.cantidadMaxima}";
+            material.textoContador.text = $"{material.tipoMaterial}: {material.cantidadActual}/{material.cantidadMaxima}";
+            material.textoContador.gameObject.SetActive(true);
             material.botonRecompensa.SetActive(false);
-            
-            // Configurar el evento del botón
+            material.bloqueoEntrada = false;
+
             Button btn = material.botonRecompensa.GetComponent<Button>();
             if (btn != null)
             {
@@ -50,11 +57,8 @@ public class CanecaReciclaje : MonoBehaviour, IDropHandler
     public void OnDrop(PointerEventData eventData)
     {
         GameObject itemArrastrado = eventData.pointerDrag;
-
-        // 1. Intentar obtener el InventorySlot (para inventario normal)
         InventorySlot slotOrigen = itemArrastrado.GetComponentInParent<InventorySlot>();
 
-        // 2. Procesar según el tipo de ítem
         if (slotOrigen != null)
         {
             ProcesarInventarioNormal(slotOrigen, itemArrastrado);
@@ -74,22 +78,26 @@ public class CanecaReciclaje : MonoBehaviour, IDropHandler
         {
             if (item.CompareTag(material.tagMaterial))
             {
-                // Sumar TODAS las unidades del slot
+                if (material.bloqueoEntrada) return;
+
                 material.cantidadActual += cantidadEnSlot;
                 material.estaCompleto = (material.cantidadActual >= material.cantidadMaxima);
 
-                // Actualizar UI
-                material.textoContador.text = $"{material.cantidadActual}/{material.cantidadMaxima}";
+                material.textoContador.text = $"{material.tipoMaterial}: {material.cantidadActual}/{material.cantidadMaxima}";
                 if (material.botonRecompensa != null)
                     material.botonRecompensa.SetActive(material.estaCompleto);
 
-                // Vaciar el slot
+                if (material.estaCompleto)
+                {
+                    material.textoContador.gameObject.SetActive(false);
+                    material.bloqueoEntrada = true;
+                }
+
                 slot.ClearSlot();
                 return;
             }
         }
 
-        // Si no coincide con ningún material, regresar al inventario
         InventoryItemDragHandler dragHandler = item.GetComponent<InventoryItemDragHandler>();
         if (dragHandler != null) dragHandler.ReturnToInventory();
     }
@@ -100,43 +108,62 @@ public class CanecaReciclaje : MonoBehaviour, IDropHandler
         {
             if (item.CompareTag(material.tagMaterial))
             {
+                if (material.bloqueoEntrada) return;
+
                 material.cantidadActual++;
                 material.estaCompleto = (material.cantidadActual >= material.cantidadMaxima);
 
-                material.textoContador.text = $"{material.cantidadActual}/{material.cantidadMaxima}";
+                material.textoContador.text = $"{material.tipoMaterial}: {material.cantidadActual}/{material.cantidadMaxima}";
                 if (material.botonRecompensa != null)
                     material.botonRecompensa.SetActive(material.estaCompleto);
+
+                if (material.estaCompleto)
+                {
+                    material.textoContador.gameObject.SetActive(false);
+                    material.bloqueoEntrada = true;
+                }
 
                 Destroy(item);
                 return;
             }
         }
     }
+
     private void ReclamarRecompensa(MaterialReciclable material)
     {
         if (!material.estaCompleto || material.recompensa == null)
-        {
             return;
-        }
 
         if (inventarioNormal == null)
-        {
             return;
-        }
 
-        bool agregado = inventarioNormal.AddItem(material.recompensa, 1);
+        bool agregado = inventarioNormal.AddItem(material.recompensa, 5);
 
         if (agregado)
         {
             material.cantidadActual = 0;
             material.estaCompleto = false;
-            material.textoContador.text = $"{material.cantidadActual}/{material.cantidadMaxima}";
+            material.bloqueoEntrada = false;
+            material.textoContador.text = $"{material.tipoMaterial}: {material.cantidadActual}/{material.cantidadMaxima}";
+            material.textoContador.gameObject.SetActive(true);
             material.botonRecompensa.SetActive(false);
         }
         else
         {
-            Debug.LogWarning("❌ No se pudo agregar la recompensa al inventario. Tal vez está lleno.");
+            if (mensajeInventarioLleno != null)
+            {
+                mensajeInventarioLleno.gameObject.SetActive(true);
+                StartCoroutine(DesactivarMensajeTMP());
+            }
         }
     }
 
+    private IEnumerator DesactivarMensajeTMP()
+    {
+        yield return new WaitForSeconds(duracionMensaje);
+        if (mensajeInventarioLleno != null)
+        {
+            mensajeInventarioLleno.gameObject.SetActive(false);
+        }
+    }
 }
