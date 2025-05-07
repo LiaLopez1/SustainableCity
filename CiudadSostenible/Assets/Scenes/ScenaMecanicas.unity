@@ -13593,6 +13593,17 @@ CanvasRenderer:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 700788479}
   m_CullTransparentMesh: 1
+--- !u!114 &721220620 stripped
+MonoBehaviour:
+  m_CorrespondingSourceObject: {fileID: 8261014177881939338, guid: 27a01d840e258be4d8b323a94780b0cc, type: 3}
+  m_PrefabInstance: {fileID: 1139514615}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: f53ee52a6b70f66429ea5589a9ede4f9, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!1 &728399213
 GameObject:
   m_ObjectHideFlags: 0
@@ -33642,6 +33653,7 @@ MonoBehaviour:
   missionManager: {fileID: 232660742}
   sliderContaminacion: {fileID: 1896017441}
   imagenEstado: {fileID: 1380588862}
+  fogController: {fileID: 721220620}
   totalMisiones: 15
   colorNormal: {r: 0, g: 1, b: 0.95917225, a: 1}
   colorAdvertencia: {r: 1, g: 0.50181097, b: 0, a: 1}

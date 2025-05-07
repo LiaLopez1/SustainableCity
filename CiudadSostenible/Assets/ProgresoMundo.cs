@@ -9,6 +9,9 @@ public class ProgresoMundo : MonoBehaviour
     public Slider sliderContaminacion;
     public Image imagenEstado;
 
+    [Header("Niebla")]
+    public PollutionFogController fogController;
+
     [Header("Configuración")]
     public int totalMisiones = 15;
 
@@ -130,6 +133,11 @@ public class ProgresoMundo : MonoBehaviour
             {
                 DesbloquearMaquina(maquina);
             }
+        }
+
+        if (fogController != null)
+        {
+            fogController.SetFogDensityByContamination(valorSlider); // valorSlider ya representa la contaminación
         }
     }
 
