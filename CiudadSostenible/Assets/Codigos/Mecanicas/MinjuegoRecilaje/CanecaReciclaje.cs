@@ -30,7 +30,7 @@ public class CanecaReciclaje : MonoBehaviour, IDropHandler
 
     [Header("Mensaje si inventario está lleno")]
     public TextMeshProUGUI mensajeInventarioLleno;
-    public float duracionMensaje = 2f;
+    public float duracionMensaje = 1f;
 
     void Start()
     {

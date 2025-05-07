@@ -18,7 +18,7 @@ public class DetectorBolsa : MonoBehaviour, IDropHandler
 
     [Header("Mensaje de error")]
     public TextMeshProUGUI mensajeErrorTMP; // Asignar desde el Inspector
-    public float duracionMensaje = 2f;
+    public float duracionMensaje = 1f;
 
     private bool bolsaYaAbierta = false;
     private GameObject bolsaActual;
