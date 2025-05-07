@@ -11675,16 +11675,13 @@ MonoBehaviour:
   tiposBasura:
   - nombreTipo: Organico
     prefab: {fileID: 4431844012238896248, guid: 465a114b46e1d5142ab94e031c905815, type: 3}
-    probabilidad: 25
-  - nombreTipo: Vidrio
-    prefab: {fileID: 3138032085840502653, guid: c94daf228ccf2aa4e939f09d13e7d825, type: 3}
-    probabilidad: 25
+    probabilidad: 33
   - nombreTipo: Plastico
     prefab: {fileID: 5135943166415602768, guid: 2d6a30c4f9451304682be37f31fc60e0, type: 3}
-    probabilidad: 25
+    probabilidad: 33
   - nombreTipo: Papel
     prefab: {fileID: 589975393376088847, guid: 0d98a336efac4964f815e9b1a9015ebe, type: 3}
-    probabilidad: 25
+    probabilidad: 33
   basuraTotalRecogida: 0
   alturaBasura: 0.133
   rangoMaximoX: 40
@@ -35589,6 +35586,7 @@ MonoBehaviour:
   sliderContaminacion: {fileID: 1896017441}
   imagenEstado: {fileID: 1380588862}
   fogController: {fileID: 721220620}
+  basuraSpawner: {fileID: 573575323}
   totalMisiones: 15
   colorNormal: {r: 0, g: 1, b: 0.95917225, a: 1}
   colorAdvertencia: {r: 1, g: 0.50181097, b: 0, a: 1}
@@ -35711,6 +35709,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   textoInteraccion: {fileID: 390929234}
+  textoFeedback: {fileID: 1224497936}
 --- !u!65 &1838375002
 BoxCollider:
   m_ObjectHideFlags: 0
