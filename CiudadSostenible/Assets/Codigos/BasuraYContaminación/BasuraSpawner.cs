@@ -101,7 +101,14 @@ public class BasuraSpawner : MonoBehaviour
     {
         basuraActual = Mathf.Max(0, basuraActual - 1);
         basuraTotalRecogida++;
+
+        // Generar una nueva basura si ya se completó la generación inicial
+        if (basuraActual < cantidadMaximaBasura && Time.time > tiempoSiguienteSpawn)
+        {
+            GenerarBasura();
+        }
     }
+
 
     public int GetBasuraRecogida()
     {

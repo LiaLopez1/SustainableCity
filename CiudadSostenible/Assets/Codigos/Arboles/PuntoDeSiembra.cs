@@ -2,6 +2,7 @@
 using UnityEngine.UI;
 using System.Collections;
 using static UnityEditor.Progress;
+using TMPro;
 
 public class PuntoDeSiembraSimple : MonoBehaviour
 {
@@ -15,10 +16,17 @@ public class PuntoDeSiembraSimple : MonoBehaviour
     public GameObject textoPlantar;
     public GameObject textoRegar;
 
+    [Header("UI de retroalimentación")]
+    public TextMeshProUGUI feedbackTexto;
+
     [Header("ItemData necesarios")]
     public ItemData semillaItem;
     public ItemData compostaItem;
     public ItemData bidonItem;
+
+    [Header("Duraciones personalizables")]
+    public float duracionDrenaje = 150f; // En segundos
+    public float duracionCrecimiento = 300f; // En segundos
 
     private bool jugadorDentro = false;
     private bool sembrado = false;
@@ -28,8 +36,8 @@ public class PuntoDeSiembraSimple : MonoBehaviour
     private Coroutine drenajeAguaCoroutine;
     private GameObject arbolInstanciado;
 
-    private const float duracionDrenaje = 150f;
     private Coroutine crecimientoCoroutine;
+    private Coroutine feedbackCoroutine;
 
     void Start()
     {
@@ -53,7 +61,7 @@ public class PuntoDeSiembraSimple : MonoBehaviour
         if (jugadorDentro)
         {
             textoPlantar?.SetActive(!sembrado);
-            textoRegar?.SetActive(sembrado && !regado);
+            textoRegar?.SetActive(sembrado && sliderAgua.value < 1f);
         }
     }
 
@@ -102,10 +110,36 @@ public class PuntoDeSiembraSimple : MonoBehaviour
 
         else
         {
+            bool tieneSemilla = inventario.TieneItem(semillaItem, 1);
+            bool tieneComposta = inventario.TieneItem(compostaItem, 1);
+
+            if (!tieneSemilla && !tieneComposta)
+            {
+                MostrarFeedback("You need a seed and compost to plant.");
+            }
+
             Debug.LogWarning("No tienes semilla o no has sembrado para aplicar composta.");
         }
+
     }
 
+    void MostrarFeedback(string mensaje)
+    {
+        if (feedbackTexto == null) return;
+
+        if (feedbackCoroutine != null)
+            StopCoroutine(feedbackCoroutine);
+
+        feedbackTexto.text = mensaje;
+        feedbackTexto.gameObject.SetActive(true);
+        feedbackCoroutine = StartCoroutine(EsconderFeedback());
+    }
+
+    IEnumerator EsconderFeedback()
+    {
+        yield return new WaitForSeconds(2.5f);
+        feedbackTexto.gameObject.SetActive(false);
+    }
 
     void IntentarRegar()
     {
@@ -116,7 +150,6 @@ public class PuntoDeSiembraSimple : MonoBehaviour
             {
                 BidonDeAguaManager.Instance.VaciarBidon(item);
                 sliderAgua.value = 1f;
-                regado = true;
 
                 if (drenajeAguaCoroutine != null)
                     StopCoroutine(drenajeAguaCoroutine);
@@ -168,13 +201,15 @@ public class PuntoDeSiembraSimple : MonoBehaviour
     }
     IEnumerator EsperarCrecimiento()
     {
-        yield return new WaitForSeconds(300f); // 5 minutos
+        yield return new WaitForSeconds(duracionCrecimiento);
 
         if (sliderAgua.value >= 0.5f && arbolInstanciado != null)
         {
             arbolInstanciado.transform.localScale = new Vector3(25f, 25f, 25f);
+            sliderAgua.gameObject.SetActive(false); // 👈 Oculta el slider
             Debug.Log("🌳 ¡El árbol ha crecido completamente!");
         }
+
     }
 
 

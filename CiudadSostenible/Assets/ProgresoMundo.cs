@@ -12,6 +12,9 @@ public class ProgresoMundo : MonoBehaviour
     [Header("Niebla")]
     public PollutionFogController fogController;
 
+    [Header("Control de Basura")]
+    public BasuraSpawner basuraSpawner;
+
     [Header("Configuración")]
     public int totalMisiones = 15;
 
@@ -25,8 +28,12 @@ public class ProgresoMundo : MonoBehaviour
     public Sprite imagenAdvertencia;
     public Sprite imagenPeligro;
 
+
     [Header("Items de Tienda")]
     public List<ShopItem> shopItems;
+
+    [Header("Máquinas siempre activas")]
+    public List<GameObject> maquinasSiempreDesbloqueadas;
 
     [Header("Máquinas Interactuables")]
     public GameObject panelCompartido;
@@ -78,10 +85,17 @@ public class ProgresoMundo : MonoBehaviour
             {
                 if (cameraSwitch != null)
                 {
+                    // Saltar si está en la lista de siempre activas
+                    if (maquinasSiempreDesbloqueadas.Contains(cameraSwitch.gameObject))
+                    {
+                        continue;
+                    }
+
                     cameraSwitch.enabled = false;
                 }
             }
         }
+
 
         ActualizarUI();
     }
@@ -139,6 +153,9 @@ public class ProgresoMundo : MonoBehaviour
         {
             fogController.SetFogDensityByContamination(valorSlider); // valorSlider ya representa la contaminación
         }
+
+        ActualizarSpawnerDeBasura(completadas);
+
     }
 
     void DesbloquearItem(ShopItem item)
@@ -177,5 +194,53 @@ public class ProgresoMundo : MonoBehaviour
         return false;
     }
 
+    void ActualizarSpawnerDeBasura(int misionesCompletadas)
+    {
+        if (basuraSpawner == null || basuraSpawner.tiposBasura == null) return;
+
+        // Tramo 0-2: una basura tiene más probabilidad
+        if (misionesCompletadas < 3)
+        {
+            AsignarProbabilidades(new float[] { 70f, 15f, 15f }); // Ejemplo para 3 tipos
+            basuraSpawner.cantidadMaximaBasura = 20;
+        }
+        // Tramo 3-5: todas igual
+        else if (misionesCompletadas < 6)
+        {
+            AsignarProbabilidadesUniformes();
+            basuraSpawner.cantidadMaximaBasura = 30;
+        }
+        // Tramo 6-9: más basura
+        else if (misionesCompletadas < 10)
+        {
+            AsignarProbabilidadesUniformes();
+            basuraSpawner.cantidadMaximaBasura = 60;
+        }
+        // Tramo 10-14: menos basura
+        else
+        {
+            AsignarProbabilidades(new float[] { 33f, 33f, 34f });
+            basuraSpawner.cantidadMaximaBasura = 15;
+        }
+    }
+
+    void AsignarProbabilidades(float[] nuevasProbs)
+    {
+        for (int i = 0; i < basuraSpawner.tiposBasura.Count && i < nuevasProbs.Length; i++)
+        {
+            basuraSpawner.tiposBasura[i].probabilidad = nuevasProbs[i];
+        }
+    }
+
+    void AsignarProbabilidadesUniformes()
+    {
+        int totalTipos = basuraSpawner.tiposBasura.Count;
+        float prob = 100f / totalTipos;
+
+        foreach (var tipo in basuraSpawner.tiposBasura)
+        {
+            tipo.probabilidad = prob;
+        }
+    }
 
 }
