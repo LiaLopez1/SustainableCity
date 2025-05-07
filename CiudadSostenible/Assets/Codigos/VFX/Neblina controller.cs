@@ -3,7 +3,7 @@ using UnityEngine;
 public class PollutionFogController : MonoBehaviour
 {
     [Header("Valores de niebla")]
-    public float initialDensity = 0.06f;
+    public float initialDensity = 0.09f;
     public float targetDensity = 0.0f;
     public float reductionSpeed = 0.01f;
 
@@ -20,12 +20,14 @@ public class PollutionFogController : MonoBehaviour
 
     void Update()
     {
-        if (currentDensity > targetDensity)
+        /*if (currentDensity > targetDensity)
         {
             currentDensity -= reductionSpeed * Time.deltaTime;
             currentDensity = Mathf.Max(currentDensity, targetDensity);
             RenderSettings.fogDensity = currentDensity;
-        }
+        }*/
+
+
     }
 
     // Puedes llamar esta función para aumentar la niebla si algo contamina el ambiente
@@ -35,4 +37,12 @@ public class PollutionFogController : MonoBehaviour
         currentDensity = Mathf.Min(currentDensity, initialDensity);
         RenderSettings.fogDensity = currentDensity;
     }
+
+    public void SetFogDensityByContamination(float contaminationLevel)
+    {
+        float density = Mathf.Lerp(targetDensity, initialDensity, contaminationLevel);
+        currentDensity = density;
+        RenderSettings.fogDensity = currentDensity;
+    }
+
 }

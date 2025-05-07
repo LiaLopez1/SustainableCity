@@ -14,9 +14,12 @@ public class CameraSwitch : MonoBehaviour
 
     private bool canSwitch = false;
     private Camera specialCamera;
+    private ProgresoMundo progresoMundo;
 
     private void Start()
     {
+        progresoMundo = FindObjectOfType<ProgresoMundo>();
+
         mainCamera.enabled = true;
         specialViewCanvas.gameObject.SetActive(false);
 
@@ -28,14 +31,25 @@ public class CameraSwitch : MonoBehaviour
             playerMovement.EnableMovement(true);
     }
 
+
     private void OnCollisionEnter(Collision collision)
     {
         if (collision.gameObject.CompareTag("Player"))
         {
-            panelUI.SetActive(true);
-            canSwitch = true;
+            if (progresoMundo != null && progresoMundo.MaquinaEstaDesbloqueada(gameObject))
+            {
+                panelUI.SetActive(true);
+                canSwitch = true;
+            }
+            else
+            {
+                panelUI.SetActive(false); // asegúrate de que no se muestre
+                canSwitch = false;
+                Debug.Log($"{gameObject.name} está bloqueada. No se puede mostrar el panel.");
+            }
         }
     }
+
 
     private void Update()
     {

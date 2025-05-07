@@ -9,6 +9,9 @@ public class ProgresoMundo : MonoBehaviour
     public Slider sliderContaminacion;
     public Image imagenEstado;
 
+    [Header("Niebla")]
+    public PollutionFogController fogController;
+
     [Header("Configuración")]
     public int totalMisiones = 15;
 
@@ -26,6 +29,7 @@ public class ProgresoMundo : MonoBehaviour
     public List<ShopItem> shopItems;
 
     [Header("Máquinas Interactuables")]
+    public GameObject panelCompartido;
     public List<MaquinaInteractuable> maquinas;
 
     private Image fillImage;
@@ -130,6 +134,11 @@ public class ProgresoMundo : MonoBehaviour
                 DesbloquearMaquina(maquina);
             }
         }
+
+        if (fogController != null)
+        {
+            fogController.SetFogDensityByContamination(valorSlider); // valorSlider ya representa la contaminación
+        }
     }
 
     void DesbloquearItem(ShopItem item)
@@ -155,4 +164,18 @@ public class ProgresoMundo : MonoBehaviour
             }
         }
     }
+
+    public bool MaquinaEstaDesbloqueada(GameObject maquinaGO)
+    {
+        foreach (var maquina in maquinas)
+        {
+            if (maquina.desbloqueado && maquina.cameraSwitches.Exists(cs => cs.gameObject == maquinaGO))
+            {
+                return true;
+            }
+        }
+        return false;
+    }
+
+
 }
