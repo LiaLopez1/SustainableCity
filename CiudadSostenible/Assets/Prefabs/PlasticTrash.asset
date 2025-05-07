@@ -10,12 +10,14 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: d3e01e06551dd2a489f97638cf5b3c99, type: 3}
-  m_Name: PlasticoSeparado
+  m_Name: PlasticTrash
   m_EditorClassIdentifier: 
   itemName: 'PLasticoseparado '
   icon: {fileID: 10901, guid: 0000000000000000f000000000000000, type: 0}
-  worldPrefab: {fileID: 2541445421842669390, guid: f6c241bf2be1e3d47a18f299f9b5d3bb, type: 3}
+  worldPrefab: {fileID: 5135943166415602768, guid: ada66a930314c2f4184ff02a1ab36275, type: 3}
   alternatePrefab: {fileID: 0}
-  itemTag: 
+  itemTag: plastic2
   maxStack: 10
   puedeAparecerEnBolsa: 0
+  activaMision: 0
+  progresoMision: 0

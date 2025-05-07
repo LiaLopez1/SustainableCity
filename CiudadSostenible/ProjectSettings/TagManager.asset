@@ -20,6 +20,9 @@ TagManager:
   - NoAprovechables
   - MCompost
   - Apple
+  - Undefined
+  - ' crumpledpaper'
+  - plastic2
   layers:
   - Default
   - TransparentFX

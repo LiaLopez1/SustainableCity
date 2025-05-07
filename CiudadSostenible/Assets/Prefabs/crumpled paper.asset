@@ -10,13 +10,13 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: d3e01e06551dd2a489f97638cf5b3c99, type: 3}
-  m_Name: PapelArrugado
+  m_Name: crumpled paper
   m_EditorClassIdentifier: 
-  itemName: Papel
-  icon: {fileID: 21300000, guid: e88e523a7798d411b916cc6fdfd7385c, type: 3}
-  worldPrefab: {fileID: 7019975391380718855, guid: 4f3afa5d2e0361e4d802dc9e5842ff3e, type: 3}
+  itemName: ' crumpled paper'
+  icon: {fileID: 21300000, guid: 5234d3d99e279b940bc8f2b108add762, type: 3}
+  worldPrefab: {fileID: 1026576054004445707, guid: 4bfaf36391545b14ca4b23d987ec5716, type: 3}
   alternatePrefab: {fileID: 0}
-  itemTag: Paper
+  itemTag: ' crumpledpaper'
   maxStack: 10
   puedeAparecerEnBolsa: 1
   activaMision: 0

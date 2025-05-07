@@ -13,11 +13,11 @@ MonoBehaviour:
   m_Name: CompostMaterial
   m_EditorClassIdentifier: 
   itemName: MCompost
-  icon: {fileID: 21300000, guid: 4dac3e9c3cb3d8b41a662d7417b4280a, type: 3}
-  worldPrefab: {fileID: 3903071019280364393, guid: 21667e1f8f52b5444b827cf72e70f1c5, type: 3}
+  icon: {fileID: 21300000, guid: 5fd55e7f2cee7af45bb6d194d39172df, type: 3}
+  worldPrefab: {fileID: 5082161312639463463, guid: 804aa7ba4574d2443bf3da3acfd8a47f, type: 3}
   alternatePrefab: {fileID: 0}
   itemTag: MCompost
   maxStack: 10
   puedeAparecerEnBolsa: 0
   activaMision: 1
-  progresoMision: 2
+  progresoMision: 1
