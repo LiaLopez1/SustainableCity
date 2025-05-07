@@ -67,32 +67,32 @@ public class ProductoComprable : MonoBehaviour
             return;
         }
 
-        bool añadido = tienda.AnadirAlInventario(itemData);
-
-        if (añadido)
+        // Si es mejora, no añadimos al inventario
+        if (esMejora)
         {
             tienda.RestarDinero(precio);
             inventario.RemoveItem(itemRequerido, cantidadRequerida);
+
+            if (objetoAntiguo != null) objetoAntiguo.SetActive(false);
+            if (objetoNuevo != null) objetoNuevo.SetActive(true);
         }
         else
         {
-            tienda.MostrarMensaje("¡Sin espacio en el inventario!");
-            StartCoroutine(EfectoEspasmoRojo());
-        }
+            bool añadido = tienda.AnadirAlInventario(itemData);
 
-        if (añadido || esMejora)
-        {
-            tienda.RestarDinero(precio);
-            inventario.RemoveItem(itemRequerido, cantidadRequerida);
-
-            if (esMejora)
+            if (añadido)
             {
-                if (objetoAntiguo != null) objetoAntiguo.SetActive(false);
-                if (objetoNuevo != null) objetoNuevo.SetActive(true);
+                tienda.RestarDinero(precio);
+                inventario.RemoveItem(itemRequerido, cantidadRequerida);
+            }
+            else
+            {
+                tienda.MostrarMensaje("¡Sin espacio en el inventario!");
+                StartCoroutine(EfectoEspasmoRojo());
             }
         }
-
     }
+
 
     private IEnumerator EfectoEspasmoRojo()
     {

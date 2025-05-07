@@ -28,6 +28,9 @@ public class ProgresoMundo : MonoBehaviour
     [Header("Items de Tienda")]
     public List<ShopItem> shopItems;
 
+    [Header("Máquinas siempre activas")]
+    public List<GameObject> maquinasSiempreDesbloqueadas;
+
     [Header("Máquinas Interactuables")]
     public GameObject panelCompartido;
     public List<MaquinaInteractuable> maquinas;
@@ -78,10 +81,17 @@ public class ProgresoMundo : MonoBehaviour
             {
                 if (cameraSwitch != null)
                 {
+                    // Saltar si está en la lista de siempre activas
+                    if (maquinasSiempreDesbloqueadas.Contains(cameraSwitch.gameObject))
+                    {
+                        continue;
+                    }
+
                     cameraSwitch.enabled = false;
                 }
             }
         }
+
 
         ActualizarUI();
     }
