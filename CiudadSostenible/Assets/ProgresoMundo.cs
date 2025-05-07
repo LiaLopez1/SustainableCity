@@ -184,6 +184,7 @@ public class ProgresoMundo : MonoBehaviour
 
     public bool MaquinaEstaDesbloqueada(GameObject maquinaGO)
     {
+        // Revisión por misión completada
         foreach (var maquina in maquinas)
         {
             if (maquina.desbloqueado && maquina.cameraSwitches.Exists(cs => cs.gameObject == maquinaGO))
@@ -191,8 +192,16 @@ public class ProgresoMundo : MonoBehaviour
                 return true;
             }
         }
+
+        // Revisión por lista de siempre activas
+        if (maquinasSiempreDesbloqueadas != null && maquinasSiempreDesbloqueadas.Contains(maquinaGO))
+        {
+            return true;
+        }
+
         return false;
     }
+
 
     void ActualizarSpawnerDeBasura(int misionesCompletadas)
     {

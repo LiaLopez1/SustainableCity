@@ -22309,6 +22309,11 @@ CanvasRenderer:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1147629394}
   m_CullTransparentMesh: 1
+--- !u!1 &1149340872 stripped
+GameObject:
+  m_CorrespondingSourceObject: {fileID: 9143886402964794719, guid: c873dd98e0f53b34280dd2c9d0c75536, type: 3}
+  m_PrefabInstance: {fileID: 660148652617423980}
+  m_PrefabAsset: {fileID: 0}
 --- !u!1 &1153715259
 GameObject:
   m_ObjectHideFlags: 0
@@ -35404,9 +35409,9 @@ MonoBehaviour:
     colorBloqueado: {r: 0.3882353, g: 0.3882353, b: 0.3882353, a: 0.5019608}
     desbloqueado: 0
   maquinasSiempreDesbloqueadas:
-  - {fileID: 1133779000302182018}
-  - {fileID: 92858447}
-  - {fileID: 3733716257107909172}
+  - {fileID: 1149340872}
+  - {fileID: 894998035}
+  - {fileID: 3319012372272717048}
   panelCompartido: {fileID: 2044535720}
   maquinas:
   - cameraSwitches:
