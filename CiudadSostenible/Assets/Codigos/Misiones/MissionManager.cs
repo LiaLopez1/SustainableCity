@@ -117,7 +117,7 @@ public class MissionManager : MonoBehaviour
         else
         {
             if (missionTitleHUD != null)
-                missionTitleHUD.text = "¡Todas las misiones completadas!";
+                missionTitleHUD.text = "¡all the missions complete!";
 
             if (missionProgressHUD != null)
                 missionProgressHUD.text = "";
@@ -132,7 +132,7 @@ public class MissionManager : MonoBehaviour
         Mission m = misiones[misionActualIndex];
 
         if (missionTitleHUD != null)
-            missionTitleHUD.text = $"MISIÓN: {m.nombreMision}";
+            missionTitleHUD.text = $"MISSION: {m.nombreMision}";
 
         if (missionProgressHUD != null)
         {

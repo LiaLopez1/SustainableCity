@@ -15,7 +15,7 @@ GameObject:
   - component: {fileID: 1823987965090727803}
   m_Layer: 0
   m_Name: Compost
-  m_TagString: Compost
+  m_TagString: MCompost
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -118,4 +118,4 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 82018dccf9ddab248ab11587b8debf3e, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  itemData: {fileID: 11400000, guid: e7c3f37cb730cc24a894498c0cd27cd4, type: 2}
+  itemData: {fileID: 11400000, guid: 2ae3b118dadcd2647bdf23b01cde8765, type: 2}
