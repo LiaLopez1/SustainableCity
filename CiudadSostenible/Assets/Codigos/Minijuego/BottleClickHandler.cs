@@ -9,6 +9,7 @@ public class BottleClickHandler : MonoBehaviour
 
     [Header("Configuración automática")]
     private PlasticBowlCounter bowlCounter;
+    private SecondPlasticBowlCounter secondBowlCounter;
 
     public Action onBotellaCompletada;
 
@@ -17,6 +18,13 @@ public class BottleClickHandler : MonoBehaviour
 
     public static int posicionIndex = 0;
     private const int maxPorFila = 7;
+
+    private void Start()
+    {
+        // Buscamos ambos contadores en la escena
+        bowlCounter = FindObjectOfType<PlasticBowlCounter>();
+        secondBowlCounter = FindObjectOfType<SecondPlasticBowlCounter>();
+    }
 
     private void OnMouseDown()
     {
@@ -48,14 +56,15 @@ public class BottleClickHandler : MonoBehaviour
         {
             if (bottleFinalSpawnPoint != null)
             {
-                if (bowlCounter == null)
-                {
-                    bowlCounter = FindObjectOfType<PlasticBowlCounter>();
-                }
-
+                // Verificamos si el bowlCounter o el secondBowlCounter está lleno
                 if (bowlCounter != null && bowlCounter.IsFull())
                 {
                     bowlCounter.MostrarMensajeFull();
+                    return;
+                }
+                else if (secondBowlCounter != null && secondBowlCounter.IsFull())
+                {
+                    secondBowlCounter.MostrarMensajeFull();
                     return;
                 }
 

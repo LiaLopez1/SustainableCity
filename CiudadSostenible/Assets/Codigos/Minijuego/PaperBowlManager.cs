@@ -7,7 +7,7 @@ public class PaperBowlManager : MonoBehaviour
 {
     [Header("Configuración")]
     public string targetTag = "Paper";
-    public int maxCapacity = 2;
+    [SerializeField] private int maxCapacity = 2;
     public TextMeshProUGUI mensajeTMP;
 
     [Header("Prefab al completar")]

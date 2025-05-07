@@ -2,11 +2,11 @@
 using TMPro;
 using System.Collections.Generic;
 
-public class PlasticBowlCounter : MonoBehaviour
+public class SecondPlasticBowlCounter : MonoBehaviour
 {
     [Header("Configuración")]
     public string targetTag = "Botella";
-    public int maxCapacity = 5;
+    public int maxCapacity = 7;
     public TextMeshProUGUI mensajeTMP;
     public Transform spawnPointProcesado;
     public GameObject prefabProcesado; 

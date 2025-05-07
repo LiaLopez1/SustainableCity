@@ -9,7 +9,7 @@ public class BuscarComponentes : EditorWindow
         GetWindow<BuscarComponentes>("Buscar Script");
     }
 
-    private string scriptName = "DragItem";
+    private string scriptName = "BottleClickHandler";
 
     void OnGUI()
     {
