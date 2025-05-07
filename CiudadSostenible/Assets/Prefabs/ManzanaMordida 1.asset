@@ -10,13 +10,13 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: d3e01e06551dd2a489f97638cf5b3c99, type: 3}
-  m_Name: Organic
+  m_Name: ManzanaMordida 1
   m_EditorClassIdentifier: 
   itemName: Organico
-  icon: {fileID: 21300000, guid: 4dac3e9c3cb3d8b41a662d7417b4280a, type: 3}
-  worldPrefab: {fileID: 4271434869485796583, guid: c2e6c039f0a343945bfdaad4092e9c35, type: 3}
-  alternatePrefab: {fileID: 7262966556149411174, guid: ac51147d77d3aa34fa0519680a8dcae5, type: 3}
-  itemTag: Esfera
+  icon: {fileID: 21300000, guid: 5beff07eda4b3774bb3e1e71d47ee7c5, type: 3}
+  worldPrefab: {fileID: 5082161312639463463, guid: f9884932c180abc449ecbf8850cc323b, type: 3}
+  alternatePrefab: {fileID: 0}
+  itemTag: Apple
   maxStack: 10
   puedeAparecerEnBolsa: 1
   activaMision: 0

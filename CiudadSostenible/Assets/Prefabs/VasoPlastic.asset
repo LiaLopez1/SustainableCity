@@ -16,7 +16,7 @@ MonoBehaviour:
   icon: {fileID: 21300000, guid: fdcbfbe0ff136b3439606c0c2a1ab5cb, type: 3}
   worldPrefab: {fileID: 5135943166415602768, guid: 2d6a30c4f9451304682be37f31fc60e0, type: 3}
   alternatePrefab: {fileID: 0}
-  itemTag: Botella
+  itemTag: plastic2
   maxStack: 10
   puedeAparecerEnBolsa: 1
   activaMision: 0
