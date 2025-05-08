@@ -147,7 +147,6 @@ public class MissionManager : MonoBehaviour
 
         if (missionProgressHUD != null)
         {
-            // Mostrar el progreso SOLO si ya fue mostrada al jugador
             if (m.fueMostradaAlJugador)
             {
                 string progreso = "";
@@ -155,13 +154,18 @@ public class MissionManager : MonoBehaviour
                 {
                     progreso += $"{req.cantidadActual}/{req.cantidadObjetivo}\n";
                 }
+                foreach (var req in m.clavesRequeridas)
+                {
+                    progreso += $"{req.cantidadActual}/{req.cantidadObjetivo}\n";
+                }
                 missionProgressHUD.text = progreso;
             }
             else
             {
-                missionProgressHUD.text = ""; // Ocultar hasta que se muestre la misión
+                missionProgressHUD.text = "";
             }
         }
+
     }
 
 

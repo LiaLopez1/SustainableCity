@@ -8,7 +8,8 @@ public class Pozo : MonoBehaviour
     public GameObject textoInteraccion;
     public TextMeshProUGUI textoFeedback;
     private Coroutine feedbackCoroutine;
-    public ItemData bidonItem;
+    public ItemData bidonVacioItem;
+    public ItemData bidonLlenoItem;
 
     private void OnTriggerEnter(Collider other)
     {
@@ -44,22 +45,20 @@ public class Pozo : MonoBehaviour
         foreach (var slot in inventario.slots)
         {
             ItemData item = slot.GetItemData();
-            if (item == bidonItem)
+            if (item == bidonVacioItem)
             {
-                if (BidonDeAguaManager.Instance.EstaLleno(item))
+                if (inventario.RemoveItem(bidonVacioItem, 1))
                 {
-                    MostrarFeedback("Your water can is already full.");
+                    inventario.AddItem(bidonLlenoItem, 1);
+                    MostrarFeedback("Water jug filled!");
                     return;
                 }
-
-                BidonDeAguaManager.Instance.LlenarBidon(item);
-                MostrarFeedback("Water can filled!");
-                return;
             }
         }
 
-        MostrarFeedback("You need a water can to use the well.");
+        MostrarFeedback("You need an empty water jug to use the well.");
     }
+
 
     void MostrarFeedback(string mensaje)
     {

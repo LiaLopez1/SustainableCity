@@ -22,7 +22,8 @@ public class PuntoDeSiembraSimple : MonoBehaviour
     [Header("ItemData necesarios")]
     public ItemData semillaItem;
     public ItemData compostaItem;
-    public ItemData bidonItem;
+    public ItemData bidonLlenoItem;
+    public ItemData bidonVacioItem;
 
     [Header("Duraciones personalizables")]
     public float duracionDrenaje = 150f; // En segundos
@@ -146,9 +147,8 @@ public class PuntoDeSiembraSimple : MonoBehaviour
         foreach (var slot in inventario.slots)
         {
             ItemData item = slot.GetItemData();
-            if (item == bidonItem && BidonDeAguaManager.Instance.EstaLleno(item))
+            if (item == bidonLlenoItem)
             {
-                BidonDeAguaManager.Instance.VaciarBidon(item);
                 sliderAgua.value = 1f;
 
                 if (drenajeAguaCoroutine != null)
@@ -160,6 +160,9 @@ public class PuntoDeSiembraSimple : MonoBehaviour
                 drenajeAguaCoroutine = StartCoroutine(DrenarAgua());
                 crecimientoCoroutine = StartCoroutine(EsperarCrecimiento());
 
+                inventario.RemoveItem(bidonLlenoItem, 1);
+                inventario.AddItem(bidonVacioItem, 1);
+
                 Debug.Log("🌧 Árbol regado completamente.");
                 return;
             }
@@ -167,6 +170,7 @@ public class PuntoDeSiembraSimple : MonoBehaviour
 
         Debug.LogWarning("Necesitas un bidón lleno para regar.");
     }
+
 
 
     IEnumerator DrenarAgua()
