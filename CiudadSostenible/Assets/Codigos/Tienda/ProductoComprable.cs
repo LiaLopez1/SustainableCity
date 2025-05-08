@@ -24,6 +24,10 @@ public class ProductoComprable : MonoBehaviour
     public GameObject objetoNuevo;  // Máquina mejorada
     public bool esMejora = false;   // Si este producto es una mejora, no un ítem
 
+    [Header("Decoración (opcional)")]
+    public bool esDecorativo = false;
+    public GameObject objetoDecorativo; // El objeto que se activa al comprar
+
     private InventorySystem inventario;
     private Image imagenBoton;
     private Color colorOriginal;
@@ -67,31 +71,30 @@ public class ProductoComprable : MonoBehaviour
             return;
         }
 
-        // Si es mejora, no añadimos al inventario
+        tienda.RestarDinero(precio);
+        inventario.RemoveItem(itemRequerido, cantidadRequerida);
+
         if (esMejora)
         {
-            tienda.RestarDinero(precio);
-            inventario.RemoveItem(itemRequerido, cantidadRequerida);
-
             if (objetoAntiguo != null) objetoAntiguo.SetActive(false);
             if (objetoNuevo != null) objetoNuevo.SetActive(true);
+        }
+        else if (esDecorativo)
+        {
+            if (objetoDecorativo != null) objetoDecorativo.SetActive(true);
         }
         else
         {
             bool añadido = tienda.AnadirAlInventario(itemData);
 
-            if (añadido)
-            {
-                tienda.RestarDinero(precio);
-                inventario.RemoveItem(itemRequerido, cantidadRequerida);
-            }
-            else
+            if (!añadido)
             {
                 tienda.MostrarMensaje("¡Sin espacio en el inventario!");
                 StartCoroutine(EfectoEspasmoRojo());
             }
         }
     }
+
 
 
     private IEnumerator EfectoEspasmoRojo()
