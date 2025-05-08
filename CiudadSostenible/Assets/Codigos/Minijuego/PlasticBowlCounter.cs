@@ -26,7 +26,7 @@ public class PlasticBowlCounter : MonoBehaviour
         if (mensajeTMP != null)
         {
             mensajeTMP.gameObject.SetActive(true);
-            StartCoroutine(HideMessageAfterSeconds(2f));
+            StartCoroutine(HideMessageAfterSeconds(1f));
         }
     }
 

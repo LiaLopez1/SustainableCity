@@ -7,7 +7,7 @@ using System.Collections;
 public class BowlCapacity : MonoBehaviour
 {
     [Header("Configuración")]
-    public int maxCapacity = 5;
+    public int maxCapacity = 3;
 
     [Header("UI")]
     public TextMeshProUGUI fullMessage;

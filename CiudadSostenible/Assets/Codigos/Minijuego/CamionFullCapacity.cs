@@ -7,7 +7,7 @@ public class CamionFullCapacity : MonoBehaviour
 {
     [Header("Configuración")]
     public string targetTag = "NoAprovechables";
-    public int capacidadMaxima = 67;
+    public int capacidadMaxima = 7;
     public TextMeshProUGUI mensajeTMP;
 
     [Header("Movimiento del camión")]
@@ -73,7 +73,7 @@ public class CamionFullCapacity : MonoBehaviour
         if (mensajeTMP != null)
         {
             mensajeTMP.gameObject.SetActive(true);
-            StartCoroutine(OcultarMensajeDespuesDe(3f));
+            StartCoroutine(OcultarMensajeDespuesDe(1f));
         }
     }
 
