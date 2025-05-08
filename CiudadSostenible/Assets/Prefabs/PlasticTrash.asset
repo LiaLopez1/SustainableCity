@@ -13,7 +13,7 @@ MonoBehaviour:
   m_Name: PlasticTrash
   m_EditorClassIdentifier: 
   itemName: 'PLasticoseparado '
-  icon: {fileID: 10901, guid: 0000000000000000f000000000000000, type: 0}
+  icon: {fileID: 21300000, guid: e29bdaf8e7fd71c41b24411db7a26c7a, type: 3}
   worldPrefab: {fileID: 5135943166415602768, guid: ada66a930314c2f4184ff02a1ab36275, type: 3}
   alternatePrefab: {fileID: 0}
   itemTag: plastic2
