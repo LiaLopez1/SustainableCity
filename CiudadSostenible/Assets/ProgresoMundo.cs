@@ -22,6 +22,9 @@ public class ProgresoMundo : MonoBehaviour
     public GameObject mapaViejo;
     public GameObject mapaNuevo;
 
+    [Header("Panel final al completar todas las misiones")]
+    public GameObject panelFinal;
+
     [Header("Colores del slider")]
     public Color colorNormal;
     public Color colorAdvertencia;
@@ -166,8 +169,8 @@ public class ProgresoMundo : MonoBehaviour
 
             if (mapaViejo != null) mapaViejo.SetActive(false);
             if (mapaNuevo != null) mapaNuevo.SetActive(true);
+            if (panelFinal != null) panelFinal.SetActive(true);
         }
-
 
         ActualizarSpawnerDeBasura(completadas);
 
@@ -222,29 +225,33 @@ public class ProgresoMundo : MonoBehaviour
     {
         if (basuraSpawner == null || basuraSpawner.tiposBasura == null) return;
 
-        // Tramo 0-2: una basura tiene más probabilidad
-        if (misionesCompletadas < 3)
+        if (misionesCompletadas < 4)
         {
-            AsignarProbabilidades(new float[] { 70f, 15f, 15f }); // Ejemplo para 3 tipos
+            AsignarProbabilidades(new float[] { 70f, 15f, 15f }); 
+            basuraSpawner.cantidadMaximaBasura = 15;
+        }
+        
+        else if (misionesCompletadas < 8)
+        {
+            AsignarProbabilidades(new float[] { 35f, 35f, 30f });
             basuraSpawner.cantidadMaximaBasura = 20;
         }
-        // Tramo 3-5: todas igual
-        else if (misionesCompletadas < 6)
+        
+        else if (misionesCompletadas < 12)
         {
-            AsignarProbabilidadesUniformes();
-            basuraSpawner.cantidadMaximaBasura = 30;
+            AsignarProbabilidades(new float[] { 33f, 33f, 34f });
+            basuraSpawner.cantidadMaximaBasura = 25;
         }
-        // Tramo 6-9: más basura
-        else if (misionesCompletadas < 10)
-        {
-            AsignarProbabilidadesUniformes();
-            basuraSpawner.cantidadMaximaBasura = 60;
-        }
-        // Tramo 10-14: menos basura
-        else
+
+        else if (misionesCompletadas < 23)
         {
             AsignarProbabilidades(new float[] { 33f, 33f, 34f });
             basuraSpawner.cantidadMaximaBasura = 15;
+        }
+        
+        else
+        {
+            basuraSpawner.cantidadMaximaBasura = 0;
         }
     }
 
