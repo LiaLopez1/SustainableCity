@@ -2271,6 +2271,224 @@ PrefabInstance:
     m_AddedGameObjects: []
     m_AddedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: bab9eb75ac4704542abae8c22c32c70f, type: 3}
+--- !u!1 &87753904
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 87753906}
+  - component: {fileID: 87753905}
+  m_Layer: 5
+  m_Name: RespaldoMisiones
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 0
+--- !u!114 &87753905
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 87753904}
+  m_Enabled: 0
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 6b2ecb283be09bd448a4f9f38f2b6d0b, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  misiones:
+  - nombreMision: Pick up 5 organic waste items
+    descripcion: Collect 5 waste items and take them to the correct bin
+    requisitos:
+    - item: {fileID: 11400000, guid: 2c6a6a3ce3f739049814d959e3575e42, type: 2}
+      cantidadObjetivo: 5
+      cantidadActual: 0
+    completada: 0
+    marcarComoCompletaDesdeEditor: 0
+    fueMostradaAlJugador: 0
+  - nombreMision: Obtain 2 units of compostable material
+    descripcion: Deposit enough organic waste in the bin to receive 2 units of compostable
+      materials.
+    requisitos:
+    - item: {fileID: 11400000, guid: 7027b3c6cb2e586478053ccd21cf62d0, type: 2}
+      cantidadObjetivo: 2
+      cantidadActual: 0
+    completada: 0
+    marcarComoCompletaDesdeEditor: 1
+    fueMostradaAlJugador: 0
+  - nombreMision: Obtain 1 compost in the composting machine
+    descripcion: Process 2 compostable units in the composting machine.
+    requisitos:
+    - item: {fileID: 11400000, guid: e7c3f37cb730cc24a894498c0cd27cd4, type: 2}
+      cantidadObjetivo: 1
+      cantidadActual: 0
+    completada: 0
+    marcarComoCompletaDesdeEditor: 1
+    fueMostradaAlJugador: 0
+  - nombreMision: 'Sell the compost and buy seeds '
+    descripcion: Take your compost to the organic store and sell it. Use the money
+      you get to buy seeds and help life grow.
+    requisitos:
+    - item: {fileID: 11400000, guid: b36e1c8eb2601f04482ec57dda46c558, type: 2}
+      cantidadObjetivo: 1
+      cantidadActual: 0
+    completada: 0
+    marcarComoCompletaDesdeEditor: 1
+    fueMostradaAlJugador: 0
+  - nombreMision: Collect 5 paper items
+    descripcion: There's paper around the city. Pick it up and take it to the correct
+      bin.
+    requisitos:
+    - item: {fileID: 11400000, guid: a844b930779108b47a43b84a18fa7970, type: 2}
+      cantidadObjetivo: 5
+      cantidadActual: 0
+    completada: 0
+    marcarComoCompletaDesdeEditor: 1
+    fueMostradaAlJugador: 0
+  - nombreMision: Get 1 recycled paper bundle
+    descripcion: Deposit enough paper in the bin to form a bundle and recycle it.
+    requisitos:
+    - item: {fileID: 11400000, guid: dc24f1464e8b016459b86de50b31f487, type: 2}
+      cantidadObjetivo: 1
+      cantidadActual: 0
+    completada: 0
+    marcarComoCompletaDesdeEditor: 1
+    fueMostradaAlJugador: 0
+  - nombreMision: Use the machine to make new paper
+    descripcion: Go to the paper machine and use the recycled bundle to create new
+      paper.
+    requisitos:
+    - item: {fileID: 11400000, guid: e59d97127e03a5947962477c8156d7de, type: 2}
+      cantidadObjetivo: 1
+      cantidadActual: 0
+    completada: 0
+    marcarComoCompletaDesdeEditor: 1
+    fueMostradaAlJugador: 0
+  - nombreMision: ' Sell 1 paper bundle and buy the Recycling book'
+    descripcion: Take the new paper to the store. Use the money you earn to buy the
+      recycling book.
+    requisitos:
+    - item: {fileID: 11400000, guid: c2df3a34cef0fad4690a366c2e397919, type: 2}
+      cantidadObjetivo: 1
+      cantidadActual: 0
+    completada: 0
+    marcarComoCompletaDesdeEditor: 1
+    fueMostradaAlJugador: 0
+  - nombreMision: Collect 5 plastic items
+    descripcion: There are bottles and other plastics everywhere. Pick them up and
+      dispose of them properly.
+    requisitos:
+    - item: {fileID: 11400000, guid: 3ef38d8ced651784ba6379012f0a9eaf, type: 2}
+      cantidadObjetivo: 5
+      cantidadActual: 0
+    completada: 0
+    marcarComoCompletaDesdeEditor: 1
+    fueMostradaAlJugador: 0
+  - nombreMision: ' Get 1 recycled plastic bundle'
+    descripcion: Deposit enough plastic in the bin to form a bundle and recycle it.
+    requisitos:
+    - item: {fileID: 11400000, guid: 19dc19810c836834eb13fa16f622c538, type: 2}
+      cantidadObjetivo: 1
+      cantidadActual: 0
+    completada: 0
+    marcarComoCompletaDesdeEditor: 1
+    fueMostradaAlJugador: 0
+  - nombreMision: Process the Recycled Plastic Bundle
+    descripcion: Take the plastic bundle to the machine and turn it into new plastic.
+    requisitos:
+    - item: {fileID: 11400000, guid: 0ac8dbfe5ec7a484888734192e099915, type: 2}
+      cantidadObjetivo: 2
+      cantidadActual: 0
+    completada: 0
+    marcarComoCompletaDesdeEditor: 1
+    fueMostradaAlJugador: 0
+  - nombreMision: ' Sell 1 bundle of plastic strips and buy the jug'
+    descripcion: Take the plastic strips to the store and use the money to buy a
+      water jug.
+    requisitos:
+    - item: {fileID: 11400000, guid: df9da549e7b658541993f314be2a4256, type: 2}
+      cantidadObjetivo: 1
+      cantidadActual: 0
+    completada: 0
+    marcarComoCompletaDesdeEditor: 1
+    fueMostradaAlJugador: 0
+  - nombreMision: Gather 3 garbage bags
+    descripcion: Shops have taken out trash bags. Pick them up and sort the waste
+      into the bins.
+    requisitos:
+    - item: {fileID: 11400000, guid: 00103e984fff47e46acf49a302f7c063, type: 2}
+      cantidadObjetivo: 3
+      cantidadActual: 0
+    completada: 0
+    marcarComoCompletaDesdeEditor: 0
+    fueMostradaAlJugador: 0
+  - nombreMision: Get 1 bundle from each bin
+    descripcion: Sort all the waste properly until you have one bundle from each
+      type.
+    requisitos:
+    - item: {fileID: 11400000, guid: 1388badfe659ff54998b884131933334, type: 2}
+      cantidadObjetivo: 1
+      cantidadActual: 0
+    - item: {fileID: 11400000, guid: dc24f1464e8b016459b86de50b31f487, type: 2}
+      cantidadObjetivo: 1
+      cantidadActual: 0
+    - item: {fileID: 11400000, guid: 7027b3c6cb2e586478053ccd21cf62d0, type: 2}
+      cantidadObjetivo: 1
+      cantidadActual: 0
+    - item: {fileID: 11400000, guid: 19dc19810c836834eb13fa16f622c538, type: 2}
+      cantidadObjetivo: 1
+      cantidadActual: 0
+    completada: 0
+    marcarComoCompletaDesdeEditor: 1
+    fueMostradaAlJugador: 0
+  - nombreMision: Collect 4 non-recyclable bags
+    descripcion: Pick up 4 bags of waste that can't be recycled and take them to
+      the garbage truck.
+    requisitos:
+    - item: {fileID: 11400000, guid: 1388badfe659ff54998b884131933334, type: 2}
+      cantidadObjetivo: 4
+      cantidadActual: 0
+    completada: 0
+    marcarComoCompletaDesdeEditor: 1
+    fueMostradaAlJugador: 0
+  - nombreMision: plant a tree
+    descripcion: Take a seed and compost to the garden and plant a new tree.
+    requisitos: []
+    completada: 0
+    marcarComoCompletaDesdeEditor: 1
+    fueMostradaAlJugador: 0
+  - nombreMision: plant a tree
+    descripcion: Take a seed and compost to the garden and plant a new tree.
+    requisitos: []
+    completada: 0
+    marcarComoCompletaDesdeEditor: 1
+    fueMostradaAlJugador: 0
+  missionTitleHUD: {fileID: 1830585011}
+  missionProgressHUD: {fileID: 244378226}
+  misionesCompletadas: 0
+--- !u!224 &87753906
+RectTransform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 87753904}
+  m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 0}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+  m_AnchorMin: {x: 0.5, y: 0.5}
+  m_AnchorMax: {x: 0.5, y: 0.5}
+  m_AnchoredPosition: {x: 960, y: 540}
+  m_SizeDelta: {x: 100, y: 100}
+  m_Pivot: {x: 0.5, y: 0.5}
 --- !u!1 &92858447 stripped
 GameObject:
   m_CorrespondingSourceObject: {fileID: 919132149155446097, guid: 079bc631453e68b43a4ca97b5601539a, type: 3}
@@ -5566,7 +5784,7 @@ MonoBehaviour:
       cantidadObjetivo: 5
       cantidadActual: 0
     completada: 0
-    marcarComoCompletaDesdeEditor: 0
+    marcarComoCompletaDesdeEditor: 1
     fueMostradaAlJugador: 0
   - nombreMision: Obtain 2 units of compostable material
     descripcion: Deposit enough organic waste in the bin to receive 2 units of compostable
@@ -5576,18 +5794,18 @@ MonoBehaviour:
       cantidadObjetivo: 2
       cantidadActual: 0
     completada: 0
-    marcarComoCompletaDesdeEditor: 0
+    marcarComoCompletaDesdeEditor: 1
     fueMostradaAlJugador: 0
   - nombreMision: Obtain 1 compost in the composting machine
     descripcion: Process 2 compostable units in the composting machine.
     requisitos:
-    - item: {fileID: 11400000, guid: 2ae3b118dadcd2647bdf23b01cde8765, type: 2}
+    - item: {fileID: 11400000, guid: e7c3f37cb730cc24a894498c0cd27cd4, type: 2}
       cantidadObjetivo: 1
       cantidadActual: 0
     completada: 0
-    marcarComoCompletaDesdeEditor: 0
+    marcarComoCompletaDesdeEditor: 1
     fueMostradaAlJugador: 0
-  - nombreMision: 'Sell 2 compost and buy seeds '
+  - nombreMision: 'Sell the compost and buy seeds '
     descripcion: Take your compost to the organic store and sell it. Use the money
       you get to buy seeds and help life grow.
     requisitos:
@@ -5595,17 +5813,17 @@ MonoBehaviour:
       cantidadObjetivo: 1
       cantidadActual: 0
     completada: 0
-    marcarComoCompletaDesdeEditor: 0
+    marcarComoCompletaDesdeEditor: 1
     fueMostradaAlJugador: 0
   - nombreMision: Collect 5 paper items
     descripcion: There's paper around the city. Pick it up and take it to the correct
       bin.
     requisitos:
     - item: {fileID: 11400000, guid: a844b930779108b47a43b84a18fa7970, type: 2}
-      cantidadObjetivo: 2
+      cantidadObjetivo: 5
       cantidadActual: 0
     completada: 0
-    marcarComoCompletaDesdeEditor: 0
+    marcarComoCompletaDesdeEditor: 1
     fueMostradaAlJugador: 0
   - nombreMision: Get 1 recycled paper bundle
     descripcion: Deposit enough paper in the bin to form a bundle and recycle it.
@@ -5614,7 +5832,7 @@ MonoBehaviour:
       cantidadObjetivo: 4
       cantidadActual: 0
     completada: 0
-    marcarComoCompletaDesdeEditor: 0
+    marcarComoCompletaDesdeEditor: 1
     fueMostradaAlJugador: 0
   - nombreMision: Use the machine to make new paper
     descripcion: Go to the paper machine and use the recycled bundle to create new
@@ -5624,7 +5842,7 @@ MonoBehaviour:
       cantidadObjetivo: 4
       cantidadActual: 0
     completada: 0
-    marcarComoCompletaDesdeEditor: 0
+    marcarComoCompletaDesdeEditor: 1
     fueMostradaAlJugador: 0
   - nombreMision: ' Sell 1 paper bundle and buy the Recycling book'
     descripcion: Take the new paper to the store. Use the money you earn to buy the
@@ -5634,7 +5852,7 @@ MonoBehaviour:
       cantidadObjetivo: 1
       cantidadActual: 0
     completada: 0
-    marcarComoCompletaDesdeEditor: 0
+    marcarComoCompletaDesdeEditor: 1
     fueMostradaAlJugador: 0
   - nombreMision: Collect 5 plastic items
     descripcion: There are bottles and other plastics everywhere. Pick them up and
@@ -5644,25 +5862,25 @@ MonoBehaviour:
       cantidadObjetivo: 5
       cantidadActual: 0
     completada: 0
-    marcarComoCompletaDesdeEditor: 0
+    marcarComoCompletaDesdeEditor: 1
     fueMostradaAlJugador: 0
   - nombreMision: ' Get 1 recycled plastic bundle'
     descripcion: Deposit enough plastic in the bin to form a bundle and recycle it.
     requisitos:
     - item: {fileID: 11400000, guid: 19dc19810c836834eb13fa16f622c538, type: 2}
-      cantidadObjetivo: 2
+      cantidadObjetivo: 1
       cantidadActual: 0
     completada: 0
-    marcarComoCompletaDesdeEditor: 0
+    marcarComoCompletaDesdeEditor: 1
     fueMostradaAlJugador: 0
   - nombreMision: Process the Recycled Plastic Bundle
     descripcion: Take the plastic bundle to the machine and turn it into new plastic.
     requisitos:
     - item: {fileID: 11400000, guid: 0ac8dbfe5ec7a484888734192e099915, type: 2}
-      cantidadObjetivo: 1
+      cantidadObjetivo: 2
       cantidadActual: 0
     completada: 0
-    marcarComoCompletaDesdeEditor: 0
+    marcarComoCompletaDesdeEditor: 1
     fueMostradaAlJugador: 0
   - nombreMision: ' Sell 1 bundle of plastic strips and buy the jug'
     descripcion: Take the plastic strips to the store and use the money to buy a
@@ -5672,56 +5890,53 @@ MonoBehaviour:
       cantidadObjetivo: 1
       cantidadActual: 0
     completada: 0
-    marcarComoCompletaDesdeEditor: 0
+    marcarComoCompletaDesdeEditor: 1
+    fueMostradaAlJugador: 0
+  - nombreMision: Gather 3 garbage bags
+    descripcion: Shops have taken out trash bags. Pick them up and sort the waste
+      into the bins.
+    requisitos:
+    - item: {fileID: 11400000, guid: 00103e984fff47e46acf49a302f7c063, type: 2}
+      cantidadObjetivo: 3
+      cantidadActual: 0
+    completada: 0
+    marcarComoCompletaDesdeEditor: 1
     fueMostradaAlJugador: 0
   - nombreMision: Get 1 bundle from each bin
     descripcion: Sort all the waste properly until you have one bundle from each
       type.
     requisitos:
-    - item: {fileID: 11400000, guid: 19dc19810c836834eb13fa16f622c538, type: 2}
-      cantidadObjetivo: 1
-      cantidadActual: 1
     - item: {fileID: 11400000, guid: 1388badfe659ff54998b884131933334, type: 2}
       cantidadObjetivo: 1
-      cantidadActual: 1
-    - item: {fileID: 11400000, guid: 7027b3c6cb2e586478053ccd21cf62d0, type: 2}
-      cantidadObjetivo: 1
-      cantidadActual: 1
+      cantidadActual: 0
     - item: {fileID: 11400000, guid: dc24f1464e8b016459b86de50b31f487, type: 2}
       cantidadObjetivo: 1
-      cantidadActual: 1
-    completada: 1
-    marcarComoCompletaDesdeEditor: 0
-    fueMostradaAlJugador: 1
-  - nombreMision: Get 1 bundle from each bin
-    descripcion: Sort all the waste properly until you have one bundle from each
-      type.
-    requisitos:
+      cantidadActual: 0
+    - item: {fileID: 11400000, guid: 7027b3c6cb2e586478053ccd21cf62d0, type: 2}
+      cantidadObjetivo: 1
+      cantidadActual: 0
     - item: {fileID: 11400000, guid: 19dc19810c836834eb13fa16f622c538, type: 2}
       cantidadObjetivo: 1
-      cantidadActual: 1
-    - item: {fileID: 11400000, guid: 1388badfe659ff54998b884131933334, type: 2}
-      cantidadObjetivo: 1
-      cantidadActual: 1
-    - item: {fileID: 11400000, guid: 7027b3c6cb2e586478053ccd21cf62d0, type: 2}
-      cantidadObjetivo: 1
-      cantidadActual: 1
-    - item: {fileID: 11400000, guid: dc24f1464e8b016459b86de50b31f487, type: 2}
-      cantidadObjetivo: 1
-      cantidadActual: 1
-    completada: 1
-    marcarComoCompletaDesdeEditor: 0
-    fueMostradaAlJugador: 1
-  - nombreMision: Collect 3 non-recyclable bags
-    descripcion: Pick up 3 bags of waste that can't be recycled and take them to
+      cantidadActual: 0
+    completada: 0
+    marcarComoCompletaDesdeEditor: 1
+    fueMostradaAlJugador: 0
+  - nombreMision: Collect 4 non-recyclable bags
+    descripcion: Pick up 4 bags of waste that can't be recycled and take them to
       the garbage truck.
     requisitos:
     - item: {fileID: 11400000, guid: 1388badfe659ff54998b884131933334, type: 2}
       cantidadObjetivo: 4
-      cantidadActual: 1
-    completada: 1
+      cantidadActual: 0
+    completada: 0
+    marcarComoCompletaDesdeEditor: 1
+    fueMostradaAlJugador: 0
+  - nombreMision: plant a tree
+    descripcion: Take a seed and compost to the garden and plant a new tree.
+    requisitos: []
+    completada: 0
     marcarComoCompletaDesdeEditor: 0
-    fueMostradaAlJugador: 1
+    fueMostradaAlJugador: 0
   missionTitleHUD: {fileID: 1830585011}
   missionProgressHUD: {fileID: 244378226}
   misionesCompletadas: 0
@@ -10572,8 +10787,8 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0, y: 0}
   m_AnchorMax: {x: 1, y: 1}
-  m_AnchoredPosition: {x: -592, y: 115}
-  m_SizeDelta: {x: 0, y: 0}
+  m_AnchoredPosition: {x: -559.71814, y: 115}
+  m_SizeDelta: {x: 241.603, y: 0}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &481464940
 MonoBehaviour:
@@ -13108,7 +13323,7 @@ MonoBehaviour:
   xMax: -23
   zMin: -11
   zMax: -24
-  cantidadMaximaBasura: 20
+  cantidadMaximaBasura: 5
   tiempoTotalGeneracion: 40
 --- !u!4 &573575324
 Transform:
@@ -14222,8 +14437,8 @@ MonoBehaviour:
   m_fontMaterials: []
   m_fontColor32:
     serializedVersion: 2
-    rgba: 2835349503
-  m_fontColor: {r: 1, g: 1, b: 1, a: 0.65882355}
+    rgba: 3506438143
+  m_fontColor: {r: 1, g: 1, b: 1, a: 0.8156863}
   m_enableVertexGradient: 0
   m_colorMode: 3
   m_fontColorGradient:
@@ -14276,7 +14491,7 @@ MonoBehaviour:
   m_VertexBufferAutoSizeReduction: 0
   m_useMaxVisibleDescender: 1
   m_pageToDisplay: 1
-  m_margin: {x: 0, y: 0, z: -269.48438, w: 0}
+  m_margin: {x: 0, y: 0, z: -297.48413, w: 0}
   m_isUsingLegacyAnimationComponent: 0
   m_isVolumetricText: 0
   m_hasFontAssetChanged: 0
@@ -14306,7 +14521,7 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0.5, y: 0.5}
   m_AnchorMax: {x: 0.5, y: 0.5}
-  m_AnchoredPosition: {x: -493, y: 21}
+  m_AnchoredPosition: {x: -551, y: 6}
   m_SizeDelta: {x: 200, y: 50}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!1 &631487238
@@ -19071,7 +19286,7 @@ PrefabInstance:
     m_Modifications:
     - target: {fileID: 105490627186069079, guid: 493c58f3d63dbf04f9b421fa64499bfd, type: 3}
       propertyPath: m_LocalPosition.x
-      value: 16.708782
+      value: -24.48
       objectReference: {fileID: 0}
     - target: {fileID: 105490627186069079, guid: 493c58f3d63dbf04f9b421fa64499bfd, type: 3}
       propertyPath: m_LocalPosition.y
@@ -19079,7 +19294,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 105490627186069079, guid: 493c58f3d63dbf04f9b421fa64499bfd, type: 3}
       propertyPath: m_LocalPosition.z
-      value: -13.398978
+      value: -10.07
       objectReference: {fileID: 0}
     - target: {fileID: 105490627186069079, guid: 493c58f3d63dbf04f9b421fa64499bfd, type: 3}
       propertyPath: m_LocalRotation.w
@@ -29359,7 +29574,7 @@ PrefabInstance:
     m_Modifications:
     - target: {fileID: 105490627186069079, guid: 493c58f3d63dbf04f9b421fa64499bfd, type: 3}
       propertyPath: m_LocalPosition.x
-      value: 15.625633
+      value: -19.4
       objectReference: {fileID: 0}
     - target: {fileID: 105490627186069079, guid: 493c58f3d63dbf04f9b421fa64499bfd, type: 3}
       propertyPath: m_LocalPosition.y
@@ -29367,7 +29582,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 105490627186069079, guid: 493c58f3d63dbf04f9b421fa64499bfd, type: 3}
       propertyPath: m_LocalPosition.z
-      value: -15.015731
+      value: -10.71
       objectReference: {fileID: 0}
     - target: {fileID: 105490627186069079, guid: 493c58f3d63dbf04f9b421fa64499bfd, type: 3}
       propertyPath: m_LocalRotation.w
@@ -31970,7 +32185,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   targetTag: NoAprovechables
-  capacidadMaxima: 7
+  capacidadMaxima: 4
   mensajeTMP: {fileID: 1422596860}
   objetoPadreAMover: {fileID: 499464465}
   desplazamientoEnX: 10
@@ -32142,7 +32357,7 @@ PrefabInstance:
     m_Modifications:
     - target: {fileID: 105490627186069079, guid: 493c58f3d63dbf04f9b421fa64499bfd, type: 3}
       propertyPath: m_LocalPosition.x
-      value: 13.687513
+      value: -9.15
       objectReference: {fileID: 0}
     - target: {fileID: 105490627186069079, guid: 493c58f3d63dbf04f9b421fa64499bfd, type: 3}
       propertyPath: m_LocalPosition.y
@@ -32150,7 +32365,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 105490627186069079, guid: 493c58f3d63dbf04f9b421fa64499bfd, type: 3}
       propertyPath: m_LocalPosition.z
-      value: -16.130337
+      value: -9.23
       objectReference: {fileID: 0}
     - target: {fileID: 105490627186069079, guid: 493c58f3d63dbf04f9b421fa64499bfd, type: 3}
       propertyPath: m_LocalRotation.w
@@ -35873,7 +36088,7 @@ PrefabInstance:
     m_Modifications:
     - target: {fileID: 105490627186069079, guid: 493c58f3d63dbf04f9b421fa64499bfd, type: 3}
       propertyPath: m_LocalPosition.x
-      value: 13.503523
+      value: -14.8
       objectReference: {fileID: 0}
     - target: {fileID: 105490627186069079, guid: 493c58f3d63dbf04f9b421fa64499bfd, type: 3}
       propertyPath: m_LocalPosition.y
@@ -35881,7 +36096,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 105490627186069079, guid: 493c58f3d63dbf04f9b421fa64499bfd, type: 3}
       propertyPath: m_LocalPosition.z
-      value: -14.85138
+      value: -10.68
       objectReference: {fileID: 0}
     - target: {fileID: 105490627186069079, guid: 493c58f3d63dbf04f9b421fa64499bfd, type: 3}
       propertyPath: m_LocalRotation.w
@@ -39315,7 +39530,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   itemData: {fileID: 11400000, guid: df9da549e7b658541993f314be2a4256, type: 2}
   precio: 10
-  itemRequerido: {fileID: 11400000, guid: 19dc19810c836834eb13fa16f622c538, type: 2}
+  itemRequerido: {fileID: 11400000, guid: 0ac8dbfe5ec7a484888734192e099915, type: 2}
   cantidadRequerida: 5
   botonComprar: {fileID: 903911836}
   textoPrecio: {fileID: 1202167764}
@@ -41378,7 +41593,7 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0.5, y: 0.5}
   m_AnchorMax: {x: 0.5, y: 0.5}
-  m_AnchoredPosition: {x: -450, y: 332}
+  m_AnchoredPosition: {x: -561, y: 332}
   m_SizeDelta: {x: 200, y: 50}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!222 &1830585010
@@ -41472,7 +41687,7 @@ MonoBehaviour:
   m_VertexBufferAutoSizeReduction: 0
   m_useMaxVisibleDescender: 1
   m_pageToDisplay: 1
-  m_margin: {x: 0, y: 0, z: -247.3316, w: 0}
+  m_margin: {x: 0, y: 0, z: -319.1151, w: 0}
   m_isUsingLegacyAnimationComponent: 0
   m_isVolumetricText: 0
   m_hasFontAssetChanged: 0
@@ -44536,7 +44751,7 @@ RectTransform:
   m_GameObject: {fileID: 1956853226}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
   m_LocalPosition: {x: 0, y: 0, z: 0}
-  m_LocalScale: {x: 1.9104, y: 1.9104, z: 1.9104}
+  m_LocalScale: {x: 3.1293185, y: 3.1293185, z: 3.1293185}
   m_ConstrainProportionsScale: 0
   m_Children:
   - {fileID: 2112457541}
@@ -44544,7 +44759,7 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0.5, y: 0.5}
   m_AnchorMax: {x: 0.5, y: 0.5}
-  m_AnchoredPosition: {x: 742, y: -474}
+  m_AnchoredPosition: {x: 771, y: -441}
   m_SizeDelta: {x: 160, y: 30}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &1956853228
@@ -48053,7 +48268,7 @@ PrefabInstance:
     m_Modifications:
     - target: {fileID: 105490627186069079, guid: 493c58f3d63dbf04f9b421fa64499bfd, type: 3}
       propertyPath: m_LocalPosition.x
-      value: 16.339514
+      value: -9.9
       objectReference: {fileID: 0}
     - target: {fileID: 105490627186069079, guid: 493c58f3d63dbf04f9b421fa64499bfd, type: 3}
       propertyPath: m_LocalPosition.y
@@ -48061,7 +48276,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 105490627186069079, guid: 493c58f3d63dbf04f9b421fa64499bfd, type: 3}
       propertyPath: m_LocalPosition.z
-      value: -30.896488
+      value: -7.98
       objectReference: {fileID: 0}
     - target: {fileID: 105490627186069079, guid: 493c58f3d63dbf04f9b421fa64499bfd, type: 3}
       propertyPath: m_LocalRotation.w
@@ -54481,6 +54696,7 @@ SceneRoots:
   - {fileID: 17213524}
   - {fileID: 1038573928}
   - {fileID: 232660743}
+  - {fileID: 87753906}
   - {fileID: 1429600151}
   - {fileID: 931731091}
   - {fileID: 1487461098}

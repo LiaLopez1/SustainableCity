@@ -16,7 +16,7 @@ MonoBehaviour:
   icon: {fileID: 21300000, guid: 5beff07eda4b3774bb3e1e71d47ee7c5, type: 3}
   worldPrefab: {fileID: 5082161312639463463, guid: f9884932c180abc449ecbf8850cc323b, type: 3}
   alternatePrefab: {fileID: 0}
-  itemTag: Apple
+  itemTag: 
   maxStack: 10
   puedeAparecerEnBolsa: 1
   activaMision: 0

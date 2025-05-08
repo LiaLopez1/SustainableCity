@@ -14,10 +14,10 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   itemName: BolsaBasura
   icon: {fileID: 21300000, guid: 9ac6d9d3e6363de459cf7f9e27bb9467, type: 3}
-  worldPrefab: {fileID: 0}
+  worldPrefab: {fileID: 737771779228914925, guid: 493c58f3d63dbf04f9b421fa64499bfd, type: 3}
   alternatePrefab: {fileID: 0}
   itemTag: BolsaBasura
   maxStack: 10
   puedeAparecerEnBolsa: 0
   activaMision: 0
-  progresoMision: 0
+  progresoMision: 1
