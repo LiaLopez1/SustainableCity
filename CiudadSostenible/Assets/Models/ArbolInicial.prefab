@@ -67,5 +67,26 @@ PrefabInstance:
     m_RemovedComponents: []
     m_RemovedGameObjects: []
     m_AddedGameObjects: []
-    m_AddedComponents: []
+    m_AddedComponents:
+    - targetCorrespondingSourceObject: {fileID: 919132149155446097, guid: 0c75780936198b84daf88c4b6056c49d, type: 3}
+      insertIndex: -1
+      addedObject: {fileID: 2397614715762885948}
   m_SourcePrefab: {fileID: 100100000, guid: 0c75780936198b84daf88c4b6056c49d, type: 3}
+--- !u!1 &5243303819073193642 stripped
+GameObject:
+  m_CorrespondingSourceObject: {fileID: 919132149155446097, guid: 0c75780936198b84daf88c4b6056c49d, type: 3}
+  m_PrefabInstance: {fileID: 4900651808764181499}
+  m_PrefabAsset: {fileID: 0}
+--- !u!114 &2397614715762885948
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 5243303819073193642}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: e02e4a729eaf9904688fd348193071c8, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  missionKey: ArbolFInal

@@ -38,7 +38,7 @@ RenderSettings:
   m_ReflectionIntensity: 1
   m_CustomReflection: {fileID: 0}
   m_Sun: {fileID: 0}
-  m_IndirectSpecularColor: {r: 0, g: 0, b: 0, a: 1}
+  m_IndirectSpecularColor: {r: 0.17762528, g: 0.22238378, b: 0.30456996, a: 1}
   m_UseRadianceAmbientProbe: 0
 --- !u!157 &3
 LightmapSettings:
@@ -179,7 +179,7 @@ MonoBehaviour:
   compostaItem: {fileID: 11400000, guid: e7c3f37cb730cc24a894498c0cd27cd4, type: 2}
   bidonItem: {fileID: 11400000, guid: df9da549e7b658541993f314be2a4256, type: 2}
   duracionDrenaje: 150
-  duracionCrecimiento: 300
+  duracionCrecimiento: 60
 --- !u!65 &4481651
 BoxCollider:
   m_ObjectHideFlags: 0
@@ -2310,6 +2310,7 @@ MonoBehaviour:
     completada: 0
     marcarComoCompletaDesdeEditor: 0
     fueMostradaAlJugador: 0
+    clavesRequeridas: []
   - nombreMision: Obtain 2 units of compostable material
     descripcion: Deposit enough organic waste in the bin to receive 2 units of compostable
       materials.
@@ -2320,6 +2321,7 @@ MonoBehaviour:
     completada: 0
     marcarComoCompletaDesdeEditor: 1
     fueMostradaAlJugador: 0
+    clavesRequeridas: []
   - nombreMision: Obtain 1 compost in the composting machine
     descripcion: Process 2 compostable units in the composting machine.
     requisitos:
@@ -2329,6 +2331,7 @@ MonoBehaviour:
     completada: 0
     marcarComoCompletaDesdeEditor: 1
     fueMostradaAlJugador: 0
+    clavesRequeridas: []
   - nombreMision: 'Sell the compost and buy seeds '
     descripcion: Take your compost to the organic store and sell it. Use the money
       you get to buy seeds and help life grow.
@@ -2339,6 +2342,7 @@ MonoBehaviour:
     completada: 0
     marcarComoCompletaDesdeEditor: 1
     fueMostradaAlJugador: 0
+    clavesRequeridas: []
   - nombreMision: Collect 5 paper items
     descripcion: There's paper around the city. Pick it up and take it to the correct
       bin.
@@ -2349,6 +2353,7 @@ MonoBehaviour:
     completada: 0
     marcarComoCompletaDesdeEditor: 1
     fueMostradaAlJugador: 0
+    clavesRequeridas: []
   - nombreMision: Get 1 recycled paper bundle
     descripcion: Deposit enough paper in the bin to form a bundle and recycle it.
     requisitos:
@@ -2358,6 +2363,7 @@ MonoBehaviour:
     completada: 0
     marcarComoCompletaDesdeEditor: 1
     fueMostradaAlJugador: 0
+    clavesRequeridas: []
   - nombreMision: Use the machine to make new paper
     descripcion: Go to the paper machine and use the recycled bundle to create new
       paper.
@@ -2368,6 +2374,7 @@ MonoBehaviour:
     completada: 0
     marcarComoCompletaDesdeEditor: 1
     fueMostradaAlJugador: 0
+    clavesRequeridas: []
   - nombreMision: ' Sell 1 paper bundle and buy the Recycling book'
     descripcion: Take the new paper to the store. Use the money you earn to buy the
       recycling book.
@@ -2378,6 +2385,7 @@ MonoBehaviour:
     completada: 0
     marcarComoCompletaDesdeEditor: 1
     fueMostradaAlJugador: 0
+    clavesRequeridas: []
   - nombreMision: Collect 5 plastic items
     descripcion: There are bottles and other plastics everywhere. Pick them up and
       dispose of them properly.
@@ -2388,6 +2396,7 @@ MonoBehaviour:
     completada: 0
     marcarComoCompletaDesdeEditor: 1
     fueMostradaAlJugador: 0
+    clavesRequeridas: []
   - nombreMision: ' Get 1 recycled plastic bundle'
     descripcion: Deposit enough plastic in the bin to form a bundle and recycle it.
     requisitos:
@@ -2397,6 +2406,7 @@ MonoBehaviour:
     completada: 0
     marcarComoCompletaDesdeEditor: 1
     fueMostradaAlJugador: 0
+    clavesRequeridas: []
   - nombreMision: Process the Recycled Plastic Bundle
     descripcion: Take the plastic bundle to the machine and turn it into new plastic.
     requisitos:
@@ -2406,6 +2416,7 @@ MonoBehaviour:
     completada: 0
     marcarComoCompletaDesdeEditor: 1
     fueMostradaAlJugador: 0
+    clavesRequeridas: []
   - nombreMision: ' Sell 1 bundle of plastic strips and buy the jug'
     descripcion: Take the plastic strips to the store and use the money to buy a
       water jug.
@@ -2416,6 +2427,7 @@ MonoBehaviour:
     completada: 0
     marcarComoCompletaDesdeEditor: 1
     fueMostradaAlJugador: 0
+    clavesRequeridas: []
   - nombreMision: Gather 3 garbage bags
     descripcion: Shops have taken out trash bags. Pick them up and sort the waste
       into the bins.
@@ -2426,6 +2438,7 @@ MonoBehaviour:
     completada: 0
     marcarComoCompletaDesdeEditor: 0
     fueMostradaAlJugador: 0
+    clavesRequeridas: []
   - nombreMision: Get 1 bundle from each bin
     descripcion: Sort all the waste properly until you have one bundle from each
       type.
@@ -2445,6 +2458,7 @@ MonoBehaviour:
     completada: 0
     marcarComoCompletaDesdeEditor: 1
     fueMostradaAlJugador: 0
+    clavesRequeridas: []
   - nombreMision: Collect 4 non-recyclable bags
     descripcion: Pick up 4 bags of waste that can't be recycled and take them to
       the garbage truck.
@@ -2455,18 +2469,21 @@ MonoBehaviour:
     completada: 0
     marcarComoCompletaDesdeEditor: 1
     fueMostradaAlJugador: 0
+    clavesRequeridas: []
   - nombreMision: plant a tree
     descripcion: Take a seed and compost to the garden and plant a new tree.
     requisitos: []
     completada: 0
     marcarComoCompletaDesdeEditor: 1
     fueMostradaAlJugador: 0
+    clavesRequeridas: []
   - nombreMision: plant a tree
     descripcion: Take a seed and compost to the garden and plant a new tree.
     requisitos: []
     completada: 0
     marcarComoCompletaDesdeEditor: 1
     fueMostradaAlJugador: 0
+    clavesRequeridas: []
   missionTitleHUD: {fileID: 1830585011}
   missionProgressHUD: {fileID: 244378226}
   misionesCompletadas: 0
@@ -5786,6 +5803,7 @@ MonoBehaviour:
     completada: 0
     marcarComoCompletaDesdeEditor: 1
     fueMostradaAlJugador: 0
+    clavesRequeridas: []
   - nombreMision: Obtain 2 units of compostable material
     descripcion: Deposit enough organic waste in the bin to receive 2 units of compostable
       materials.
@@ -5796,6 +5814,7 @@ MonoBehaviour:
     completada: 0
     marcarComoCompletaDesdeEditor: 1
     fueMostradaAlJugador: 0
+    clavesRequeridas: []
   - nombreMision: Obtain 1 compost in the composting machine
     descripcion: Process 2 compostable units in the composting machine.
     requisitos:
@@ -5805,6 +5824,7 @@ MonoBehaviour:
     completada: 0
     marcarComoCompletaDesdeEditor: 1
     fueMostradaAlJugador: 0
+    clavesRequeridas: []
   - nombreMision: 'Sell the compost and buy seeds '
     descripcion: Take your compost to the organic store and sell it. Use the money
       you get to buy seeds and help life grow.
@@ -5815,6 +5835,7 @@ MonoBehaviour:
     completada: 0
     marcarComoCompletaDesdeEditor: 1
     fueMostradaAlJugador: 0
+    clavesRequeridas: []
   - nombreMision: Collect 5 paper items
     descripcion: There's paper around the city. Pick it up and take it to the correct
       bin.
@@ -5825,6 +5846,7 @@ MonoBehaviour:
     completada: 0
     marcarComoCompletaDesdeEditor: 1
     fueMostradaAlJugador: 0
+    clavesRequeridas: []
   - nombreMision: Get 1 recycled paper bundle
     descripcion: Deposit enough paper in the bin to form a bundle and recycle it.
     requisitos:
@@ -5834,6 +5856,7 @@ MonoBehaviour:
     completada: 0
     marcarComoCompletaDesdeEditor: 1
     fueMostradaAlJugador: 0
+    clavesRequeridas: []
   - nombreMision: Use the machine to make new paper
     descripcion: Go to the paper machine and use the recycled bundle to create new
       paper.
@@ -5844,6 +5867,7 @@ MonoBehaviour:
     completada: 0
     marcarComoCompletaDesdeEditor: 1
     fueMostradaAlJugador: 0
+    clavesRequeridas: []
   - nombreMision: ' Sell 1 paper bundle and buy the Recycling book'
     descripcion: Take the new paper to the store. Use the money you earn to buy the
       recycling book.
@@ -5854,6 +5878,7 @@ MonoBehaviour:
     completada: 0
     marcarComoCompletaDesdeEditor: 1
     fueMostradaAlJugador: 0
+    clavesRequeridas: []
   - nombreMision: Collect 5 plastic items
     descripcion: There are bottles and other plastics everywhere. Pick them up and
       dispose of them properly.
@@ -5864,6 +5889,7 @@ MonoBehaviour:
     completada: 0
     marcarComoCompletaDesdeEditor: 1
     fueMostradaAlJugador: 0
+    clavesRequeridas: []
   - nombreMision: ' Get 1 recycled plastic bundle'
     descripcion: Deposit enough plastic in the bin to form a bundle and recycle it.
     requisitos:
@@ -5873,6 +5899,7 @@ MonoBehaviour:
     completada: 0
     marcarComoCompletaDesdeEditor: 1
     fueMostradaAlJugador: 0
+    clavesRequeridas: []
   - nombreMision: Process the Recycled Plastic Bundle
     descripcion: Take the plastic bundle to the machine and turn it into new plastic.
     requisitos:
@@ -5882,6 +5909,7 @@ MonoBehaviour:
     completada: 0
     marcarComoCompletaDesdeEditor: 1
     fueMostradaAlJugador: 0
+    clavesRequeridas: []
   - nombreMision: ' Sell 1 bundle of plastic strips and buy the jug'
     descripcion: Take the plastic strips to the store and use the money to buy a
       water jug.
@@ -5892,6 +5920,7 @@ MonoBehaviour:
     completada: 0
     marcarComoCompletaDesdeEditor: 1
     fueMostradaAlJugador: 0
+    clavesRequeridas: []
   - nombreMision: Gather 3 garbage bags
     descripcion: Shops have taken out trash bags. Pick them up and sort the waste
       into the bins.
@@ -5902,6 +5931,7 @@ MonoBehaviour:
     completada: 0
     marcarComoCompletaDesdeEditor: 1
     fueMostradaAlJugador: 0
+    clavesRequeridas: []
   - nombreMision: Get 1 bundle from each bin
     descripcion: Sort all the waste properly until you have one bundle from each
       type.
@@ -5921,6 +5951,7 @@ MonoBehaviour:
     completada: 0
     marcarComoCompletaDesdeEditor: 1
     fueMostradaAlJugador: 0
+    clavesRequeridas: []
   - nombreMision: Collect 4 non-recyclable bags
     descripcion: Pick up 4 bags of waste that can't be recycled and take them to
       the garbage truck.
@@ -5931,12 +5962,37 @@ MonoBehaviour:
     completada: 0
     marcarComoCompletaDesdeEditor: 1
     fueMostradaAlJugador: 0
+    clavesRequeridas: []
   - nombreMision: plant a tree
     descripcion: Take a seed and compost to the garden and plant a new tree.
     requisitos: []
     completada: 0
+    marcarComoCompletaDesdeEditor: 1
+    fueMostradaAlJugador: 0
+    clavesRequeridas:
+    - clave: ArbolFInal
+      cantidadObjetivo: 1
+      cantidadActual: 0
+  - nombreMision: Buy a decorative item
+    descripcion: Go to the store an buy the decorative plant
+    requisitos: []
+    completada: 0
+    marcarComoCompletaDesdeEditor: 1
+    fueMostradaAlJugador: 0
+    clavesRequeridas:
+    - clave: PlantaDecorativa
+      cantidadObjetivo: 1
+      cantidadActual: 0
+  - nombreMision: Upgrade a process machine
+    descripcion: buy in the store the upgrade for the compost processing machine
+    requisitos: []
+    completada: 0
     marcarComoCompletaDesdeEditor: 0
     fueMostradaAlJugador: 0
+    clavesRequeridas:
+    - clave: MejoraCompost
+      cantidadObjetivo: 1
+      cantidadActual: 0
   missionTitleHUD: {fileID: 1830585011}
   missionProgressHUD: {fileID: 244378226}
   misionesCompletadas: 0
@@ -17397,7 +17453,7 @@ MonoBehaviour:
   - {fileID: 241623725}
   - {fileID: 57442545}
   - {fileID: 886820201}
-  itemPrueba: {fileID: 11400000, guid: e7c3f37cb730cc24a894498c0cd27cd4, type: 2}
+  itemPrueba: {fileID: 11400000, guid: df9da549e7b658541993f314be2a4256, type: 2}
 --- !u!95 &778765611
 Animator:
   serializedVersion: 5
@@ -17852,7 +17908,7 @@ MonoBehaviour:
   compostaItem: {fileID: 11400000, guid: e7c3f37cb730cc24a894498c0cd27cd4, type: 2}
   bidonItem: {fileID: 11400000, guid: df9da549e7b658541993f314be2a4256, type: 2}
   duracionDrenaje: 150
-  duracionCrecimiento: 300
+  duracionCrecimiento: 60
 --- !u!65 &799936405
 BoxCollider:
   m_ObjectHideFlags: 0
@@ -20697,6 +20753,7 @@ GameObject:
   - component: {fileID: 894998039}
   - component: {fileID: 894998038}
   - component: {fileID: 894998037}
+  - component: {fileID: 894998041}
   m_Layer: 0
   m_Name: Mesa
   m_TagString: Untagged
@@ -20808,6 +20865,19 @@ MeshFilter:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 894998035}
   m_Mesh: {fileID: -3101794883780484172, guid: a385e1e2db8c26e468aa2190ce3664b2, type: 3}
+--- !u!114 &894998041
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 894998035}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: e02e4a729eaf9904688fd348193071c8, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  missionKey: MejoraCompost
 --- !u!1 &897625784
 GameObject:
   m_ObjectHideFlags: 0
@@ -27753,7 +27823,7 @@ MonoBehaviour:
   compostaItem: {fileID: 11400000, guid: e7c3f37cb730cc24a894498c0cd27cd4, type: 2}
   bidonItem: {fileID: 11400000, guid: df9da549e7b658541993f314be2a4256, type: 2}
   duracionDrenaje: 150
-  duracionCrecimiento: 300
+  duracionCrecimiento: 60
 --- !u!65 &1179359761
 BoxCollider:
   m_ObjectHideFlags: 0
@@ -34279,7 +34349,7 @@ MonoBehaviour:
   compostaItem: {fileID: 11400000, guid: e7c3f37cb730cc24a894498c0cd27cd4, type: 2}
   bidonItem: {fileID: 11400000, guid: df9da549e7b658541993f314be2a4256, type: 2}
   duracionDrenaje: 150
-  duracionCrecimiento: 300
+  duracionCrecimiento: 60
 --- !u!65 &1448639513
 BoxCollider:
   m_ObjectHideFlags: 0
@@ -41925,6 +41995,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   textoInteraccion: {fileID: 390929234}
   textoFeedback: {fileID: 1224497936}
+  bidonItem: {fileID: 11400000, guid: df9da549e7b658541993f314be2a4256, type: 2}
 --- !u!65 &1838375002
 BoxCollider:
   m_ObjectHideFlags: 0
@@ -42460,7 +42531,7 @@ MonoBehaviour:
   compostaItem: {fileID: 11400000, guid: e7c3f37cb730cc24a894498c0cd27cd4, type: 2}
   bidonItem: {fileID: 11400000, guid: df9da549e7b658541993f314be2a4256, type: 2}
   duracionDrenaje: 150
-  duracionCrecimiento: 300
+  duracionCrecimiento: 60
 --- !u!65 &1865268241
 BoxCollider:
   m_ObjectHideFlags: 0
@@ -45251,7 +45322,7 @@ MonoBehaviour:
   compostaItem: {fileID: 11400000, guid: e7c3f37cb730cc24a894498c0cd27cd4, type: 2}
   bidonItem: {fileID: 11400000, guid: df9da549e7b658541993f314be2a4256, type: 2}
   duracionDrenaje: 150
-  duracionCrecimiento: 300
+  duracionCrecimiento: 60
 --- !u!65 &1965867858
 BoxCollider:
   m_ObjectHideFlags: 0

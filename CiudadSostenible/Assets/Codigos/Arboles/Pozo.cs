@@ -8,6 +8,7 @@ public class Pozo : MonoBehaviour
     public GameObject textoInteraccion;
     public TextMeshProUGUI textoFeedback;
     private Coroutine feedbackCoroutine;
+    public ItemData bidonItem;
 
     private void OnTriggerEnter(Collider other)
     {
@@ -43,7 +44,7 @@ public class Pozo : MonoBehaviour
         foreach (var slot in inventario.slots)
         {
             ItemData item = slot.GetItemData();
-            if (item != null && item.itemName.ToLower().Contains("BidonPlastico"))
+            if (item == bidonItem)
             {
                 if (BidonDeAguaManager.Instance.EstaLleno(item))
                 {

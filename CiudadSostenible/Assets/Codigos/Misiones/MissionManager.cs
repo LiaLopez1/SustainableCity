@@ -24,6 +24,17 @@ public class MissionManager : MonoBehaviour
         public bool marcarComoCompletaDesdeEditor = false;
 
         [HideInInspector] public bool fueMostradaAlJugador = false;
+
+        [System.Serializable]
+        public class RequisitoClave
+        {
+            public string clave;
+            public int cantidadObjetivo;
+            [HideInInspector] public int cantidadActual = 0;
+        }
+
+        public List<RequisitoClave> clavesRequeridas = new List<RequisitoClave>();
+
     }
 
     public List<Mission> misiones;
@@ -162,6 +173,69 @@ public class MissionManager : MonoBehaviour
         else
             return null;
     }
+
+    public void AgregarProgresoPorClave(string clave)
+    {
+        if (misionActualIndex >= misiones.Count) return;
+
+        Mission misionActual = misiones[misionActualIndex];
+        if (misionActual.completada) return;
+
+        bool huboProgreso = false;
+
+        foreach (var req in misionActual.clavesRequeridas)
+        {
+            if (req.clave == clave)
+            {
+                req.cantidadActual++;
+                if (req.cantidadActual > req.cantidadObjetivo)
+                    req.cantidadActual = req.cantidadObjetivo;
+
+                huboProgreso = true;
+            }
+        }
+
+        if (huboProgreso)
+        {
+            bool todosCompletos = true;
+
+            // Verifica los ítems
+            foreach (var req in misionActual.requisitos)
+            {
+                if (req.cantidadActual < req.cantidadObjetivo)
+                {
+                    todosCompletos = false;
+                    break;
+                }
+            }
+
+            // Verifica las claves
+            foreach (var req in misionActual.clavesRequeridas)
+            {
+                if (req.cantidadActual < req.cantidadObjetivo)
+                {
+                    todosCompletos = false;
+                    break;
+                }
+            }
+
+            if (todosCompletos)
+            {
+                misionActual.completada = true;
+                misionesCompletadas++;
+                misionActualIndex++;
+
+                MostrarMisionActual();
+                if (uiController != null)
+                    uiController.ActualizarExclamacion();
+            }
+            else
+            {
+                ActualizarTextoHUD();
+            }
+        }
+    }
+
 
     /*void VerificarDesbloqueos()
     {
