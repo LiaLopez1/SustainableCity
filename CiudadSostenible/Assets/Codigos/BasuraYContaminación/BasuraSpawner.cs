@@ -20,8 +20,10 @@ public class BasuraSpawner : MonoBehaviour
 
     [Header("Configuración de Spawn")]
     public float alturaBasura = 0.133f;
-    public float rangoMaximoX = 40f;
-    public float rangoMaximoZ = 40f;
+    public float xMin = -20f;  // Límite izquierdo (X negativo)
+    public float xMax = 20f;   // Límite derecho (X positivo)
+    public float zMin = -15f;  // Límite inferior (Z negativo)
+    public float zMax = 25f;
     public int cantidadMaximaBasura = 50;
     public float tiempoTotalGeneracion = 60f;
 
@@ -54,7 +56,6 @@ public class BasuraSpawner : MonoBehaviour
     void GenerarBasura()
     {
         GameObject prefabElegido = ElegirPrefabPorProbabilidad();
-
         if (prefabElegido == null)
         {
             Debug.LogWarning("No se pudo elegir prefab de basura.");
@@ -62,15 +63,13 @@ public class BasuraSpawner : MonoBehaviour
         }
 
         Vector3 posicion = new Vector3(
-            Random.Range(-rangoMaximoX, rangoMaximoX),
+            Random.Range(xMin, xMax),  // Usa los límites personalizados en X
             alturaBasura,
-            Random.Range(-rangoMaximoZ, rangoMaximoZ)
+            Random.Range(zMin, zMax)   // Usa los límites personalizados en Z
         );
 
         Quaternion rotacion = Quaternion.Euler(0, Random.Range(0f, 360f), 0);
-
         Instantiate(prefabElegido, posicion, rotacion);
-
         basuraActual++;
     }
 

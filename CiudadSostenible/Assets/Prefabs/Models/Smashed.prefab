@@ -14,6 +14,7 @@ GameObject:
   - component: {fileID: 5034845784630273518}
   - component: {fileID: 8312949906723796071}
   - component: {fileID: 5499024256228894374}
+  - component: {fileID: 7655759239039875163}
   m_Layer: 3
   m_Name: Smashed
   m_TagString: Esfera
@@ -156,3 +157,16 @@ MeshCollider:
   m_Convex: 1
   m_CookingOptions: 30
   m_Mesh: {fileID: 2064154311904059913, guid: 39b35fd482d15ed4cbc7c124f17b230d, type: 3}
+--- !u!114 &7655759239039875163
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 7262966556149411174}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 82018dccf9ddab248ab11587b8debf3e, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  itemData: {fileID: 11400000, guid: e7c3f37cb730cc24a894498c0cd27cd4, type: 2}

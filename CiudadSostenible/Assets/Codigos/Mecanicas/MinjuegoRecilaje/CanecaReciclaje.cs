@@ -72,6 +72,8 @@ public class CanecaReciclaje : MonoBehaviour, IDropHandler
     private void ProcesarInventarioNormal(InventorySlot slot, GameObject item)
     {
         ItemData itemData = slot.GetItemData();
+        if (itemData == null) return;
+
         int cantidadEnSlot = slot.GetQuantity();
 
         foreach (var material in materiales)
@@ -80,7 +82,13 @@ public class CanecaReciclaje : MonoBehaviour, IDropHandler
             {
                 if (material.bloqueoEntrada) return;
 
-                material.cantidadActual += cantidadEnSlot;
+                int espacioDisponible = material.cantidadMaxima - material.cantidadActual;
+                int cantidadATomar = Mathf.Min(espacioDisponible, cantidadEnSlot);
+
+                // Si no hay espacio suficiente, no hacemos nada
+                if (cantidadATomar <= 0) return;
+
+                material.cantidadActual += cantidadATomar;
                 material.estaCompleto = (material.cantidadActual >= material.cantidadMaxima);
 
                 material.textoContador.text = $"{material.tipoMaterial}: {material.cantidadActual}/{material.cantidadMaxima}";
@@ -93,11 +101,23 @@ public class CanecaReciclaje : MonoBehaviour, IDropHandler
                     material.bloqueoEntrada = true;
                 }
 
-                slot.ClearSlot();
+                // Actualizamos el slot del inventario
+                if (cantidadATomar == cantidadEnSlot)
+                {
+                    // Si tomamos todo, limpiamos el slot
+                    slot.ClearSlot();
+                }
+                else
+                {
+                    // Si tomamos solo parte, actualizamos la cantidad
+                    slot.UpdateQuantity(cantidadEnSlot - cantidadATomar);
+                }
+
                 return;
             }
         }
 
+        // Si no coincide con ningún material, devolvemos el item
         InventoryItemDragHandler dragHandler = item.GetComponent<InventoryItemDragHandler>();
         if (dragHandler != null) dragHandler.ReturnToInventory();
     }

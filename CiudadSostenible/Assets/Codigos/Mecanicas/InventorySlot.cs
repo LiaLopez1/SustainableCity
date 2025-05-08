@@ -82,6 +82,12 @@ public class InventorySlot : MonoBehaviour
         itemIcon.enabled = false;
         quantityText.text = "";
     }
+    public void UpdateQuantity(int newQuantity)
+    {
+        currentQuantity = newQuantity;
+        quantityText.text = currentQuantity.ToString();
+        // O cualquier otra lógica que necesites para actualizar la visualización
+    }
 
     private void UpdateUI()
     {
