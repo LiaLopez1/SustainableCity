@@ -18,6 +18,10 @@ public class ProgresoMundo : MonoBehaviour
     [Header("Configuración")]
     public int totalMisiones = 15;
 
+    [Header("Cambio de mapa final")]
+    public GameObject mapaViejo;
+    public GameObject mapaNuevo;
+
     [Header("Colores del slider")]
     public Color colorNormal;
     public Color colorAdvertencia;
@@ -40,6 +44,8 @@ public class ProgresoMundo : MonoBehaviour
     public List<MaquinaInteractuable> maquinas;
 
     private Image fillImage;
+    private bool mapaFinalActivado = false;
+
 
     [System.Serializable]
     public class ShopItem
@@ -153,6 +159,15 @@ public class ProgresoMundo : MonoBehaviour
         {
             fogController.SetFogDensityByContamination(valorSlider); // valorSlider ya representa la contaminación
         }
+
+        if (!mapaFinalActivado && completadas >= totalMisiones)
+        {
+            mapaFinalActivado = true;
+
+            if (mapaViejo != null) mapaViejo.SetActive(false);
+            if (mapaNuevo != null) mapaNuevo.SetActive(true);
+        }
+
 
         ActualizarSpawnerDeBasura(completadas);
 
