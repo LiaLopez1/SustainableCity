@@ -243,6 +243,18 @@ public class ProgresoMundo : MonoBehaviour
             basuraSpawner.cantidadMaximaBasura = 15;
         }
 
+        else if (misionesCompletadas < 15)
+        {
+            AsignarProbabilidades(new float[] { 5f, 5f, 5f, 85f });
+            basuraSpawner.cantidadMaximaBasura = 15;
+        }
+
+        else if (misionesCompletadas < 16)
+        {
+            AsignarProbabilidades(new float[] { 22f, 22f, 22f, 34f });
+            basuraSpawner.cantidadMaximaBasura = 15;
+        }
+
         else if (misionesCompletadas < 23)
         {
             AsignarProbabilidades(new float[] { 25f, 25f,25f , 25f });
