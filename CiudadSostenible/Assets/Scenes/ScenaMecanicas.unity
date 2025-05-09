@@ -6946,14 +6946,14 @@ RectTransform:
   m_GameObject: {fileID: 244378225}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
   m_LocalPosition: {x: 0, y: 0, z: 0}
-  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_LocalScale: {x: 1.0354, y: 1.0354, z: 1.0354}
   m_ConstrainProportionsScale: 0
   m_Children: []
   m_Father: {fileID: 1038573928}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0.5, y: 0.5}
   m_AnchorMax: {x: 0.5, y: 0.5}
-  m_AnchoredPosition: {x: -665.8, y: 321}
+  m_AnchoredPosition: {x: -665.8, y: 329.9}
   m_SizeDelta: {x: 200, y: 50}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!1 &246642188
@@ -14087,13 +14087,13 @@ MonoBehaviour:
     prefab: {fileID: 737771779228914925, guid: 493c58f3d63dbf04f9b421fa64499bfd, type: 3}
     probabilidad: 33
   basuraTotalRecogida: 0
-  alturaBasura: 1
+  alturaBasura: 0.12
   xMin: 19
   xMax: -23
   zMin: -11
   zMax: -24
-  cantidadMaximaBasura: 2
-  tiempoTotalGeneracion: 60
+  cantidadMaximaBasura: 10
+  tiempoTotalGeneracion: 10
 --- !u!4 &573575324
 Transform:
   m_ObjectHideFlags: 0
@@ -16802,7 +16802,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 7647154774785859517, guid: 4f3afa5d2e0361e4d802dc9e5842ff3e, type: 3}
       propertyPath: m_LocalPosition.y
-      value: 0.713
+      value: 0.37
       objectReference: {fileID: 0}
     - target: {fileID: 7647154774785859517, guid: 4f3afa5d2e0361e4d802dc9e5842ff3e, type: 3}
       propertyPath: m_LocalPosition.z
