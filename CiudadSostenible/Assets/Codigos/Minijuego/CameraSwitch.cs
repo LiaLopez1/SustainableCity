@@ -10,7 +10,6 @@ public class CameraSwitch : MonoBehaviour
 
     [Header("Configuración")]
     public KeyCode switchKey = KeyCode.E;
-    public KeyCode exitKey = KeyCode.Escape;
 
     private bool canSwitch = false;
     private Camera specialCamera;
@@ -31,7 +30,6 @@ public class CameraSwitch : MonoBehaviour
             playerMovement.EnableMovement(true);
     }
 
-
     private void OnCollisionEnter(Collision collision)
     {
         if (collision.gameObject.CompareTag("Player"))
@@ -43,21 +41,30 @@ public class CameraSwitch : MonoBehaviour
             }
             else
             {
-                panelUI.SetActive(false); // asegúrate de que no se muestre
+                panelUI.SetActive(false);
                 canSwitch = false;
                 Debug.Log($"{gameObject.name} está bloqueada. No se puede mostrar el panel.");
             }
         }
     }
 
+    private void OnCollisionExit(Collision collision)
+    {
+        if (collision.gameObject.CompareTag("Player"))
+        {
+            ReturnToMainView();
+        }
+    }
 
     private void Update()
     {
-        if (canSwitch && Input.GetKeyDown(switchKey) && !specialViewCanvas.gameObject.activeSelf)
-            SwitchToSpecialView();
-
-        if (Input.GetKeyDown(exitKey) && specialViewCanvas.gameObject.activeSelf)
-            ReturnToMainView();
+        if (canSwitch && Input.GetKeyDown(switchKey))
+        {
+            if (specialViewCanvas.gameObject.activeSelf)
+                ReturnToMainView();
+            else
+                SwitchToSpecialView();
+        }
     }
 
     private void SwitchToSpecialView()
@@ -89,15 +96,11 @@ public class CameraSwitch : MonoBehaviour
         NotifyDragHandlers(false);
     }
 
-    private void OnCollisionExit(Collision collision)
-    {
-        if (collision.gameObject.CompareTag("Player"))
-            ReturnToMainView();
-    }
-
     private void NotifyDragHandlers(bool isActive)
     {
         foreach (var handler in FindObjectsOfType<InventoryItemDragHandler>())
+        {
             handler.SetSpecialCanvasActive(isActive);
+        }
     }
 }
