@@ -89,7 +89,7 @@ public class InventorySystem : MonoBehaviour
     }
 
 
-    private void Update()
+    /*private void Update()
     {
         // Solo para pruebas: presionar T agrega un ítem manualmente
         if (Input.GetKeyDown(KeyCode.T))
@@ -97,5 +97,5 @@ public class InventorySystem : MonoBehaviour
             // Asegúrate de tener una referencia al ítem de prueba
             AddItem(itemPrueba);
         }
-    }
+    }*/
 }
