@@ -12,7 +12,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: d3e01e06551dd2a489f97638cf5b3c99, type: 3}
   m_Name: CompostMaterial
   m_EditorClassIdentifier: 
-  itemName: MCompost
+  itemName: Compost
   icon: {fileID: 21300000, guid: 5fd55e7f2cee7af45bb6d194d39172df, type: 3}
   worldPrefab: {fileID: 5082161312639463463, guid: 804aa7ba4574d2443bf3da3acfd8a47f, type: 3}
   alternatePrefab: {fileID: 0}

@@ -227,26 +227,26 @@ public class ProgresoMundo : MonoBehaviour
 
         if (misionesCompletadas < 4)
         {
-            AsignarProbabilidades(new float[] { 70f, 15f, 15f }); 
+            AsignarProbabilidades(new float[] { 70f, 15f, 15f, 0f }); 
             basuraSpawner.cantidadMaximaBasura = 15;
         }
         
         else if (misionesCompletadas < 8)
         {
-            AsignarProbabilidades(new float[] { 35f, 35f, 30f });
+            AsignarProbabilidades(new float[] { 35f, 35f, 30f ,0f });
             basuraSpawner.cantidadMaximaBasura = 20;
         }
         
-        else if (misionesCompletadas < 12)
+        else if (misionesCompletadas < 11)
         {
-            AsignarProbabilidades(new float[] { 33f, 33f, 34f });
-            basuraSpawner.cantidadMaximaBasura = 25;
+            AsignarProbabilidades(new float[] { 22f, 22f, 22f, 34f });
+            basuraSpawner.cantidadMaximaBasura = 15;
         }
 
         else if (misionesCompletadas < 23)
         {
-            AsignarProbabilidades(new float[] { 33f, 33f, 34f });
-            basuraSpawner.cantidadMaximaBasura = 15;
+            AsignarProbabilidades(new float[] { 25f, 25f,25f , 25f });
+            basuraSpawner.cantidadMaximaBasura = 10;
         }
         
         else
@@ -257,9 +257,12 @@ public class ProgresoMundo : MonoBehaviour
 
     void AsignarProbabilidades(float[] nuevasProbs)
     {
-        for (int i = 0; i < basuraSpawner.tiposBasura.Count && i < nuevasProbs.Length; i++)
+        for (int i = 0; i < basuraSpawner.tiposBasura.Count; i++)
         {
-            basuraSpawner.tiposBasura[i].probabilidad = nuevasProbs[i];
+            if (i < nuevasProbs.Length)
+                basuraSpawner.tiposBasura[i].probabilidad = nuevasProbs[i];
+            else
+                basuraSpawner.tiposBasura[i].probabilidad = 0f; // explícito
         }
     }
 

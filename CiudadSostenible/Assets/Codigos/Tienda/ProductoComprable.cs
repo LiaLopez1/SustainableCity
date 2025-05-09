@@ -59,14 +59,14 @@ public class ProductoComprable : MonoBehaviour
     {
         if (!tienda.TieneDineroSuficiente(precio))
         {
-            tienda.MostrarMensaje("¡Dinero insuficiente!");
+            tienda.MostrarMensaje("Not enough money!");
             StartCoroutine(EfectoEspasmoRojo());
             return;
         }
 
         if (!inventario.TieneItem(itemRequerido, cantidadRequerida))
         {
-            tienda.MostrarMensaje($"¡Faltan {itemRequerido.itemName}!");
+            tienda.MostrarMensaje($" {itemRequerido.itemName} Missing!");
             StartCoroutine(EfectoEspasmoRojo());
             return;
         }
@@ -89,7 +89,7 @@ public class ProductoComprable : MonoBehaviour
 
             if (!añadido)
             {
-                tienda.MostrarMensaje("¡Sin espacio en el inventario!");
+                tienda.MostrarMensaje("No space in inventory!");
                 StartCoroutine(EfectoEspasmoRojo());
             }
         }

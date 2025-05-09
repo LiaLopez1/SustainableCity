@@ -12,7 +12,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: d3e01e06551dd2a489f97638cf5b3c99, type: 3}
   m_Name: NewPaper
   m_EditorClassIdentifier: 
-  itemName: Papel
+  itemName: Paper
   icon: {fileID: 21300000, guid: a2e4a93ffb9d3524d870b40bf976bada, type: 3}
   worldPrefab: {fileID: 1291277029854165065, guid: ca3bb6f2157f5de4ca53aee4f628f2bf, type: 3}
   alternatePrefab: {fileID: 0}
