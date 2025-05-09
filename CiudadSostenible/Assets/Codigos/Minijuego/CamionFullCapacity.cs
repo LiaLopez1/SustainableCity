@@ -7,7 +7,7 @@ public class CamionFullCapacity : MonoBehaviour
 {
     [Header("Configuración")]
     public string targetTag = "NoAprovechables";
-    public int capacidadMaxima = 7;
+    public int capacidadMaxima = 5;
     public TextMeshProUGUI mensajeTMP;
 
     [Header("Movimiento del camión")]

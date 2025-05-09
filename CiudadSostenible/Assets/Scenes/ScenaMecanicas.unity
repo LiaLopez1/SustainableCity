@@ -18793,7 +18793,7 @@ MonoBehaviour:
   - {fileID: 241623725}
   - {fileID: 57442545}
   - {fileID: 886820201}
-  itemPrueba: {fileID: 11400000, guid: c2df3a34cef0fad4690a366c2e397919, type: 2}
+  itemPrueba: {fileID: 0}
 --- !u!95 &778765611
 Animator:
   serializedVersion: 5
@@ -39357,7 +39357,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   targetTag: NoAprovechables
-  capacidadMaxima: 4
+  capacidadMaxima: 5
   mensajeTMP: {fileID: 1422596860}
   objetoPadreAMover: {fileID: 499464465}
   desplazamientoEnX: 10

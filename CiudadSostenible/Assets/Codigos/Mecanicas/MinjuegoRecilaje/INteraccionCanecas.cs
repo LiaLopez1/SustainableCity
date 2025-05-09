@@ -33,7 +33,6 @@ public class InteraccionCanecas : MonoBehaviour
         {
             bool activo = !panelMiniJuego.activeSelf;
             panelMiniJuego.SetActive(activo);
-            panelInventario.SetActive(activo);
             mensajeInteraccion.SetActive(!activo); 
         }
     }
