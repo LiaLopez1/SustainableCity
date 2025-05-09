@@ -10,7 +10,7 @@ public class CanecaReciclaje : MonoBehaviour, IDropHandler
     [System.Serializable]
     public class MaterialReciclable
     {
-        public string tagMaterial; // "Papel", "Plastico", etc.
+        public string tagMaterial;
         public int cantidadActual = 0;
         public int cantidadMaxima = 10;
         public TextMeshProUGUI textoContador;
@@ -19,7 +19,7 @@ public class CanecaReciclaje : MonoBehaviour, IDropHandler
         public string tipoMaterial;
 
         [HideInInspector] public bool estaCompleto;
-        [HideInInspector] public bool bloqueoEntrada = false; // NUEVO: bloqueo al llenarse
+        [HideInInspector] public bool bloqueoEntrada = false;
     }
 
     [Header("Materiales")]
@@ -31,6 +31,8 @@ public class CanecaReciclaje : MonoBehaviour, IDropHandler
     [Header("Mensaje si inventario está lleno")]
     public TextMeshProUGUI mensajeInventarioLleno;
     public float duracionMensaje = 1f;
+
+    private Coroutine mensajeCoroutine; // Referencia a la corrutina activa
 
     void Start()
     {
@@ -85,7 +87,6 @@ public class CanecaReciclaje : MonoBehaviour, IDropHandler
                 int espacioDisponible = material.cantidadMaxima - material.cantidadActual;
                 int cantidadATomar = Mathf.Min(espacioDisponible, cantidadEnSlot);
 
-                // Si no hay espacio suficiente, no hacemos nada
                 if (cantidadATomar <= 0) return;
 
                 material.cantidadActual += cantidadATomar;
@@ -101,23 +102,15 @@ public class CanecaReciclaje : MonoBehaviour, IDropHandler
                     material.bloqueoEntrada = true;
                 }
 
-                // Actualizamos el slot del inventario
                 if (cantidadATomar == cantidadEnSlot)
-                {
-                    // Si tomamos todo, limpiamos el slot
                     slot.ClearSlot();
-                }
                 else
-                {
-                    // Si tomamos solo parte, actualizamos la cantidad
                     slot.UpdateQuantity(cantidadEnSlot - cantidadATomar);
-                }
 
                 return;
             }
         }
 
-        // Si no coincide con ningún material, devolvemos el item
         InventoryItemDragHandler dragHandler = item.GetComponent<InventoryItemDragHandler>();
         if (dragHandler != null) dragHandler.ReturnToInventory();
     }
@@ -173,7 +166,11 @@ public class CanecaReciclaje : MonoBehaviour, IDropHandler
             if (mensajeInventarioLleno != null)
             {
                 mensajeInventarioLleno.gameObject.SetActive(true);
-                StartCoroutine(DesactivarMensajeTMP());
+
+                if (mensajeCoroutine != null)
+                    StopCoroutine(mensajeCoroutine);
+
+                mensajeCoroutine = StartCoroutine(DesactivarMensajeTMP());
             }
         }
     }
