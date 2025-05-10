@@ -93,7 +93,7 @@ public class InventorySlot : MonoBehaviour
     {
         itemIcon.sprite = currentItem?.icon;
         itemIcon.enabled = currentItem != null;
-        quantityText.text = currentQuantity > 1 ? currentQuantity.ToString() : "";
+        quantityText.text = currentQuantity > 1 ? currentQuantity.ToString() : "1";
 
         // Actualizar tag del icono (importante para las canecas)
         if (currentItem != null && !string.IsNullOrEmpty(currentItem.itemTag))

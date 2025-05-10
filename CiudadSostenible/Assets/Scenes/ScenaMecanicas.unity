@@ -14429,7 +14429,7 @@ MonoBehaviour:
   zMin: -11
   zMax: -24
   cantidadMaximaBasura: 10
-  tiempoTotalGeneracion: 10
+  tiempoTotalGeneracion: 20
 --- !u!4 &573575324
 Transform:
   m_ObjectHideFlags: 0
