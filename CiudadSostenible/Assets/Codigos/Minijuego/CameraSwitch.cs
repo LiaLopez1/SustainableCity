@@ -1,4 +1,4 @@
-using UnityEngine;
+﻿using UnityEngine;
 
 public class CameraSwitch : MonoBehaviour
 {
@@ -7,8 +7,9 @@ public class CameraSwitch : MonoBehaviour
     public Canvas specialViewCanvas;
     public Camera mainCamera;
     public PlayerMove playerMovement;
+    public GameObject botonCerrar;
 
-    [Header("Configuraci�n")]
+    [Header("Configuración")]
     public KeyCode switchKey = KeyCode.E;
 
     private bool canSwitch = false;
@@ -28,6 +29,9 @@ public class CameraSwitch : MonoBehaviour
 
         if (playerMovement != null)
             playerMovement.EnableMovement(true);
+
+        if (botonCerrar != null)
+            botonCerrar.SetActive(false);
     }
 
     private void OnCollisionEnter(Collision collision)
@@ -43,7 +47,7 @@ public class CameraSwitch : MonoBehaviour
             {
                 panelUI.SetActive(false);
                 canSwitch = false;
-                Debug.Log($"{gameObject.name} est� bloqueada. No se puede mostrar el panel.");
+                Debug.Log($"{gameObject.name} está bloqueada. No se puede mostrar el panel.");
             }
         }
     }
@@ -52,18 +56,19 @@ public class CameraSwitch : MonoBehaviour
     {
         if (collision.gameObject.CompareTag("Player"))
         {
-            ReturnToMainView();
+            panelUI.SetActive(false);
+            canSwitch = false;
+
+            // NOTA: No llamamos a ReturnToMainView aquí para NO cerrar la cámara automáticamente
         }
     }
 
     private void Update()
     {
-        if (canSwitch && Input.GetKeyDown(switchKey))
+        // ✅ Solo se puede entrar con E si el canvas no está activo aún
+        if (canSwitch && Input.GetKeyDown(switchKey) && !specialViewCanvas.gameObject.activeSelf)
         {
-            if (specialViewCanvas.gameObject.activeSelf)
-                ReturnToMainView();
-            else
-                SwitchToSpecialView();
+            SwitchToSpecialView();
         }
     }
 
@@ -74,24 +79,32 @@ public class CameraSwitch : MonoBehaviour
             specialCamera.enabled = true;
 
         panelUI.SetActive(false);
+
         if (playerMovement != null)
             playerMovement.EnableMovement(false);
+
+        if (botonCerrar != null)
+            botonCerrar.SetActive(true);
 
         NotifyDragHandlers(true);
     }
 
-    private void ReturnToMainView()
+    // 🔴 Solo se llama desde el botón
+    public void ReturnToMainView()
     {
         specialViewCanvas.gameObject.SetActive(false);
         if (specialCamera != null)
             specialCamera.enabled = false;
 
         mainCamera.enabled = true;
-        panelUI.SetActive(false);
-        canSwitch = false;
 
         if (playerMovement != null)
             playerMovement.EnableMovement(true);
+
+        if (botonCerrar != null)
+            botonCerrar.SetActive(false);
+
+        canSwitch = false;
 
         NotifyDragHandlers(false);
     }

@@ -14,7 +14,7 @@ GameObject:
   - component: {fileID: 6220503235534367127}
   - component: {fileID: 5119610485361174816}
   - component: {fileID: 8177249375616035542}
-  - component: {fileID: 2623893225548534798}
+  - component: {fileID: 3829324500180115463}
   m_Layer: 0
   m_Name: AppleWBanana
   m_TagString: Esfera
@@ -148,8 +148,8 @@ BoxCollider:
   serializedVersion: 3
   m_Size: {x: 28.825443, y: 26.482468, z: 40.396008}
   m_Center: {x: 1.6486671, y: 1.0594187, z: -0.34527785}
---- !u!65 &2623893225548534798
-BoxCollider:
+--- !u!64 &3829324500180115463
+MeshCollider:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
@@ -166,6 +166,7 @@ BoxCollider:
   m_IsTrigger: 0
   m_ProvidesContacts: 0
   m_Enabled: 1
-  serializedVersion: 3
-  m_Size: {x: 28.825443, y: 26.482468, z: 40.396008}
-  m_Center: {x: 1.6486671, y: 1.0594187, z: -0.34527785}
+  serializedVersion: 5
+  m_Convex: 1
+  m_CookingOptions: 30
+  m_Mesh: {fileID: -5183863981284598377, guid: dd3c1b95969144c41a7f0f5a94dcefd9, type: 3}
