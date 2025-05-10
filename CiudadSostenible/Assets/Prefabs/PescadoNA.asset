@@ -13,7 +13,7 @@ MonoBehaviour:
   m_Name: PescadoNA
   m_EditorClassIdentifier: 
   itemName: PescadoNA
-  icon: {fileID: 21300000, guid: a13f46f7bfabc9d4a9acfbc1ffcf0ec9, type: 3}
+  icon: {fileID: 21300000, guid: cd2082212a4da014896c72e91d3bc9e5, type: 3}
   worldPrefab: {fileID: 737771779228914925, guid: adee759e0345b4d46b5cab18c1e54f9d, type: 3}
   alternatePrefab: {fileID: 0}
   itemTag: NoAprovechables
