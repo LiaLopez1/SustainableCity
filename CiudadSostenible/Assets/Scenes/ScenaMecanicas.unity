@@ -589,7 +589,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!114 &13555711
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -4823,9 +4823,9 @@ RectTransform:
   - {fileID: 805295619}
   m_Father: {fileID: 17213524}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
-  m_AnchorMin: {x: 0.5, y: 0.5}
-  m_AnchorMax: {x: 0.5, y: 0.5}
-  m_AnchoredPosition: {x: 753, y: 310}
+  m_AnchorMin: {x: 1, y: 0.5}
+  m_AnchorMax: {x: 1, y: 0.5}
+  m_AnchoredPosition: {x: -207, y: 310}
   m_SizeDelta: {x: 700, y: 380}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &159807910
@@ -10346,12 +10346,12 @@ GameObject:
   - component: {fileID: 391793429}
   - component: {fileID: 391793428}
   m_Layer: 5
-  m_Name: ButtonSalirPlastic (1)
+  m_Name: ButtonSalirPlasticNew
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!224 &391793427
 RectTransform:
   m_ObjectHideFlags: 0
@@ -13630,12 +13630,12 @@ GameObject:
   - component: {fileID: 527239830}
   - component: {fileID: 527239829}
   m_Layer: 5
-  m_Name: ButtonSalirOrganicos (1)
+  m_Name: ButtonSalirOrganicosNew
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!224 &527239828
 RectTransform:
   m_ObjectHideFlags: 0
@@ -19510,7 +19510,7 @@ MonoBehaviour:
   - {fileID: 241623725}
   - {fileID: 57442545}
   - {fileID: 886820201}
-  itemPrueba: {fileID: 11400000, guid: e59d97127e03a5947962477c8156d7de, type: 2}
+  itemPrueba: {fileID: 0}
 --- !u!95 &778765611
 Animator:
   serializedVersion: 5
@@ -22987,7 +22987,7 @@ MonoBehaviour:
   specialViewCanvas: {fileID: 787252399}
   mainCamera: {fileID: 1412406310}
   playerMovement: {fileID: 1235521613}
-  botonCerrar: {fileID: 0}
+  botonCerrar: {fileID: 527239827}
   switchKey: 101
 --- !u!65 &894998038
 BoxCollider:
@@ -27127,7 +27127,7 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0.5, y: 0.5}
   m_AnchorMax: {x: 0.5, y: 0.5}
-  m_AnchoredPosition: {x: 509.7373, y: 355.22314}
+  m_AnchoredPosition: {x: -1, y: 0}
   m_SizeDelta: {x: 383.1134, y: 119.4136}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &1067791489
@@ -36547,7 +36547,7 @@ MonoBehaviour:
   m_OnCullStateChanged:
     m_PersistentCalls:
       m_Calls: []
-  m_text: New Text
+  m_text: "You can now check the manual. It contains all the information\_you\_need."
   m_isRightToLeft: 0
   m_fontAsset: {fileID: 11400000, guid: 8f586378b4e144a9851e7b34d9b748ee, type: 2}
   m_sharedMaterial: {fileID: 2180264, guid: 8f586378b4e144a9851e7b34d9b748ee, type: 2}
@@ -36556,8 +36556,8 @@ MonoBehaviour:
   m_fontMaterials: []
   m_fontColor32:
     serializedVersion: 2
-    rgba: 4294967295
-  m_fontColor: {r: 1, g: 1, b: 1, a: 1}
+    rgba: 4278190080
+  m_fontColor: {r: 0, g: 0, b: 0, a: 1}
   m_enableVertexGradient: 0
   m_colorMode: 3
   m_fontColorGradient:
@@ -37889,12 +37889,12 @@ GameObject:
   - component: {fileID: 1271788921}
   - component: {fileID: 1271788920}
   m_Layer: 5
-  m_Name: ButtonSalirPaper (1)
+  m_Name: ButtonSalirPaperNew
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!224 &1271788919
 RectTransform:
   m_ObjectHideFlags: 0
@@ -41153,7 +41153,7 @@ MonoBehaviour:
   specialViewCanvas: {fileID: 554824291}
   mainCamera: {fileID: 1412406310}
   playerMovement: {fileID: 1235521613}
-  botonCerrar: {fileID: 0}
+  botonCerrar: {fileID: 13555710}
   switchKey: 101
 --- !u!1 &1396885635
 GameObject:
@@ -41573,7 +41573,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!114 &1415725943
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -43619,7 +43619,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!114 &1527344069
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -49537,7 +49537,7 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0, y: 0}
   m_AnchorMax: {x: 1, y: 1}
-  m_AnchoredPosition: {x: 0, y: 0}
+  m_AnchoredPosition: {x: 160.49133, y: 162.26575}
   m_SizeDelta: {x: 0, y: 0}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!1 &1828024249
@@ -53086,7 +53086,7 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0.5, y: 0.5}
   m_AnchorMax: {x: 0.5, y: 0.5}
-  m_AnchoredPosition: {x: 509.7373, y: 355.22314}
+  m_AnchoredPosition: {x: 162, y: 163}
   m_SizeDelta: {x: 383.1134, y: 119.4136}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &1950633041
@@ -54915,12 +54915,12 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 0cd44c1031e13a943bb63640046fad76, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  m_UiScaleMode: 0
+  m_UiScaleMode: 1
   m_ReferencePixelsPerUnit: 100
   m_ScaleFactor: 1
-  m_ReferenceResolution: {x: 800, y: 600}
+  m_ReferenceResolution: {x: 1920, y: 1080}
   m_ScreenMatchMode: 0
-  m_MatchWidthOrHeight: 0
+  m_MatchWidthOrHeight: 0.5
   m_PhysicalUnit: 3
   m_FallbackScreenDPI: 96
   m_DefaultSpriteDPI: 96
@@ -61767,7 +61767,7 @@ MonoBehaviour:
   specialViewCanvas: {fileID: 1379105725}
   mainCamera: {fileID: 1412406310}
   playerMovement: {fileID: 1235521613}
-  botonCerrar: {fileID: 0}
+  botonCerrar: {fileID: 1271788918}
   switchKey: 101
 --- !u!1 &4392355735304239456
 GameObject:
@@ -62569,7 +62569,7 @@ MonoBehaviour:
   specialViewCanvas: {fileID: 554824291}
   mainCamera: {fileID: 1412406310}
   playerMovement: {fileID: 1235521613}
-  botonCerrar: {fileID: 0}
+  botonCerrar: {fileID: 391793426}
   switchKey: 101
 --- !u!64 &5413497880238487417
 MeshCollider:
@@ -65618,7 +65618,7 @@ MonoBehaviour:
   specialViewCanvas: {fileID: 554824291}
   mainCamera: {fileID: 1412406310}
   playerMovement: {fileID: 1235521613}
-  botonCerrar: {fileID: 0}
+  botonCerrar: {fileID: 391793426}
   switchKey: 101
 --- !u!64 &7609767280775716575
 MeshCollider:
@@ -66557,7 +66557,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!23 &8745838786141250813
 MeshRenderer:
   m_ObjectHideFlags: 0
