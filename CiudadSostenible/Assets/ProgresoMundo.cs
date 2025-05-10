@@ -227,13 +227,13 @@ public class ProgresoMundo : MonoBehaviour
 
         if (misionesCompletadas < 4)
         {
-            AsignarProbabilidades(new float[] { 60f, 20f, 20f, 0f }); 
+            AsignarProbabilidades(new float[] { 70f, 20f, 10f, 0f }); 
             basuraSpawner.cantidadMaximaBasura = 20;
         }
         
         else if (misionesCompletadas < 8)
         {
-            AsignarProbabilidades(new float[] { 20f, 60f, 20f ,0f });
+            AsignarProbabilidades(new float[] { 20f, 70f, 10f ,0f });
             basuraSpawner.cantidadMaximaBasura = 18;
         }
         
@@ -257,7 +257,7 @@ public class ProgresoMundo : MonoBehaviour
 
         else if (misionesCompletadas < 25)
         {
-            AsignarProbabilidades(new float[] { 35f, 20f,20f , 25f });
+            AsignarProbabilidades(new float[] {40f, 20f,25f , 15f });
             basuraSpawner.cantidadMaximaBasura = 10;
         }
         
