@@ -75,17 +75,30 @@ public class PuntoDeSiembraSimple : MonoBehaviour
         {
             quitadoSemilla = inventario.RemoveItem(semillaItem, 1);
             if (quitadoSemilla)
+            {
                 monticuloObject.SetActive(true);
+                MostrarFeedback("Seed planted. Add compost to continue.");
+            }
+            else
+            {
+                MostrarFeedback("You need a seed to plant.");
+            }
         }
         else
         {
-            // Ya hay montículo, intentamos compostar si no lo habíamos hecho
+            // Ya hay montículo, intentamos compostar
             if (arbolInstanciado == null && arbolPrefab != null && spawnPoint != null)
             {
                 quitadoComposta = inventario.RemoveItem(compostaItem, 1);
                 if (quitadoComposta)
+                {
                     arbolInstanciado = Instantiate(arbolPrefab, spawnPoint.position, spawnPoint.rotation);
-
+                    MostrarFeedback("Compost added. Now water the tree.");
+                }
+                else
+                {
+                    MostrarFeedback("You need compost to continue.");
+                }
             }
         }
 
@@ -96,32 +109,19 @@ public class PuntoDeSiembraSimple : MonoBehaviour
             if (tieneComposta)
             {
                 arbolInstanciado = Instantiate(arbolPrefab, spawnPoint.position, spawnPoint.rotation);
-
+                MostrarFeedback("Tree planted. Now water it.");
             }
         }
 
-        // Si se hizo al menos un paso válido
+        // Si ya se completaron semilla y composta
         if (arbolInstanciado != null)
         {
             sembrado = true;
             sliderAgua.gameObject.SetActive(true);
             sliderAgua.value = 0;
         }
-
-        else
-        {
-            bool tieneSemilla = inventario.TieneItem(semillaItem, 1);
-            bool tieneComposta = inventario.TieneItem(compostaItem, 1);
-
-            if (!tieneSemilla && !tieneComposta)
-            {
-                MostrarFeedback("You need a seed and compost to plant.");
-            }
-
-            Debug.LogWarning("No tienes semilla o no has sembrado para aplicar composta.");
-        }
-
     }
+
 
     void MostrarFeedback(string mensaje)
     {
