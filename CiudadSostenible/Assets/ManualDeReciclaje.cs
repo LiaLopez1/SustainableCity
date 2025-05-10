@@ -18,6 +18,10 @@ public class ManualDeReciclaje : MonoBehaviour
     [Header("Botón para abrir/cerrar manual")]
     public Button botonAbrirCerrarManual;
 
+    [Header("Retroalimentación visual inicial")]
+    public GameObject textoIntroduccionManual;  // Texto tipo "puedes revisar el libro..."
+    public GameObject flechaUI;                 // Imagen tipo flecha
+
     private int paginaActual = 0;
     private bool manualActivo = false;
     private bool manualFueEntregado = false;
@@ -41,9 +45,16 @@ public class ManualDeReciclaje : MonoBehaviour
         {
             manualFueEntregado = true;
             inventario.RemoveItem(manualItem, 1); // Elimina el manual
+
             botonAbrirCerrarManual?.gameObject.SetActive(true);
+
+            // Activar retroalimentación visual
+            if (textoIntroduccionManual != null) textoIntroduccionManual.SetActive(true);
+            if (flechaUI != null) flechaUI.SetActive(true);
+            Invoke(nameof(DesactivarFeedbackManual), 4f);
         }
     }
+
 
     void ToggleManual()
     {
@@ -98,4 +109,11 @@ public class ManualDeReciclaje : MonoBehaviour
             ActivarPagina(paginaActual);
         }
     }
+
+    void DesactivarFeedbackManual()
+    {
+        if (textoIntroduccionManual != null) textoIntroduccionManual.SetActive(false);
+        if (flechaUI != null) flechaUI.SetActive(false);
+    }
+
 }
