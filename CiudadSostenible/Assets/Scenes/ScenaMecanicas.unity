@@ -6964,7 +6964,7 @@ MonoBehaviour:
     marcarComoCompletaDesdeEditor: 0
     fueMostradaAlJugador: 0
     clavesRequeridas:
-    - clave: Update1
+    - clave: Update2
       cantidadObjetivo: 1
       cantidadActual: 0
   - nombreMision: Upgrade the composting machine
@@ -6974,7 +6974,7 @@ MonoBehaviour:
     marcarComoCompletaDesdeEditor: 0
     fueMostradaAlJugador: 0
     clavesRequeridas:
-    - clave: Update2
+    - clave: Update1
       cantidadObjetivo: 1
       cantidadActual: 0
   - nombreMision: Upgrade the plastic machine
@@ -50227,7 +50227,7 @@ MonoBehaviour:
     colorBloqueado: {r: 0.3882353, g: 0.3882353, b: 0.3882353, a: 0.5019608}
     desbloqueado: 0
   - itemButton: {fileID: 1855944802}
-    misionRequerida: 20
+    misionRequerida: 21
     colorBloqueado: {r: 0.3882353, g: 0.3882353, b: 0.3882353, a: 0.5019608}
     desbloqueado: 0
   - itemButton: {fileID: 210115583}
