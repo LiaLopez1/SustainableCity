@@ -1330,7 +1330,7 @@ MonoBehaviour:
   itemData: {fileID: 11400000, guid: 41235489ef7e3884080a36911350532b, type: 2}
   precio: 60
   itemRequerido: {fileID: 11400000, guid: e59d97127e03a5947962477c8156d7de, type: 2}
-  cantidadRequerida: 7
+  cantidadRequerida: 5
   botonComprar: {fileID: 65490267}
   textoPrecio: {fileID: 1176182937}
   textoRequisito: {fileID: 485323520}
@@ -8361,7 +8361,7 @@ MonoBehaviour:
   itemData: {fileID: 11400000, guid: a5600f70dc469f54c81541a85ec71f1e, type: 2}
   precio: 30
   itemRequerido: {fileID: 11400000, guid: 2ae3b118dadcd2647bdf23b01cde8765, type: 2}
-  cantidadRequerida: 5
+  cantidadRequerida: 3
   botonComprar: {fileID: 849220087}
   textoPrecio: {fileID: 660021513}
   textoRequisito: {fileID: 821483757}
@@ -9544,7 +9544,7 @@ MonoBehaviour:
   itemData: {fileID: 11400000, guid: 6bca01e77894f50419429b497b890723, type: 2}
   precio: 30
   itemRequerido: {fileID: 11400000, guid: e59d97127e03a5947962477c8156d7de, type: 2}
-  cantidadRequerida: 5
+  cantidadRequerida: 3
   botonComprar: {fileID: 632032721}
   textoPrecio: {fileID: 471340690}
   textoRequisito: {fileID: 1377952008}
@@ -11872,7 +11872,7 @@ MonoBehaviour:
   itemData: {fileID: 11400000, guid: b36e1c8eb2601f04482ec57dda46c558, type: 2}
   precio: 10
   itemRequerido: {fileID: 11400000, guid: 2ae3b118dadcd2647bdf23b01cde8765, type: 2}
-  cantidadRequerida: 2
+  cantidadRequerida: 1
   botonComprar: {fileID: 1308242521}
   textoPrecio: {fileID: 254381056}
   textoRequisito: {fileID: 1271761541}
@@ -25400,7 +25400,7 @@ MonoBehaviour:
   itemData: {fileID: 11400000, guid: c1337d54b02f92a418f89a930a1fe7b4, type: 2}
   precio: 60
   itemRequerido: {fileID: 11400000, guid: 0ac8dbfe5ec7a484888734192e099915, type: 2}
-  cantidadRequerida: 7
+  cantidadRequerida: 5
   botonComprar: {fileID: 128142381}
   textoPrecio: {fileID: 170037912}
   textoRequisito: {fileID: 423058972}
@@ -35953,7 +35953,7 @@ MonoBehaviour:
   itemData: {fileID: 11400000, guid: c2df3a34cef0fad4690a366c2e397919, type: 2}
   precio: 10
   itemRequerido: {fileID: 11400000, guid: e59d97127e03a5947962477c8156d7de, type: 2}
-  cantidadRequerida: 2
+  cantidadRequerida: 1
   botonComprar: {fileID: 210115583}
   textoPrecio: {fileID: 1233233273}
   textoRequisito: {fileID: 1374876348}
@@ -41586,7 +41586,7 @@ MonoBehaviour:
   itemData: {fileID: 11400000, guid: 51c64150db366f24184ce914cdea6143, type: 2}
   precio: 30
   itemRequerido: {fileID: 11400000, guid: 0ac8dbfe5ec7a484888734192e099915, type: 2}
-  cantidadRequerida: 5
+  cantidadRequerida: 3
   botonComprar: {fileID: 1051300761}
   textoPrecio: {fileID: 594952648}
   textoRequisito: {fileID: 491642328}
@@ -46719,7 +46719,7 @@ MonoBehaviour:
   itemData: {fileID: 11400000, guid: df9da549e7b658541993f314be2a4256, type: 2}
   precio: 10
   itemRequerido: {fileID: 11400000, guid: 0ac8dbfe5ec7a484888734192e099915, type: 2}
-  cantidadRequerida: 2
+  cantidadRequerida: 1
   botonComprar: {fileID: 903911836}
   textoPrecio: {fileID: 1202167764}
   textoRequisito: {fileID: 1177567647}
@@ -49310,11 +49310,11 @@ MonoBehaviour:
   maquinas:
   - cameraSwitches:
     - {fileID: 331444239}
-    misionRequerida: 2
+    misionRequerida: 6
     desbloqueado: 0
   - cameraSwitches:
     - {fileID: 681195115}
-    misionRequerida: 6
+    misionRequerida: 2
     desbloqueado: 0
   - cameraSwitches:
     - {fileID: 1390783561}
@@ -54325,7 +54325,7 @@ MonoBehaviour:
   itemData: {fileID: 11400000, guid: ccd0f60f6fe356440908e76b0b85f9d1, type: 2}
   precio: 60
   itemRequerido: {fileID: 11400000, guid: 2ae3b118dadcd2647bdf23b01cde8765, type: 2}
-  cantidadRequerida: 7
+  cantidadRequerida: 5
   botonComprar: {fileID: 1855944802}
   textoPrecio: {fileID: 1540399692}
   textoRequisito: {fileID: 163669354}
