@@ -40246,7 +40246,7 @@ GameObject:
   m_Component:
   - component: {fileID: 1339169030}
   m_Layer: 0
-  m_Name: RecyclingGameManager
+  m_Name: RecyclingGameManager****
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -48861,7 +48861,7 @@ GameObject:
   - component: {fileID: 1760947256}
   - component: {fileID: 1760947255}
   m_Layer: 0
-  m_Name: UIBasura
+  m_Name: UIBasura****
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
