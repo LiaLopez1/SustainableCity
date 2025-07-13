@@ -6,20 +6,8 @@ public class ManivelaGiratoria : MonoBehaviour
     public Transform manivelaVisual;
     public Camera camara;
 
-    // Enum para seleccionar el tipo de objeto en el Inspector
-    public enum TipoDeObjeto
-    {
-        Objeto1 = 1,  // Primer objeto con PlasticBowlCounter
-        Objeto2 = 2   // Segundo objeto con SecondPlasticBowlCounter
-    }
-
-    // Selección de tipo de objeto desde el Inspector
     [Header("Configuración")]
-    public TipoDeObjeto tipoDeObjeto = TipoDeObjeto.Objeto1; // Valor predeterminado, puedes cambiarlo en el Inspector
-
-    // Variables para almacenar los dos posibles contadores
     public PlasticBowlCounter bowlCounter;
-    public SecondPlasticBowlCounter secondBowlCounter;
 
     public float sensibilidad = 1f;
     public float vueltaCompleta = 360f;
@@ -31,14 +19,10 @@ public class ManivelaGiratoria : MonoBehaviour
 
     void Start()
     {
-        // Asignar el componente correcto según el valor de tipoDeObjeto
-        if (tipoDeObjeto == TipoDeObjeto.Objeto1)
+        // Asignar automáticamente el primer PlasticBowlCounter en la escena si no se asigna desde el inspector
+        if (bowlCounter == null)
         {
             bowlCounter = FindObjectOfType<PlasticBowlCounter>();
-        }
-        else if (tipoDeObjeto == TipoDeObjeto.Objeto2)
-        {
-            secondBowlCounter = FindObjectOfType<SecondPlasticBowlCounter>();
         }
     }
 
@@ -73,14 +57,9 @@ public class ManivelaGiratoria : MonoBehaviour
                 {
                     rotacionAcumulada = 0f;
 
-                    // Dependiendo del tipo de objeto seleccionado, ejecutar el código correspondiente
-                    if (tipoDeObjeto == TipoDeObjeto.Objeto1 && bowlCounter != null)
+                    if (bowlCounter != null)
                     {
                         bowlCounter.ProcesarUnaBotellaDirecto();
-                    }
-                    else if (tipoDeObjeto == TipoDeObjeto.Objeto2 && secondBowlCounter != null)
-                    {
-                        secondBowlCounter.ProcesarUnaBotellaDirecto();
                     }
                     else
                     {

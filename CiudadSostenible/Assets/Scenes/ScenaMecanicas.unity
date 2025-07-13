@@ -25967,9 +25967,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   manivelaVisual: {fileID: 7895940250943290319}
   camara: {fileID: 97363991}
-  tipoDeObjeto: 1
   bowlCounter: {fileID: 1216484265197742885}
-  secondBowlCounter: {fileID: 0}
   sensibilidad: 1
   vueltaCompleta: 360
 --- !u!1 &1025055579
@@ -70418,7 +70416,7 @@ MonoBehaviour:
   m_GameObject: {fileID: 1216484264233591758}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 370bc46c080862d4b9f581cac2b01c92, type: 3}
+  m_Script: {fileID: 11500000, guid: f42ac53f453b5df449e1c34f28523336, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
   targetTag: Botella
@@ -71631,9 +71629,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   manivelaVisual: {fileID: 7895940249994834721}
   camara: {fileID: 97363991}
-  tipoDeObjeto: 2
   bowlCounter: {fileID: 0}
-  secondBowlCounter: {fileID: 0}
   sensibilidad: 1
   vueltaCompleta: 360
 --- !u!64 &8340640790735102917
