@@ -122,6 +122,37 @@ public class InventoryItemDragHandler : MonoBehaviour, IBeginDragHandler, IDragH
 
         GameObject objetoSoltado = eventData.pointerCurrentRaycast.gameObject;
 
+
+        // 🔁 Lógica de intercambio o reubicación entre slots
+        InventorySlot slotDestino = objetoSoltado?.GetComponentInParent<InventorySlot>();
+
+        if (slotDestino != null && slotDestino != parentSlot)
+        {
+            if (slotDestino.IsEmpty())
+            {
+                // Mover el ítem al slot vacío
+                slotDestino.UpdateSlot(parentSlot.GetItemData(), parentSlot.GetQuantity());
+                parentSlot.ClearSlot();
+            }
+            else
+            {
+                // Intercambiar ítems
+                ItemData dataOrigen = parentSlot.GetItemData();
+                int cantidadOrigen = parentSlot.GetQuantity();
+
+                ItemData dataDestino = slotDestino.GetItemData();
+                int cantidadDestino = slotDestino.GetQuantity();
+
+                // Intercambio
+                parentSlot.UpdateSlot(dataDestino, cantidadDestino);
+                slotDestino.UpdateSlot(dataOrigen, cantidadOrigen);
+            }
+
+            return; // No continuar con lógica de soltar en el mundo
+        }
+
+
+
         if (objetoSoltado != null && objetoSoltado.CompareTag("Caneca"))
         {
             CanecaReciclaje caneca = objetoSoltado.GetComponent<CanecaReciclaje>();
@@ -228,6 +259,7 @@ public class InventoryItemDragHandler : MonoBehaviour, IBeginDragHandler, IDragH
                 StartCoroutine(BounceBackToSlot());
             }
         }
+
     }
 
     private void ToggleImagenActiva()
