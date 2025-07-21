@@ -11,7 +11,6 @@ public class TiendaComprasUI : MonoBehaviour
     [Header("Estado actual")]
     [SerializeField] private int dinero = 0;
 
-    // Se llama desde ProductoComprable
     public bool TieneDineroSuficiente(int cantidad)
     {
         return EconomiaJugador.Instance.TieneDinero(cantidad);
@@ -22,33 +21,38 @@ public class TiendaComprasUI : MonoBehaviour
         EconomiaJugador.Instance.RestarDinero(cantidad);
     }
 
-
     public bool AnadirAlInventario(ItemData item)
     {
-        // AddItem ya devuelve false si no hay espacio
         return inventario.AddItem(item);
     }
 
     public void MostrarMensaje(string mensaje)
     {
+        Debug.Log("MENSAJE: " + mensaje);
         if (textoAdvertencia != null)
         {
             textoAdvertencia.text = mensaje;
             textoAdvertencia.gameObject.SetActive(true);
+
             CancelInvoke(nameof(OcultarMensaje));
             Invoke(nameof(OcultarMensaje), 2f);
         }
     }
 
+
     private void OcultarMensaje()
     {
-        textoAdvertencia.gameObject.SetActive(false);
+        if (textoAdvertencia != null)
+        {
+            textoAdvertencia.gameObject.SetActive(false);
+        }
     }
 
-
-    private void LimpiarMensaje()
+    // Actualización de UI (opcional)
+    public void EstablecerDinero(int cantidad)
     {
-        textoAdvertencia.text = "";
+        dinero = cantidad;
+        ActualizarUI();
     }
 
     private void ActualizarUI()
@@ -57,13 +61,7 @@ public class TiendaComprasUI : MonoBehaviour
             textoDinero.text = "$" + dinero;
     }
 
-    // Puedes usar esto para cargar dinero desde otro sistema
-    public void EstablecerDinero(int cantidad)
-    {
-        dinero = cantidad;
-        ActualizarUI();
-    }
-
     public int ObtenerDinero() => dinero;
+
 
 }
