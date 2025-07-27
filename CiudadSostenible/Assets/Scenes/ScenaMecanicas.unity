@@ -9354,7 +9354,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!114 &360489175
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -9468,7 +9468,7 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0.5, y: 0.5}
   m_AnchorMax: {x: 0.5, y: 0.5}
-  m_AnchoredPosition: {x: 0.9997613, y: -474.59903}
+  m_AnchoredPosition: {x: 0.9997613, y: -303}
   m_SizeDelta: {x: 200, y: 50}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!1 &363963179
@@ -12929,8 +12929,8 @@ MonoBehaviour:
   m_faceColor:
     serializedVersion: 2
     rgba: 4294967295
-  m_fontSize: 40
-  m_fontSizeBase: 40
+  m_fontSize: 60
+  m_fontSizeBase: 60
   m_fontWeight: 400
   m_enableAutoSizing: 0
   m_fontSizeMin: 18
@@ -14239,7 +14239,7 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0.5, y: 0.5}
   m_AnchorMax: {x: 0.5, y: 0.5}
-  m_AnchoredPosition: {x: -578, y: 406}
+  m_AnchoredPosition: {x: -578, y: 459}
   m_SizeDelta: {x: 200, y: 50}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &562194904
@@ -14291,8 +14291,8 @@ MonoBehaviour:
   m_faceColor:
     serializedVersion: 2
     rgba: 4294967295
-  m_fontSize: 40
-  m_fontSizeBase: 40
+  m_fontSize: 70
+  m_fontSizeBase: 70
   m_fontWeight: 400
   m_enableAutoSizing: 0
   m_fontSizeMin: 18
@@ -14327,7 +14327,7 @@ MonoBehaviour:
   m_VertexBufferAutoSizeReduction: 0
   m_useMaxVisibleDescender: 1
   m_pageToDisplay: 1
-  m_margin: {x: -63.08919, y: 0, z: -645.7878, w: 0}
+  m_margin: {x: -63.08919, y: -7.765688, z: -645.7878, w: -34.360806}
   m_isUsingLegacyAnimationComponent: 0
   m_isVolumetricText: 0
   m_hasFontAssetChanged: 0
@@ -15534,7 +15534,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!4 &618070446
 Transform:
   m_ObjectHideFlags: 0
@@ -16948,7 +16948,7 @@ MonoBehaviour:
   m_OnClick:
     m_PersistentCalls:
       m_Calls:
-      - m_Target: {fileID: 6244125589717865274}
+      - m_Target: {fileID: 0}
         m_TargetAssemblyTypeName: 
         m_MethodName: 
         m_Mode: 1
@@ -23093,7 +23093,6 @@ RectTransform:
   m_LocalScale: {x: 0.48736, y: 0.68815, z: 0.48736}
   m_ConstrainProportionsScale: 0
   m_Children:
-  - {fileID: 1987197299}
   - {fileID: 134373952}
   - {fileID: 972601943}
   - {fileID: 683990757}
@@ -23683,9 +23682,9 @@ MonoBehaviour:
   m_OnClick:
     m_PersistentCalls:
       m_Calls:
-      - m_Target: {fileID: 8347870968220486801}
+      - m_Target: {fileID: 0}
         m_TargetAssemblyTypeName: ProductoComprable3D, Assembly-CSharp
-        m_MethodName: CerrarPanelDetalle
+        m_MethodName: 
         m_Mode: 1
         m_Arguments:
           m_ObjectArgument: {fileID: 0}
@@ -24742,8 +24741,8 @@ MonoBehaviour:
   m_faceColor:
     serializedVersion: 2
     rgba: 4294967295
-  m_fontSize: 40
-  m_fontSizeBase: 40
+  m_fontSize: 60
+  m_fontSizeBase: 60
   m_fontWeight: 400
   m_enableAutoSizing: 0
   m_fontSizeMin: 18
@@ -24778,7 +24777,7 @@ MonoBehaviour:
   m_VertexBufferAutoSizeReduction: 0
   m_useMaxVisibleDescender: 1
   m_pageToDisplay: 1
-  m_margin: {x: 106.62934, y: 0, z: -358.23657, w: -97.07697}
+  m_margin: {x: 106.62934, y: -44.682903, z: -358.23657, w: -148.45444}
   m_isUsingLegacyAnimationComponent: 0
   m_isVolumetricText: 0
   m_hasFontAssetChanged: 0
@@ -27999,9 +27998,9 @@ MonoBehaviour:
   m_OnClick:
     m_PersistentCalls:
       m_Calls:
-      - m_Target: {fileID: 911556691}
-        m_TargetAssemblyTypeName: TiendaUIController, Assembly-CSharp
-        m_MethodName: CerrarTienda
+      - m_Target: {fileID: 1987197300}
+        m_TargetAssemblyTypeName: TiendaComprasUI, Assembly-CSharp
+        m_MethodName: CerrarDetalle
         m_Mode: 1
         m_Arguments:
           m_ObjectArgument: {fileID: 0}
@@ -36408,10 +36407,10 @@ MonoBehaviour:
   m_OnClick:
     m_PersistentCalls:
       m_Calls:
-      - m_Target: {fileID: 911556691}
-        m_TargetAssemblyTypeName: TiendaUIController, Assembly-CSharp
-        m_MethodName: MostrarPanelTienda
-        m_Mode: 3
+      - m_Target: {fileID: 1987197300}
+        m_TargetAssemblyTypeName: TiendaComprasUI, Assembly-CSharp
+        m_MethodName: ComprarActual
+        m_Mode: 1
         m_Arguments:
           m_ObjectArgument: {fileID: 0}
           m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
@@ -46691,8 +46690,7 @@ GameObject:
   - component: {fileID: 1771746598}
   - component: {fileID: 1771746597}
   - component: {fileID: 1771746596}
-  - component: {fileID: 1771746595}
-  m_Layer: 0
+  m_Layer: 9
   m_Name: Semillas (1)
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -46714,38 +46712,6 @@ Transform:
   m_Children: []
   m_Father: {fileID: 6163092755487192610}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!114 &1771746595
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1771746593}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 1c67f9a41c55ab740a043675b0f25aec, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  itemData: {fileID: 11400000, guid: b36e1c8eb2601f04482ec57dda46c558, type: 2}
-  precio: 10
-  itemRequerido: {fileID: 11400000, guid: 2ae3b118dadcd2647bdf23b01cde8765, type: 2}
-  cantidadRequerida: 1
-  esMejora: 0
-  objetoAntiguo: {fileID: 0}
-  objetoNuevo: {fileID: 0}
-  esDecorativo: 0
-  objetoDecorativo: {fileID: 0}
-  outlineMesh: {fileID: 0}
-  panelFlotante: {fileID: 0}
-  panelDetalle: {fileID: 0}
-  textoNombre: {fileID: 0}
-  textoPrecio: {fileID: 0}
-  textoDescripcion: {fileID: 0}
-  imagenIcono: {fileID: 0}
-  botonComprar: {fileID: 0}
-  botonCancelar: {fileID: 0}
-  descripcionPersonalizada: 
-  tienda: {fileID: 0}
 --- !u!65 &1771746596
 BoxCollider:
   m_ObjectHideFlags: 0
@@ -46846,6 +46812,7 @@ Transform:
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children:
+  - {fileID: 1987197299}
   - {fileID: 610755428}
   - {fileID: 1156530902}
   - {fileID: 1505326163}
@@ -57001,14 +56968,14 @@ RectTransform:
   m_GameObject: {fileID: 1987197298}
   m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
   m_LocalPosition: {x: 0, y: 0, z: 0}
-  m_LocalScale: {x: 0.9995896, y: 0.9055293, z: 0.9995896}
+  m_LocalScale: {x: 0.6495467, y: 0.83085334, z: 0.6495467}
   m_ConstrainProportionsScale: 0
   m_Children: []
-  m_Father: {fileID: 962072773}
+  m_Father: {fileID: 1772767387}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0.5, y: 0.5}
   m_AnchorMax: {x: 0.5, y: 0.5}
-  m_AnchoredPosition: {x: 0.9997613, y: -49.000237}
+  m_AnchoredPosition: {x: 1333.9829, y: 728.37396}
   m_SizeDelta: {x: 100, y: 100}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &1987197300
@@ -57026,7 +56993,13 @@ MonoBehaviour:
   inventario: {fileID: 778765610}
   textoDinero: {fileID: 159000097}
   textoAdvertencia: {fileID: 360489175}
-  dinero: 0
+  panelDetalle: {fileID: 1597619348}
+  textoNombre: {fileID: 562194904}
+  textoPrecio: {fileID: 1029542014}
+  textoDescripcion: {fileID: 519621738}
+  imagenIcono: {fileID: 773669979}
+  botonComprar: {fileID: 1272075075}
+  botonCancelar: {fileID: 1147629396}
 --- !u!1 &1991838057
 GameObject:
   m_ObjectHideFlags: 0
@@ -62370,7 +62343,7 @@ GameObject:
   - component: {fileID: 1366404683812290831}
   - component: {fileID: 3798067175153966929}
   - component: {fileID: 3798067175153966928}
-  m_Layer: 0
+  m_Layer: 9
   m_Name: Decoracion_papel
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -62814,7 +62787,7 @@ GameObject:
   - component: {fileID: 8544658079446940231}
   - component: {fileID: 8544658079446940233}
   - component: {fileID: 8544658079446940232}
-  m_Layer: 0
+  m_Layer: 9
   m_Name: Libro
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -63693,7 +63666,7 @@ GameObject:
   - component: {fileID: 2349019989214200401}
   - component: {fileID: 4758523377057878717}
   - component: {fileID: 4758523377057878716}
-  m_Layer: 0
+  m_Layer: 9
   m_Name: Mejora_2
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -64335,6 +64308,10 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 1c67f9a41c55ab740a043675b0f25aec, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  cameraInteractiva: {fileID: 0}
+  shopItemLayer:
+    serializedVersion: 2
+    m_Bits: 0
   itemData: {fileID: 0}
   precio: 0
   itemRequerido: {fileID: 0}
@@ -64346,13 +64323,6 @@ MonoBehaviour:
   objetoDecorativo: {fileID: 0}
   outlineMesh: {fileID: 0}
   panelFlotante: {fileID: 0}
-  panelDetalle: {fileID: 0}
-  textoNombre: {fileID: 0}
-  textoPrecio: {fileID: 0}
-  textoDescripcion: {fileID: 0}
-  imagenIcono: {fileID: 0}
-  botonComprar: {fileID: 0}
-  botonCancelar: {fileID: 0}
   descripcionPersonalizada: 
   tienda: {fileID: 0}
 --- !u!65 &3798067175153966929
@@ -65708,6 +65678,10 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 1c67f9a41c55ab740a043675b0f25aec, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  cameraInteractiva: {fileID: 0}
+  shopItemLayer:
+    serializedVersion: 2
+    m_Bits: 0
   itemData: {fileID: 0}
   precio: 0
   itemRequerido: {fileID: 0}
@@ -65719,13 +65693,6 @@ MonoBehaviour:
   objetoDecorativo: {fileID: 0}
   outlineMesh: {fileID: 0}
   panelFlotante: {fileID: 0}
-  panelDetalle: {fileID: 0}
-  textoNombre: {fileID: 0}
-  textoPrecio: {fileID: 0}
-  textoDescripcion: {fileID: 0}
-  imagenIcono: {fileID: 0}
-  botonComprar: {fileID: 0}
-  botonCancelar: {fileID: 0}
   descripcionPersonalizada: 
   tienda: {fileID: 0}
 --- !u!65 &4758523377057878717
@@ -67540,7 +67507,7 @@ GameObject:
   - component: {fileID: 8347870968220486800}
   - component: {fileID: 8347870968220486802}
   - component: {fileID: 8347870968220486801}
-  m_Layer: 0
+  m_Layer: 9
   m_Name: Semillas
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -67733,7 +67700,7 @@ GameObject:
   - component: {fileID: 9204124770073141116}
   - component: {fileID: 9204124770073141118}
   - component: {fileID: 9204124770073141117}
-  m_Layer: 0
+  m_Layer: 9
   m_Name: Mejora_1
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -68850,7 +68817,7 @@ GameObject:
   - component: {fileID: 483475681385874332}
   - component: {fileID: 7083507540716051210}
   - component: {fileID: 7083507540716051209}
-  m_Layer: 0
+  m_Layer: 9
   m_Name: Matera
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -68869,6 +68836,10 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 1c67f9a41c55ab740a043675b0f25aec, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  cameraInteractiva: {fileID: 0}
+  shopItemLayer:
+    serializedVersion: 2
+    m_Bits: 0
   itemData: {fileID: 0}
   precio: 0
   itemRequerido: {fileID: 0}
@@ -68880,13 +68851,6 @@ MonoBehaviour:
   objetoDecorativo: {fileID: 0}
   outlineMesh: {fileID: 0}
   panelFlotante: {fileID: 0}
-  panelDetalle: {fileID: 0}
-  textoNombre: {fileID: 0}
-  textoPrecio: {fileID: 0}
-  textoDescripcion: {fileID: 0}
-  imagenIcono: {fileID: 0}
-  botonComprar: {fileID: 0}
-  botonCancelar: {fileID: 0}
   descripcionPersonalizada: 
   tienda: {fileID: 0}
 --- !u!65 &7083507540716051210
@@ -70069,7 +70033,7 @@ GameObject:
   - component: {fileID: 9025202656664475765}
   - component: {fileID: 9025202656664475767}
   - component: {fileID: 9025202656664475766}
-  m_Layer: 0
+  m_Layer: 9
   m_Name: Water_jug
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -70146,7 +70110,7 @@ GameObject:
   - component: {fileID: 66004154387444445}
   - component: {fileID: 8099713496563247637}
   - component: {fileID: 8099713496563247636}
-  m_Layer: 0
+  m_Layer: 9
   m_Name: Mejora_3
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -70165,6 +70129,10 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 1c67f9a41c55ab740a043675b0f25aec, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  cameraInteractiva: {fileID: 0}
+  shopItemLayer:
+    serializedVersion: 2
+    m_Bits: 0
   itemData: {fileID: 0}
   precio: 0
   itemRequerido: {fileID: 0}
@@ -70176,13 +70144,6 @@ MonoBehaviour:
   objetoDecorativo: {fileID: 0}
   outlineMesh: {fileID: 0}
   panelFlotante: {fileID: 0}
-  panelDetalle: {fileID: 0}
-  textoNombre: {fileID: 0}
-  textoPrecio: {fileID: 0}
-  textoDescripcion: {fileID: 0}
-  imagenIcono: {fileID: 0}
-  botonComprar: {fileID: 0}
-  botonCancelar: {fileID: 0}
   descripcionPersonalizada: 
   tienda: {fileID: 0}
 --- !u!65 &8099713496563247637
@@ -70509,6 +70470,10 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 1c67f9a41c55ab740a043675b0f25aec, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  cameraInteractiva: {fileID: 5669224508280432771}
+  shopItemLayer:
+    serializedVersion: 2
+    m_Bits: 512
   itemData: {fileID: 11400000, guid: b36e1c8eb2601f04482ec57dda46c558, type: 2}
   precio: 10
   itemRequerido: {fileID: 11400000, guid: 2ae3b118dadcd2647bdf23b01cde8765, type: 2}
@@ -70520,15 +70485,8 @@ MonoBehaviour:
   objetoDecorativo: {fileID: 0}
   outlineMesh: {fileID: 1771746593}
   panelFlotante: {fileID: 1427648894}
-  panelDetalle: {fileID: 1597619348}
-  textoNombre: {fileID: 562194904}
-  textoPrecio: {fileID: 1029542014}
-  textoDescripcion: {fileID: 519621738}
-  imagenIcono: {fileID: 773669979}
-  botonComprar: {fileID: 1272075075}
-  botonCancelar: {fileID: 1147629396}
   descripcionPersonalizada: Estas son las semillas
-  tienda: {fileID: 0}
+  tienda: {fileID: 1987197300}
 --- !u!65 &8347870968220486802
 BoxCollider:
   m_ObjectHideFlags: 0
@@ -70778,6 +70736,10 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 1c67f9a41c55ab740a043675b0f25aec, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  cameraInteractiva: {fileID: 0}
+  shopItemLayer:
+    serializedVersion: 2
+    m_Bits: 0
   itemData: {fileID: 0}
   precio: 0
   itemRequerido: {fileID: 0}
@@ -70789,13 +70751,6 @@ MonoBehaviour:
   objetoDecorativo: {fileID: 0}
   outlineMesh: {fileID: 0}
   panelFlotante: {fileID: 0}
-  panelDetalle: {fileID: 0}
-  textoNombre: {fileID: 0}
-  textoPrecio: {fileID: 0}
-  textoDescripcion: {fileID: 0}
-  imagenIcono: {fileID: 0}
-  botonComprar: {fileID: 0}
-  botonCancelar: {fileID: 0}
   descripcionPersonalizada: 
   tienda: {fileID: 0}
 --- !u!65 &8544658079446940233
@@ -71245,7 +71200,7 @@ GameObject:
   - component: {fileID: 394323901676103839}
   - component: {fileID: 9001832611830016063}
   - component: {fileID: 9001832611830016062}
-  m_Layer: 0
+  m_Layer: 9
   m_Name: silla
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -71264,6 +71219,10 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 1c67f9a41c55ab740a043675b0f25aec, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  cameraInteractiva: {fileID: 0}
+  shopItemLayer:
+    serializedVersion: 2
+    m_Bits: 0
   itemData: {fileID: 0}
   precio: 0
   itemRequerido: {fileID: 0}
@@ -71275,13 +71234,6 @@ MonoBehaviour:
   objetoDecorativo: {fileID: 0}
   outlineMesh: {fileID: 0}
   panelFlotante: {fileID: 0}
-  panelDetalle: {fileID: 0}
-  textoNombre: {fileID: 0}
-  textoPrecio: {fileID: 0}
-  textoDescripcion: {fileID: 0}
-  imagenIcono: {fileID: 0}
-  botonComprar: {fileID: 0}
-  botonCancelar: {fileID: 0}
   descripcionPersonalizada: 
   tienda: {fileID: 0}
 --- !u!65 &9001832611830016063
@@ -71419,6 +71371,10 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 1c67f9a41c55ab740a043675b0f25aec, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  cameraInteractiva: {fileID: 0}
+  shopItemLayer:
+    serializedVersion: 2
+    m_Bits: 512
   itemData: {fileID: 0}
   precio: 0
   itemRequerido: {fileID: 0}
@@ -71430,13 +71386,6 @@ MonoBehaviour:
   objetoDecorativo: {fileID: 0}
   outlineMesh: {fileID: 0}
   panelFlotante: {fileID: 0}
-  panelDetalle: {fileID: 0}
-  textoNombre: {fileID: 0}
-  textoPrecio: {fileID: 0}
-  textoDescripcion: {fileID: 0}
-  imagenIcono: {fileID: 0}
-  botonComprar: {fileID: 0}
-  botonCancelar: {fileID: 0}
   descripcionPersonalizada: 
   tienda: {fileID: 0}
 --- !u!65 &9025202656664475767
@@ -71590,6 +71539,10 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 1c67f9a41c55ab740a043675b0f25aec, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  cameraInteractiva: {fileID: 0}
+  shopItemLayer:
+    serializedVersion: 2
+    m_Bits: 0
   itemData: {fileID: 0}
   precio: 0
   itemRequerido: {fileID: 0}
@@ -71601,13 +71554,6 @@ MonoBehaviour:
   objetoDecorativo: {fileID: 0}
   outlineMesh: {fileID: 0}
   panelFlotante: {fileID: 0}
-  panelDetalle: {fileID: 0}
-  textoNombre: {fileID: 0}
-  textoPrecio: {fileID: 0}
-  textoDescripcion: {fileID: 0}
-  imagenIcono: {fileID: 0}
-  botonComprar: {fileID: 0}
-  botonCancelar: {fileID: 0}
   descripcionPersonalizada: 
   tienda: {fileID: 0}
 --- !u!65 &9204124770073141118
