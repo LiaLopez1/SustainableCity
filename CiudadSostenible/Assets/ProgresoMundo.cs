@@ -1,6 +1,7 @@
 ﻿using UnityEngine;
 using UnityEngine.UI;
 using System.Collections.Generic;
+using TMPro;
 
 public class ProgresoMundo : MonoBehaviour
 {
@@ -35,7 +36,6 @@ public class ProgresoMundo : MonoBehaviour
     public Sprite imagenAdvertencia;
     public Sprite imagenPeligro;
 
-
     [Header("Items de Tienda")]
     public List<ShopItem> shopItems;
 
@@ -46,9 +46,11 @@ public class ProgresoMundo : MonoBehaviour
     public GameObject panelCompartido;
     public List<MaquinaInteractuable> maquinas;
 
+    [Header("Productos 3D a controlar")]
+    public List<Product3DEntry> productos3D;
+
     private Image fillImage;
     private bool mapaFinalActivado = false;
-
 
     [System.Serializable]
     public class ShopItem
@@ -68,9 +70,19 @@ public class ProgresoMundo : MonoBehaviour
         [HideInInspector] public bool desbloqueado;
     }
 
+    [System.Serializable]
+    public class Product3DEntry
+    {
+        public ProductoComprable3D producto;
+        public int misionRequerida = 1;
+        public Material materialNormal;
+        public Material materialBloqueado;
+        public TMP_Text textBloqueado;
+    }
+
     void Start()
     {
-        // Configuración inicial del slider
+        // Slider inicial
         if (sliderContaminacion != null)
         {
             fillImage = sliderContaminacion.fillRect?.GetComponent<Image>();
@@ -80,31 +92,30 @@ public class ProgresoMundo : MonoBehaviour
 
         // Inicializar items de tienda
         foreach (var item in shopItems)
-        {
             if (item.itemButton != null)
-            {
                 item.itemButton.interactable = false;
-            }
-        }
 
-        // Inicializar máquinas (desactivar todos los CameraSwitch)
+        // Inicializar máquinas
         foreach (var maquina in maquinas)
-        {
-            foreach (var cameraSwitch in maquina.cameraSwitches)
-            {
-                if (cameraSwitch != null)
-                {
-                    // Saltar si está en la lista de siempre activas
-                    if (maquinasSiempreDesbloqueadas.Contains(cameraSwitch.gameObject))
-                    {
-                        continue;
-                    }
+            foreach (var cs in maquina.cameraSwitches)
+                if (cs != null && !maquinasSiempreDesbloqueadas.Contains(cs.gameObject))
+                    cs.enabled = false;
 
-                    cameraSwitch.enabled = false;
-                }
+        // Inicializar productos 3D (bloqueados por defecto)
+        foreach (var entry in productos3D)
+        {
+            var prod = entry.producto;
+            if (prod == null) continue;
+            prod.desbloqueado = false;
+            var rend = prod.GetComponent<Renderer>();
+            if (entry.materialBloqueado != null)
+                rend.material = entry.materialBloqueado;
+            if (entry.textBloqueado != null)
+            {
+                entry.textBloqueado.text = $"Bloqueado\nMisión {entry.misionRequerida}";
+                entry.textBloqueado.gameObject.SetActive(false);  // oculto inicialmente
             }
         }
-
 
         ActualizarUI();
     }
@@ -116,110 +127,106 @@ public class ProgresoMundo : MonoBehaviour
 
     void ActualizarUI()
     {
-        if (missionManager == null || sliderContaminacion == null || totalMisiones <= 0) return;
+        if (missionManager == null || sliderContaminacion == null || totalMisiones <= 0)
+            return;
 
         int completadas = missionManager.misionesCompletadas;
         float valorSlider = Mathf.Clamp01(1f - (float)completadas / totalMisiones);
 
-        // Actualizar slider
+        // Slider y colores
         sliderContaminacion.value = valorSlider;
-
-        // Actualizar colores del slider
         if (fillImage != null)
-        {
-            fillImage.color = valorSlider <= 0.33f ? colorNormal :
-                            valorSlider <= 0.66f ? colorAdvertencia :
-                            colorPeligro;
-        }
+            fillImage.color = valorSlider <= 0.33f ? colorNormal : valorSlider <= 0.66f ? colorAdvertencia : colorPeligro;
 
-        // Actualizar imagen de estado
+        // Imagen de estado
         if (imagenEstado != null)
-        {
-            imagenEstado.sprite = valorSlider <= 0.33f ? imagenNormal :
-                                 valorSlider <= 0.66f ? imagenAdvertencia :
-                                 imagenPeligro;
-        }
+            imagenEstado.sprite = valorSlider <= 0.33f ? imagenNormal : valorSlider <= 0.66f ? imagenAdvertencia : imagenPeligro;
 
-        // Actualizar items de tienda
+        // Desbloquear items de tienda
         foreach (var item in shopItems)
-        {
             if (!item.desbloqueado && completadas >= item.misionRequerida)
-            {
                 DesbloquearItem(item);
-            }
-        }
 
-        // Actualizar máquinas
+        // Desbloquear máquinas
         foreach (var maquina in maquinas)
-        {
             if (!maquina.desbloqueado && completadas >= maquina.misionRequerida)
-            {
                 DesbloquearMaquina(maquina);
+
+        // Desbloquear productos 3D y controlar visibilidad de texto bloqueado
+        foreach (var entry in productos3D)
+        {
+            var prod = entry.producto;
+            if (prod == null) continue;
+            bool shouldUnlock = completadas >= entry.misionRequerida;
+            prod.desbloqueado = shouldUnlock;
+            var rend = prod.GetComponent<Renderer>();
+            if (shouldUnlock)
+            {
+                if (entry.materialNormal != null)
+                    rend.material = entry.materialNormal;
+            }
+            else
+            {
+                if (entry.materialBloqueado != null)
+                    rend.material = entry.materialBloqueado;
+            }
+
+            if (entry.textBloqueado != null)
+            {
+                bool camaraParentActive = prod.cameraInteractiva != null &&
+                    prod.cameraInteractiva.transform.parent != null &&
+                    prod.cameraInteractiva.transform.parent.gameObject.activeInHierarchy;
+                bool mostrar = !shouldUnlock && camaraParentActive;
+                entry.textBloqueado.gameObject.SetActive(mostrar);
+                if (mostrar)
+                    entry.textBloqueado.text = $"Bloqueado\nMisión {entry.misionRequerida}";
             }
         }
 
+        // Niebla
         if (fogController != null)
-        {
-            fogController.SetFogDensityByContamination(valorSlider); // valorSlider ya representa la contaminación
-        }
+            fogController.SetFogDensityByContamination(valorSlider);
 
+        // Cambio de mapa final
         if (!mapaFinalActivado && completadas >= totalMisiones)
         {
             mapaFinalActivado = true;
-
             if (mapaViejo != null) mapaViejo.SetActive(false);
             if (mapaNuevo != null) mapaNuevo.SetActive(true);
             if (panelFinal != null) panelFinal.SetActive(true);
         }
 
+        // Actualizar spawner de basura
         ActualizarSpawnerDeBasura(completadas);
-
     }
 
     void DesbloquearItem(ShopItem item)
     {
         item.desbloqueado = true;
-
         if (item.itemButton != null)
-        {
             item.itemButton.interactable = true;
-        }
     }
 
     void DesbloquearMaquina(MaquinaInteractuable maquina)
     {
         maquina.desbloqueado = true;
-
-        foreach (var cameraSwitch in maquina.cameraSwitches)
+        foreach (var cs in maquina.cameraSwitches)
         {
-            if (cameraSwitch != null)
+            if (cs != null)
             {
-                cameraSwitch.enabled = true;
-                Debug.Log($"Máquina desbloqueada! Script CameraSwitch activado en {cameraSwitch.gameObject.name}");
+                cs.enabled = true;
+                Debug.Log($"Máquina desbloqueada! Script CameraSwitch activado en {cs.gameObject.name}");
             }
         }
     }
 
     public bool MaquinaEstaDesbloqueada(GameObject maquinaGO)
     {
-        // Revisión por misión completada
         foreach (var maquina in maquinas)
-        {
             if (maquina.desbloqueado && maquina.cameraSwitches.Exists(cs => cs.gameObject == maquinaGO))
-            {
                 return true;
-            }
-        }
-
-        // Revisión por lista de siempre activas
-        if (maquinasSiempreDesbloqueadas != null && maquinasSiempreDesbloqueadas.Contains(maquinaGO))
-        {
-            return true;
-        }
-
-        return false;
+        return maquinasSiempreDesbloqueadas != null && maquinasSiempreDesbloqueadas.Contains(maquinaGO);
     }
-
 
     void ActualizarSpawnerDeBasura(int misionesCompletadas)
     {
@@ -227,40 +234,34 @@ public class ProgresoMundo : MonoBehaviour
 
         if (misionesCompletadas < 4)
         {
-            AsignarProbabilidades(new float[] { 70f, 20f, 10f, 0f }); 
+            AsignarProbabilidades(new float[] { 70f, 20f, 10f, 0f });
             basuraSpawner.cantidadMaximaBasura = 20;
         }
-        
         else if (misionesCompletadas < 8)
         {
-            AsignarProbabilidades(new float[] { 20f, 70f, 10f ,0f });
+            AsignarProbabilidades(new float[] { 20f, 70f, 10f, 0f });
             basuraSpawner.cantidadMaximaBasura = 18;
         }
-        
         else if (misionesCompletadas < 11)
         {
             AsignarProbabilidades(new float[] { 20f, 20f, 60f, 0f });
             basuraSpawner.cantidadMaximaBasura = 15;
         }
-
         else if (misionesCompletadas < 13)
         {
             AsignarProbabilidades(new float[] { 5f, 5f, 5f, 85f });
             basuraSpawner.cantidadMaximaBasura = 15;
         }
-
         else if (misionesCompletadas < 16)
         {
             AsignarProbabilidades(new float[] { 22f, 22f, 22f, 34f });
             basuraSpawner.cantidadMaximaBasura = 15;
         }
-
         else if (misionesCompletadas < 25)
         {
-            AsignarProbabilidades(new float[] {40f, 20f,25f , 15f });
+            AsignarProbabilidades(new float[] { 40f, 20f, 25f, 15f });
             basuraSpawner.cantidadMaximaBasura = 10;
         }
-        
         else
         {
             basuraSpawner.cantidadMaximaBasura = 0;
@@ -270,23 +271,14 @@ public class ProgresoMundo : MonoBehaviour
     void AsignarProbabilidades(float[] nuevasProbs)
     {
         for (int i = 0; i < basuraSpawner.tiposBasura.Count; i++)
-        {
-            if (i < nuevasProbs.Length)
-                basuraSpawner.tiposBasura[i].probabilidad = nuevasProbs[i];
-            else
-                basuraSpawner.tiposBasura[i].probabilidad = 0f; // explícito
-        }
+            basuraSpawner.tiposBasura[i].probabilidad = i < nuevasProbs.Length ? nuevasProbs[i] : 0f;
     }
 
     void AsignarProbabilidadesUniformes()
     {
         int totalTipos = basuraSpawner.tiposBasura.Count;
         float prob = 100f / totalTipos;
-
         foreach (var tipo in basuraSpawner.tiposBasura)
-        {
             tipo.probabilidad = prob;
-        }
     }
-
 }

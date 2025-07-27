@@ -1,4 +1,4 @@
-using UnityEngine;
+Ôªøusing UnityEngine;
 using UnityEngine.UI;
 using TMPro;
 using System.Collections;
@@ -28,7 +28,7 @@ public class TiendaComprasUI : MonoBehaviour
 
     void Awake()
     {
-        // Guardamos color original del botÛn
+        // Guardamos color original del bot√≥n
         if (botonComprar != null && botonComprar.image != null)
             originalBuyColor = botonComprar.image.color;
 
@@ -44,7 +44,7 @@ public class TiendaComprasUI : MonoBehaviour
     }
 
     /// <summary>
-    /// Muestra un mensaje de advertencia y hace parpadear el botÛn de comprar.
+    /// Muestra un mensaje de advertencia y hace parpadear el bot√≥n de comprar.
     /// </summary>
     public void MostrarMensaje(string mensaje)
     {
@@ -55,7 +55,7 @@ public class TiendaComprasUI : MonoBehaviour
             textoAdvertencia.text = mensaje;
             textoAdvertencia.gameObject.SetActive(true);
 
-            // Blink del botÛn
+            // Blink del bot√≥n
             ParpadearBotonRojo();
 
             // Ocultar mensaje tras 2s
@@ -100,7 +100,7 @@ public class TiendaComprasUI : MonoBehaviour
     }
 
     /// <summary>
-    /// Llamado por el botÛn ìComprarî.
+    /// Llamado por el bot√≥n ‚ÄúComprar‚Äù.
     /// </summary>
    public void ComprarActual()
     {
@@ -109,7 +109,7 @@ public class TiendaComprasUI : MonoBehaviour
     }
 
     /// <summary>
-    /// Llamado por el botÛn ìCancelarî o al Èxito de la compra.
+    /// Llamado por el bot√≥n ‚ÄúCancelar‚Äù o al √©xito de la compra.
     /// </summary>
     public void CerrarDetalle()
     {
@@ -118,7 +118,7 @@ public class TiendaComprasUI : MonoBehaviour
     }
 
     /// <summary>
-    /// Inicia el parpadeo en rojo del botÛn Comprar.
+    /// Inicia el parpadeo en rojo del bot√≥n Comprar.
     /// </summary>
     private void ParpadearBotonRojo()
     {

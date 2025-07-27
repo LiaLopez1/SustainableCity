@@ -5,8 +5,8 @@ using System.Collections;
 public class TiendaInteraction : MonoBehaviour
 {
     [Header("Paneles de la tienda")]
-    public GameObject panelBotonesIniciales;     // Panel con botones "Abrir tienda" y "Salir"
-    public GameObject panelContenidoTienda;      // Panel que muestra el contenido de la tienda
+    public GameObject panelBotonesIniciales;
+    public GameObject panelContenidoTienda;
 
     [Header("Fade")]
     public CanvasGroup canvasGroupFade;
@@ -20,7 +20,9 @@ public class TiendaInteraction : MonoBehaviour
     public GameObject[] objetosUIAOcultar;
 
     [Header("Movimiento del jugador")]
-    public MonoBehaviour scriptMovimientoJugador;
+    // Aquí referenciamos directamente tu script de movimiento
+    // Reemplaza 'PlayerMovement' con el nombre exacto de tu componente
+    public PlayerMovement scriptMovimientoJugador;
 
     [Header("Texto de interacción")]
     public GameObject textoInteraccion;
@@ -48,11 +50,8 @@ public class TiendaInteraction : MonoBehaviour
         if (objetoCamaraSecundaria != null)
             objetoCamaraSecundaria.SetActive(false);
 
-        if (botonAbrirTienda != null)
-            botonAbrirTienda.onClick.AddListener(AbrirPanelTienda);
-
-        if (botonCerrarTienda != null)
-            botonCerrarTienda.onClick.AddListener(CerrarTienda);
+        botonAbrirTienda?.onClick.AddListener(AbrirPanelTienda);
+        botonCerrarTienda?.onClick.AddListener(CerrarTienda);
     }
 
     void Update()
@@ -70,30 +69,23 @@ public class TiendaInteraction : MonoBehaviour
 
         canvasGroupFade.gameObject.SetActive(true);
 
-        // Desactivar movimiento del jugador
+        // — Desactivar MOVIMIENTO usando tu script específico —
         if (scriptMovimientoJugador != null)
             scriptMovimientoJugador.enabled = false;
 
         // Fade In
         yield return StartCoroutine(FadeCanvasGroup(0f, 1f, 0.5f));
-
-        // Esperar pantalla negra
         yield return new WaitForSeconds(0.5f);
 
-        // Activar cámara secundaria
         if (objetoCamaraSecundaria != null)
             objetoCamaraSecundaria.SetActive(true);
 
         camaraPrincipal.enabled = false;
         camaraSecundaria.enabled = true;
 
-        // Ocultar otros elementos UI
         foreach (GameObject obj in objetosUIAOcultar)
-        {
             if (obj != null) obj.SetActive(false);
-        }
 
-        // Mostrar panel con botones
         panelBotonesIniciales?.SetActive(true);
         panelContenidoTienda?.SetActive(false);
 
@@ -120,24 +112,19 @@ public class TiendaInteraction : MonoBehaviour
         yield return StartCoroutine(FadeCanvasGroup(0f, 1f, 0.5f));
         yield return new WaitForSeconds(0.5f);
 
-        // Apagar cámara secundaria
         if (objetoCamaraSecundaria != null)
             objetoCamaraSecundaria.SetActive(false);
 
         camaraSecundaria.enabled = false;
         camaraPrincipal.enabled = true;
 
-        // Reactivar movimiento
+        // — Reactivar MOVIMIENTO usando tu script específico —
         if (scriptMovimientoJugador != null)
             scriptMovimientoJugador.enabled = true;
 
-        // Reactivar otros UI
         foreach (GameObject obj in objetosUIAOcultar)
-        {
             if (obj != null) obj.SetActive(true);
-        }
 
-        // Ocultar paneles
         panelBotonesIniciales?.SetActive(false);
         panelContenidoTienda?.SetActive(false);
 

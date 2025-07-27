@@ -1,12 +1,15 @@
 ﻿using UnityEngine;
-using System.Collections;
+using UnityEngine.UI;
+using TMPro;
 
 [RequireComponent(typeof(Collider))]
 public class ProductoComprable3D : MonoBehaviour
 {
+    [HideInInspector] public bool desbloqueado = false;
+
     [Header("Interacción y Hover")]
     public Camera cameraInteractiva;      // Tu cámara principal
-    public LayerMask shopItemLayer;       // Layer “ShopItem” para tus objetos de tienda
+    public LayerMask shopItemLayer;       // Layer “ShopItem” para objetos de tienda
 
     [Header("Datos del producto")]
     public ItemData itemData;
@@ -20,7 +23,6 @@ public class ProductoComprable3D : MonoBehaviour
     public bool esMejora;
     public GameObject objetoAntiguo;
     public GameObject objetoNuevo;
-
     public bool esDecorativo;
     public GameObject objetoDecorativo;
 
@@ -32,7 +34,7 @@ public class ProductoComprable3D : MonoBehaviour
     public string descripcionPersonalizada;
 
     [Header("Manager de tienda")]
-    public TiendaComprasUI tienda;       // Referencia a tu manager central
+    public TiendaComprasUI tienda;       // Manager central de la tienda
 
     private InventorySystem inventario;
     private bool isHovered;
@@ -46,13 +48,40 @@ public class ProductoComprable3D : MonoBehaviour
 
     void Update()
     {
-        // 1) Raycast desde el cursor
+        // Si está bloqueado, no permitimos interacción
+        if (!desbloqueado) return;
+
+        // Manejo de overlay y hover
+        if (tienda != null && tienda.panelDetalle != null && tienda.panelDetalle.activeInHierarchy)
+        {
+            if (isHovered)
+            {
+                isHovered = false;
+                outlineMesh?.SetActive(false);
+                panelFlotante?.SetActive(false);
+            }
+            return;
+        }
+
+        // 1) Si la cámara no está activa, abortamos
+        if (cameraInteractiva == null || !cameraInteractiva.gameObject.activeInHierarchy)
+        {
+            if (isHovered)
+            {
+                isHovered = false;
+                outlineMesh?.SetActive(false);
+                panelFlotante?.SetActive(false);
+            }
+            return;
+        }
+
+        // 2) Raycast desde el cursor
         Ray ray = cameraInteractiva.ScreenPointToRay(Input.mousePosition);
         RaycastHit hit;
         bool ahoraHover = Physics.Raycast(ray, out hit, Mathf.Infinity, shopItemLayer)
                           && hit.collider.GetComponentInParent<ProductoComprable3D>() == this;
 
-        // 2) Mostrar/ocultar outline & panel flotante
+        // 3) Mostrar/ocultar outline & panel flotante
         if (ahoraHover && !isHovered)
         {
             isHovered = true;
@@ -66,7 +95,7 @@ public class ProductoComprable3D : MonoBehaviour
             panelFlotante?.SetActive(false);
         }
 
-        // 3) Clic para abrir detalle en el manager
+        // 4) Clic para abrir detalle
         if (ahoraHover && Input.GetMouseButtonDown(0))
         {
             tienda.AbrirDetalle(this);
@@ -74,14 +103,20 @@ public class ProductoComprable3D : MonoBehaviour
     }
 
     /// <summary>
-    /// Llamado por TiendaComprasUI.ComprarActual()
+    /// Invocado por TiendaComprasUI.ComprarActual()
     /// </summary>
     public void Comprar()
     {
+        // Si está bloqueado, mostramos mensaje y salimos
+        if (!desbloqueado)
+        {
+            tienda.MostrarMensaje("Este objeto está bloqueado.");
+            return;
+        }
+
         bool tieneDinero = tienda.TieneDineroSuficiente(precio);
         bool tieneMateriales = inventario.TieneItem(itemRequerido, cantidadRequerida);
 
-        // Validaciones
         if (!tieneDinero && !tieneMateriales)
         {
             tienda.MostrarMensaje("No tienes dinero ni materiales suficientes.");
@@ -98,7 +133,7 @@ public class ProductoComprable3D : MonoBehaviour
             return;
         }
 
-        // Lógica de compra
+        // Lógica de compra intacta
         if (esMejora)
         {
             tienda.RestarDinero(precio);
@@ -116,8 +151,8 @@ public class ProductoComprable3D : MonoBehaviour
             tienda.CerrarDetalle();
             return;
         }
-        bool añadido = tienda.AnadirAlInventario(itemData);
-        if (añadido)
+        bool anadido = tienda.AnadirAlInventario(itemData);
+        if (anadido)
         {
             tienda.RestarDinero(precio);
             inventario.RemoveItem(itemRequerido, cantidadRequerida);
