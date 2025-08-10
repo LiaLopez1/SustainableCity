@@ -13,8 +13,12 @@ public class ItemPrecio
 public class ZonaVentaUI : MonoBehaviour
 {
     [Header("Referencias")]
-    public VentaSlot ventaSlot;                 // ÚNICO slot
-    public TextMeshProUGUI textoDinero;         // opcional
+    public VentaSlot ventaSlot;
+    public TextMeshProUGUI textoDinero;
+
+    [Header("Panel de venta")]
+    [Tooltip("Arrastra aquí el GameObject del panel para poder cerrarlo al pulsar el botón Cerrar.")]
+    public GameObject panelVenta;
 
     [Header("UI Cantidad / Precio")]
     public Button botonMas;
@@ -39,10 +43,7 @@ public class ZonaVentaUI : MonoBehaviour
     };
 
     [Header("Listas de control")]
-    [Tooltip("Si tiene elementos, SOLO estos se pueden vender y el precio se toma de aquí.")]
     public List<ItemPrecio> itemsVendibles = new List<ItemPrecio>();
-
-    [Tooltip("Se usa SOLO si 'itemsVendibles' está vacía. Bloquea los ítems indicados.")]
     public List<ItemData> itemsNoVendibles = new List<ItemData>();
 
     // Estado
@@ -102,8 +103,6 @@ public class ZonaVentaUI : MonoBehaviour
         if (botonMenos != null) botonMenos.interactable = hayItem && cantidad > 1;
     }
 
-    // ========= Validaciones / Precios =========
-
     public bool EsVendible(ItemData item)
     {
         if (item == null) return false;
@@ -138,8 +137,6 @@ public class ZonaVentaUI : MonoBehaviour
         return Mathf.Max(0, precioDefault);
     }
 
-    // ========= Botones y acciones =========
-
     private void OnClickMas()
     {
         if (ventaSlot == null || ventaSlot.EstaVacio()) return;
@@ -170,20 +167,25 @@ public class ZonaVentaUI : MonoBehaviour
         EconomiaJugador.Instance.AgregarDinero(total);
         Debug.Log($"Venta: {cantidad} x {itemActual.name} @ ${precioUnitario} = ${total}. Dinero: ${EconomiaJugador.Instance.ObtenerDinero()}");
 
-        // Venta confirmada: descarta snapshot y reservas
         ventaSlot.ConfirmarVentaFinalize();
-
         RefrescarDesdeSlot();
         ActualizarDineroUI();
+
+        // Cierra panel después de vender si está asignado
+        if (panelVenta != null)
+            panelVenta.SetActive(false);
     }
 
     public void CerrarPanel()
     {
-        // Restaurar EXACTAMENTE el estado inicial del inventario para el tag actual
         if (ventaSlot != null && !ventaSlot.EstaVacio())
             ventaSlot.RestaurarYLimpiar();
 
         RefrescarDesdeSlot();
+
+        // 🔹 Cerrar visualmente el panel
+        if (panelVenta != null)
+            panelVenta.SetActive(false);
     }
 
     private void ActualizarDineroUI()
