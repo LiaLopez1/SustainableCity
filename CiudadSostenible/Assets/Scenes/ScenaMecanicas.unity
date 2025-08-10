@@ -53331,12 +53331,6 @@ MonoBehaviour:
     precio: 20
   - item: {fileID: 11400000, guid: 19dc19810c836834eb13fa16f622c538, type: 2}
     precio: 20
-  - item: {fileID: 11400000, guid: a844b930779108b47a43b84a18fa7970, type: 2}
-    precio: 10
-  - item: {fileID: 11400000, guid: 2c6a6a3ce3f739049814d959e3575e42, type: 2}
-    precio: 10
-  - item: {fileID: 11400000, guid: 3ef38d8ced651784ba6379012f0a9eaf, type: 2}
-    precio: 10
   itemsNoVendibles:
   - {fileID: 11400000, guid: 00103e984fff47e46acf49a302f7c063, type: 2}
   - {fileID: 11400000, guid: 1388badfe659ff54998b884131933334, type: 2}
@@ -53348,6 +53342,9 @@ MonoBehaviour:
   - {fileID: 11400000, guid: 51c64150db366f24184ce914cdea6143, type: 2}
   - {fileID: 11400000, guid: 7e30adc204708d24daf5125b5d71bcc1, type: 2}
   - {fileID: 11400000, guid: c1337d54b02f92a418f89a930a1fe7b4, type: 2}
+  - {fileID: 11400000, guid: a844b930779108b47a43b84a18fa7970, type: 2}
+  - {fileID: 11400000, guid: 2c6a6a3ce3f739049814d959e3575e42, type: 2}
+  - {fileID: 11400000, guid: 3ef38d8ced651784ba6379012f0a9eaf, type: 2}
 --- !u!1 &1896017439
 GameObject:
   m_ObjectHideFlags: 0
