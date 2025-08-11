@@ -113,4 +113,30 @@ public class BasuraSpawner : MonoBehaviour
     {
         return basuraTotalRecogida;
     }
+    private void OnDrawGizmos()
+    {
+        // Color del gizmo (puedes cambiarlo a gusto)
+        Gizmos.color = new Color(0f, 1f, 0f, 0.25f);
+
+        // Calcular el centro del área de spawn
+        Vector3 centro = new Vector3(
+            (xMin + xMax) / 2f,
+            alturaBasura,
+            (zMin + zMax) / 2f
+        );
+
+        // Calcular el tamaño del área
+        Vector3 tamaño = new Vector3(
+            Mathf.Abs(xMax - xMin),
+            0.1f, // Grosor pequeño, porque es una zona en el piso
+            Mathf.Abs(zMax - zMin)
+        );
+
+        // Dibujar un cubo que represente el área
+        Gizmos.DrawCube(centro, tamaño);
+
+        // También dibujar contorno para que se vea más claro
+        Gizmos.color = Color.green;
+        Gizmos.DrawWireCube(centro, tamaño);
+    }
 }
