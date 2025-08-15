@@ -6173,7 +6173,7 @@ MonoBehaviour:
       cantidadActual: 0
   missionTitleHUD: {fileID: 1830585011}
   missionProgressHUD: {fileID: 244378226}
-  misionesCompletadas: 3
+  misionesCompletadas: 0
 --- !u!224 &232660743
 RectTransform:
   m_ObjectHideFlags: 0
@@ -11428,6 +11428,10 @@ MonoBehaviour:
   textoTituloMision: {fileID: 1830585011}
   textoExplicacion: {fileID: 629836460}
   botonCerrar: {fileID: 1956853228}
+  bellRect: {fileID: 0}
+  popScaleUp: 1.18
+  popTimeUp: 0.12
+  popTimeDown: 0.12
 --- !u!114 &481464941
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -19586,6 +19590,7 @@ GameObject:
   - component: {fileID: 830465523}
   - component: {fileID: 830465522}
   - component: {fileID: 830465521}
+  - component: {fileID: 830465524}
   m_Layer: 0
   m_Name: Image !!
   m_TagString: Untagged
@@ -19650,6 +19655,22 @@ RectTransform:
   m_AnchoredPosition: {x: 29.5, y: 38}
   m_SizeDelta: {x: 100, y: 100}
   m_Pivot: {x: 0.5, y: 0.5}
+--- !u!114 &830465524
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 830465520}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: bd5945d5f0abf5a469cd691a107d732e, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  bellRect: {fileID: 830465523}
+  popScaleUp: 1.18
+  popTimeUp: 0.12
+  popTimeDown: 0.12
 --- !u!1 &830554851
 GameObject:
   m_ObjectHideFlags: 0
@@ -37911,7 +37932,7 @@ GameObject:
   - component: {fileID: 1378661484}
   - component: {fileID: 1378661483}
   m_Layer: 0
-  m_Name: ImageLibreta
+  m_Name: ImagenCampanita
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0

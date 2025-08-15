@@ -34,43 +34,62 @@ public class MissionManager : MonoBehaviour
         }
 
         public List<RequisitoClave> clavesRequeridas = new List<RequisitoClave>();
-
     }
 
+    [Header("Misiones")]
     public List<Mission> misiones;
 
-    public TextMeshProUGUI missionTitleHUD; // Para "MISIÓN:"
-    public TextMeshProUGUI missionProgressHUD; // Para el progreso tipo (2/5)
+    [Header("HUD")]
+    public TextMeshProUGUI missionTitleHUD;     // Para el título: "MISSION: ..."
+    public TextMeshProUGUI missionProgressHUD;  // Para progreso "x/y" por requisito
 
+    [Header("Progreso global")]
+    [Tooltip("Cantidad de misiones ya cumplidas al iniciar. Si pones 3, se inician completas 0,1,2 y arrancas en la 3.")]
     public int misionesCompletadas = 0;
 
-    //public GameObject triggerBloqueoMaquina; // Para desbloqueo condicional
+    // public GameObject triggerBloqueoMaquina; // Ejemplo para desbloqueos condicionales
 
     private int misionActualIndex = 0;
-
     private MissionUIController uiController;
 
+    #region Ciclo de vida
     void Start()
     {
         uiController = FindObjectOfType<MissionUIController>();
 
-        // Saltar misiones marcadas como completadas
-        while (misionActualIndex < misiones.Count && misiones[misionActualIndex].marcarComoCompletaDesdeEditor)
+        // 1) Aplica las 'misionesCompletadas' que definas en el Inspector (clave para pruebas)
+        if (misionesCompletadas > 0)
         {
-            misiones[misionActualIndex].completada = true;
-            misionActualIndex++;
+            // true = reiniciar progreso de la misión actual (primera no completada)
+            AplicarMisionesCompletadas(misionesCompletadas, reiniciarProgresoDeLaActual: true);
         }
 
+        // 2) Además, respeta las que fueron marcadas "completas desde el editor" (consecutivas)
+        while (misionActualIndex < misiones.Count && misiones[misionActualIndex].marcarComoCompletaDesdeEditor)
+        {
+            var m = misiones[misionActualIndex];
+            m.completada = true;
+
+            // (Opcional) Llevar contadores al objetivo por coherencia visual
+            foreach (var r in m.requisitos) r.cantidadActual = r.cantidadObjetivo;
+            foreach (var c in m.clavesRequeridas) c.cantidadActual = c.cantidadObjetivo;
+
+            misionActualIndex++;
+            misionesCompletadas = Mathf.Max(misionesCompletadas, misionActualIndex);
+        }
+
+        // 3) Muestra lo que haya quedado como misión actual (o mensaje de todo completado)
         MostrarMisionActual();
         if (uiController != null) uiController.ActualizarExclamacion();
     }
+    #endregion
 
+    #region API de progreso (ítems / claves)
     public void AgregarProgreso(ItemData item, int cantidad)
     {
         if (misionActualIndex >= misiones.Count) return;
 
         Mission misionActual = misiones[misionActualIndex];
-
         if (misionActual.completada) return;
 
         bool huboProgreso = false;
@@ -87,95 +106,16 @@ public class MissionManager : MonoBehaviour
             }
         }
 
-        if (huboProgreso)
+        if (!huboProgreso) return;
+
+        if (MisionCompleta(misionActual))
         {
-            bool todosCompletos = true;
-            foreach (var req in misionActual.requisitos)
-            {
-                if (req.cantidadActual < req.cantidadObjetivo)
-                {
-                    todosCompletos = false;
-                    break;
-                }
-            }
-
-            if (todosCompletos)
-            {
-                misionActual.completada = true;
-                misionesCompletadas++;
-                misionActualIndex++;
-
-                //VerificarDesbloqueos();
-                MostrarMisionActual(); // Cambia a la nueva misión
-
-                if (uiController != null)
-                    uiController.ActualizarExclamacion(); // Ahora se basa en la nueva misión
-            }
-
-            else
-            {
-                ActualizarTextoHUD();
-            }
+            CompletarYAvanzar();
         }
-    }
-
-    void MostrarMisionActual()
-    {
-        if (misionActualIndex < misiones.Count)
+        else
         {
             ActualizarTextoHUD();
         }
-        else
-        {
-            if (missionTitleHUD != null)
-                missionTitleHUD.text = "¡all the missions complete!";
-
-            if (missionProgressHUD != null)
-                missionProgressHUD.text = "";
-        }
-    }
-
-
-    public void ActualizarTextoHUD()
-    {
-        if (misionActualIndex >= misiones.Count) return;
-
-        Mission m = misiones[misionActualIndex];
-
-        if (missionTitleHUD != null)
-            missionTitleHUD.text = $"MISSION: {m.nombreMision}";
-
-        if (missionProgressHUD != null)
-        {
-            if (m.fueMostradaAlJugador)
-            {
-                string progreso = "";
-                foreach (var req in m.requisitos)
-                {
-                    progreso += $"{req.cantidadActual}/{req.cantidadObjetivo}\n";
-                }
-                foreach (var req in m.clavesRequeridas)
-                {
-                    progreso += $"{req.cantidadActual}/{req.cantidadObjetivo}\n";
-                }
-                missionProgressHUD.text = progreso;
-            }
-            else
-            {
-                missionProgressHUD.text = "";
-            }
-        }
-
-    }
-
-
-
-    public Mission ObtenerMisionActual()
-    {
-        if (misionActualIndex < misiones.Count)
-            return misiones[misionActualIndex];
-        else
-            return null;
     }
 
     public void AgregarProgresoPorClave(string clave)
@@ -199,54 +139,172 @@ public class MissionManager : MonoBehaviour
             }
         }
 
-        if (huboProgreso)
+        if (!huboProgreso) return;
+
+        if (MisionCompleta(misionActual))
         {
-            bool todosCompletos = true;
+            CompletarYAvanzar();
+        }
+        else
+        {
+            ActualizarTextoHUD();
+        }
+    }
+    #endregion
 
-            // Verifica los ítems
-            foreach (var req in misionActual.requisitos)
+    #region Lógica de misión / UI
+    private bool MisionCompleta(Mission m)
+    {
+        // Ítems
+        foreach (var req in m.requisitos)
+            if (req.cantidadActual < req.cantidadObjetivo) return false;
+
+        // Claves
+        foreach (var req in m.clavesRequeridas)
+            if (req.cantidadActual < req.cantidadObjetivo) return false;
+
+        return true;
+    }
+
+    private void CompletarYAvanzar()
+    {
+        var m = misiones[misionActualIndex];
+        m.completada = true;
+        misionesCompletadas++;
+        misionActualIndex++;
+
+        MostrarMisionActual();
+        if (uiController != null) uiController.ActualizarExclamacion();
+
+        // VerificarDesbloqueos();
+    }
+
+    private void MostrarMisionActual()
+    {
+        if (misionActualIndex < misiones.Count)
+        {
+            ActualizarTextoHUD();
+        }
+        else
+        {
+            if (missionTitleHUD != null)
+                missionTitleHUD.text = "¡all the missions complete!";
+
+            if (missionProgressHUD != null)
+                missionProgressHUD.text = "";
+        }
+    }
+
+    public void ActualizarTextoHUD()
+    {
+        if (misionActualIndex >= misiones.Count) return;
+
+        Mission m = misiones[misionActualIndex];
+
+        if (missionTitleHUD != null)
+            missionTitleHUD.text = $"MISSION: {m.nombreMision}";
+
+        if (missionProgressHUD != null)
+        {
+            if (m.fueMostradaAlJugador)
             {
-                if (req.cantidadActual < req.cantidadObjetivo)
+                // Muestra números de progreso (si ya fue "revelada")
+                string progreso = "";
+                foreach (var req in m.requisitos)
                 {
-                    todosCompletos = false;
-                    break;
+                    progreso += $"{req.cantidadActual}/{req.cantidadObjetivo}\n";
                 }
-            }
-
-            // Verifica las claves
-            foreach (var req in misionActual.clavesRequeridas)
-            {
-                if (req.cantidadActual < req.cantidadObjetivo)
+                foreach (var req in m.clavesRequeridas)
                 {
-                    todosCompletos = false;
-                    break;
+                    progreso += $"{req.cantidadActual}/{req.cantidadObjetivo}\n";
                 }
-            }
-
-            if (todosCompletos)
-            {
-                misionActual.completada = true;
-                misionesCompletadas++;
-                misionActualIndex++;
-
-                MostrarMisionActual();
-                if (uiController != null)
-                    uiController.ActualizarExclamacion();
+                missionProgressHUD.text = progreso;
             }
             else
             {
-                ActualizarTextoHUD();
+                // Oculta números si aún no se "mostró" al jugador
+                missionProgressHUD.text = "";
             }
         }
     }
 
-
-    /*void VerificarDesbloqueos()
+    public Mission ObtenerMisionActual()
     {
-        // Ejemplo: desbloquear máquina cuando se completa la misión 0
+        if (misionActualIndex < misiones.Count)
+            return misiones[misionActualIndex];
+        else
+            return null;
+    }
+    #endregion
+
+    #region Helpers de control y pruebas
+    /// <summary>
+    /// Marca completas las primeras 'n' misiones y sitúa el índice en la siguiente.
+    /// Si 'reiniciarProgresoDeLaActual' es true, limpia contadores de la misión actual.
+    /// </summary>
+    public void AplicarMisionesCompletadas(int n, bool reiniciarProgresoDeLaActual = true)
+    {
+        if (misiones == null || misiones.Count == 0) return;
+
+        n = Mathf.Clamp(n, 0, misiones.Count);
+
+        // Marca completas 0..n-1
+        for (int i = 0; i < n; i++)
+        {
+            var m = misiones[i];
+            m.completada = true;
+
+            // (Opcional) Deja contadores al tope para coherencia visual si se consulta su UI
+            foreach (var r in m.requisitos) r.cantidadActual = r.cantidadObjetivo;
+            foreach (var c in m.clavesRequeridas) c.cantidadActual = c.cantidadObjetivo;
+        }
+
+        // Posiciónate en la siguiente
+        misionActualIndex = n;
+        misionesCompletadas = n;
+
+        // Si existe misión actual, puedes empezarla "limpia"
+        if (misionActualIndex < misiones.Count && reiniciarProgresoDeLaActual)
+        {
+            ResetProgreso(misiones[misionActualIndex]);
+        }
+
+        // Refresca pantallas
+        MostrarMisionActual();
+        if (uiController != null) uiController.ActualizarExclamacion();
+    }
+
+    /// <summary>
+    /// Cambia en tiempo de ejecución cuántas misiones se consideran cumplidas,
+    /// reubicando el índice y refrescando la UI.
+    /// </summary>
+    public void SetMisionesCompletadasEnRuntime(int n, bool reiniciarProgresoDeLaActual = true)
+    {
+        AplicarMisionesCompletadas(n, reiniciarProgresoDeLaActual);
+    }
+
+    /// <summary>
+    /// Limpia contadores y marca una misión como no completada.
+    /// </summary>
+    private void ResetProgreso(Mission m)
+    {
+        foreach (var r in m.requisitos) r.cantidadActual = 0;
+        foreach (var c in m.clavesRequeridas) c.cantidadActual = 0;
+        m.completada = false;
+
+        // Si prefieres ocultar progreso numérico hasta revelar:
+        // m.fueMostradaAlJugador = false;
+    }
+
+    // Ejemplo de verificación de desbloqueos
+    /*
+    void VerificarDesbloqueos()
+    {
         if (misionActualIndex > 0 && triggerBloqueoMaquina != null)
         {
             triggerBloqueoMaquina.SetActive(false);
         }
-    }*/
+    }
+    */
+    #endregion
 }
