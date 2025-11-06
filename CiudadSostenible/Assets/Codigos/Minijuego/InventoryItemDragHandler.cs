@@ -57,6 +57,9 @@ public class InventoryItemDragHandler : MonoBehaviour, IBeginDragHandler, IDragH
 
     public InventorySlot GetParentSlot() => parentSlot;
 
+    //Flag para que no aumente la cantidada al cambiar entre casillas
+    public static bool SuppressMissionProgress = false;
+
     private void Awake()
     {
         canvasGroup = GetComponent<CanvasGroup>();
@@ -128,24 +131,33 @@ public class InventoryItemDragHandler : MonoBehaviour, IBeginDragHandler, IDragH
 
         if (slotDestino != null && slotDestino != parentSlot)
         {
-            if (slotDestino.IsEmpty())
+            // 🔒 silenciar conteo de misión mientras reacomodamos
+            SuppressMissionProgress = true;
+            try
             {
-                // Mover el ítem al slot vacío
-                slotDestino.UpdateSlot(parentSlot.GetItemData(), parentSlot.GetQuantity());
-                parentSlot.ClearSlot();
+                if (slotDestino.IsEmpty())
+                {
+                    // Mover al slot vacío
+                    slotDestino.UpdateSlot(parentSlot.GetItemData(), parentSlot.GetQuantity());
+                    parentSlot.ClearSlot();
+                }
+                else
+                {
+                    // Intercambiar ítems
+                    ItemData dataOrigen = parentSlot.GetItemData();
+                    int cantidadOrigen = parentSlot.GetQuantity();
+
+                    ItemData dataDestino = slotDestino.GetItemData();
+                    int cantidadDestino = slotDestino.GetQuantity();
+
+                    parentSlot.UpdateSlot(dataDestino, cantidadDestino);
+                    slotDestino.UpdateSlot(dataOrigen, cantidadOrigen);
+                }
             }
-            else
+            finally
             {
-                // Intercambiar ítems
-                ItemData dataOrigen = parentSlot.GetItemData();
-                int cantidadOrigen = parentSlot.GetQuantity();
-
-                ItemData dataDestino = slotDestino.GetItemData();
-                int cantidadDestino = slotDestino.GetQuantity();
-
-                // Intercambio
-                parentSlot.UpdateSlot(dataDestino, cantidadDestino);
-                slotDestino.UpdateSlot(dataOrigen, cantidadOrigen);
+                // 🔓 volver a permitir conteo normal
+                SuppressMissionProgress = false;
             }
 
             return; // No continuar con lógica de soltar en el mundo

@@ -20,15 +20,46 @@ public class InventorySlot : MonoBehaviour
 
     public void UpdateSlot(ItemData item, int quantity)
     {
+        // Guardar estado previo para calcular delta
+        ItemData prevItem = currentItem;
+        int prevQty = currentQuantity;
+
         currentItem = item;
         currentQuantity = quantity;
         UpdateUI();
 
-        // Informar al MissionManager
-        MissionManager manager = FindObjectOfType<MissionManager>();
-        if (manager != null)
+        // ✅ Contar SOLO si no estamos reacomodando, y solo delta positivo real
+        if (!InventoryItemDragHandler.SuppressMissionProgress)
         {
-            manager.AgregarProgreso(item, quantity);
+            int delta = 0;
+
+            if (prevItem == null && item != null)
+            {
+                // Slot estaba vacío y ahora tiene item => delta es toda la cantidad
+                delta = quantity;
+            }
+            else if (prevItem == item)
+            {
+                // Mismo item: delta es el aumento neto
+                delta = quantity - prevQty;
+            }
+            else
+            {
+                // Cambió de item (p.ej. swap). Si no es reacomodo, probablemente quieres contar
+                // solo si el slot estaba vacío antes y ahora tiene algo:
+                // ya cubierto por el primer if (prevItem == null && item != null)
+                // En otros casos, no contamos aquí.
+                delta = 0;
+            }
+
+            if (delta > 0)
+            {
+                MissionManager manager = FindObjectOfType<MissionManager>();
+                if (manager != null)
+                {
+                    manager.AgregarProgreso(item, delta);
+                }
+            }
         }
     }
 
@@ -45,11 +76,14 @@ public class InventorySlot : MonoBehaviour
         currentQuantity += amount;
         UpdateUI();
 
-        // Informar al MissionManager
-        MissionManager manager = FindObjectOfType<MissionManager>();
-        if (manager != null)
+        // ✅ Contar solo si NO estamos reacomodando
+        if (!InventoryItemDragHandler.SuppressMissionProgress)
         {
-            manager.AgregarProgreso(currentItem, amount);
+            MissionManager manager = FindObjectOfType<MissionManager>();
+            if (manager != null)
+            {
+                manager.AgregarProgreso(currentItem, amount);
+            }
         }
 
         return true;
