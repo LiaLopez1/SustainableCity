@@ -23,6 +23,8 @@ TagManager:
   - Undefined
   - ' crumpledpaper'
   - plastic2
+  - NewPaper
+  - npc
   layers:
   - Default
   - TransparentFX
