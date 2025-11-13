@@ -1,7 +1,6 @@
 ﻿using UnityEngine;
 using UnityEngine.UI;
 using System.Collections.Generic;
-using TMPro;
 
 public class ProgresoMundo : MonoBehaviour
 {
@@ -52,6 +51,9 @@ public class ProgresoMundo : MonoBehaviour
     private Image fillImage;
     private bool mapaFinalActivado = false;
 
+    // Cache de renderers objetivo por producto (padre o hijos)
+    private readonly Dictionary<Product3DEntry, List<Renderer>> _objetivoRenderers = new();
+
     [System.Serializable]
     public class ShopItem
     {
@@ -73,11 +75,34 @@ public class ProgresoMundo : MonoBehaviour
     [System.Serializable]
     public class Product3DEntry
     {
+        [Header("Producto base")]
         public ProductoComprable3D producto;
         public int misionRequerida = 1;
+
+        [Header("Materiales")]
         public Material materialNormal;
         public Material materialBloqueado;
-        public TMP_Text textBloqueado;
+
+        [Header("Bloqueo por imagen (reemplaza texto)")]
+        [Tooltip("Image (UI) que se mostrará cuando el producto esté bloqueado (Canvas world-space recomendado).")]
+        public Image imagenBloqueado;
+        [Tooltip("Sprite opcional para el icono de bloqueo (si se deja vacío, se usa el sprite ya asignado al Image).")]
+        public Sprite spriteBloqueado;
+
+        [Header("¿El objeto asignado es un PADRE?")]
+        [Tooltip("Marca si el 'producto' es un contenedor y los modelos reales están en sus hijos.")]
+        public bool esPadre = false;
+
+        [Tooltip("Si está activo, se buscan automaticamente los Renderers en los hijos.")]
+        public bool autoDetectarHijos = true;
+
+        [Tooltip("Si es > 0 y autoDetectarHijos está activo, limita a los primeros N hijos con Renderer encontrados.")]
+        public int cantidadHijos = 0; // 0 = todos
+
+        [Tooltip("Si NO quieres autodetectar, arrastra aquí los Renderers de los hijos a afectar.")]
+        public List<Renderer> hijosRenderers = new List<Renderer>();
+
+        [HideInInspector] public bool _cached; // interno
     }
 
     void Start()
@@ -101,20 +126,27 @@ public class ProgresoMundo : MonoBehaviour
                 if (cs != null && !maquinasSiempreDesbloqueadas.Contains(cs.gameObject))
                     cs.enabled = false;
 
-        // Inicializar productos 3D (bloqueados por defecto)
+        // Inicializar productos 3D (bloqueados por defecto) + cache de renderers objetivo
         foreach (var entry in productos3D)
         {
             var prod = entry.producto;
             if (prod == null) continue;
             prod.desbloqueado = false;
-            var rend = prod.GetComponent<Renderer>();
-            if (entry.materialBloqueado != null)
-                rend.material = entry.materialBloqueado;
-            if (entry.textBloqueado != null)
+
+            // Cachear renderers objetivo
+            _objetivoRenderers[entry] = CalcularRenderersObjetivo(entry);
+
+            // Configurar imagen de bloqueo (oculta al inicio)
+            if (entry.imagenBloqueado != null)
             {
-                entry.textBloqueado.text = $"Bloqueado\nMisión {entry.misionRequerida}";
-                entry.textBloqueado.gameObject.SetActive(false);  // oculto inicialmente
+                if (entry.spriteBloqueado != null)
+                    entry.imagenBloqueado.sprite = entry.spriteBloqueado;
+                entry.imagenBloqueado.enabled = false;
+                entry.imagenBloqueado.gameObject.SetActive(false);
             }
+
+            // Aplicar material bloqueado al inicio
+            AplicarMaterial(entry, estaDesbloqueado: false);
         }
 
         ActualizarUI();
@@ -152,34 +184,28 @@ public class ProgresoMundo : MonoBehaviour
             if (!maquina.desbloqueado && completadas >= maquina.misionRequerida)
                 DesbloquearMaquina(maquina);
 
-        // Desbloquear productos 3D y controlar visibilidad de texto bloqueado
+        // Controlar productos 3D: material y visibilidad de imagen de bloqueo
         foreach (var entry in productos3D)
         {
             var prod = entry.producto;
             if (prod == null) continue;
+
             bool shouldUnlock = completadas >= entry.misionRequerida;
             prod.desbloqueado = shouldUnlock;
-            var rend = prod.GetComponent<Renderer>();
-            if (shouldUnlock)
-            {
-                if (entry.materialNormal != null)
-                    rend.material = entry.materialNormal;
-            }
-            else
-            {
-                if (entry.materialBloqueado != null)
-                    rend.material = entry.materialBloqueado;
-            }
 
-            if (entry.textBloqueado != null)
+            AplicarMaterial(entry, shouldUnlock);
+
+            // Mostrar/ocultar imagen de bloqueo según cámara activa y estado
+            if (entry.imagenBloqueado != null)
             {
                 bool camaraParentActive = prod.cameraInteractiva != null &&
                     prod.cameraInteractiva.transform.parent != null &&
                     prod.cameraInteractiva.transform.parent.gameObject.activeInHierarchy;
+
                 bool mostrar = !shouldUnlock && camaraParentActive;
-                entry.textBloqueado.gameObject.SetActive(mostrar);
-                if (mostrar)
-                    entry.textBloqueado.text = $"Bloqueado\nMisión {entry.misionRequerida}";
+
+                entry.imagenBloqueado.enabled = mostrar;
+                entry.imagenBloqueado.gameObject.SetActive(mostrar);
             }
         }
 
@@ -198,6 +224,67 @@ public class ProgresoMundo : MonoBehaviour
 
         // Actualizar spawner de basura
         ActualizarSpawnerDeBasura(completadas);
+    }
+
+    // ---------- Helpers de productos 3D ----------
+
+    private List<Renderer> CalcularRenderersObjetivo(Product3DEntry entry)
+    {
+        var lista = new List<Renderer>();
+        if (entry.producto == null) return lista;
+
+        if (!entry.esPadre)
+        {
+            var r = entry.producto.GetComponent<Renderer>();
+            if (r != null) lista.Add(r);
+            return lista;
+        }
+
+        // Si es padre:
+        if (!entry.autoDetectarHijos)
+        {
+            // Usar los que el diseñador asigne manualmente
+            foreach (var r in entry.hijosRenderers)
+                if (r != null) lista.Add(r);
+            return lista;
+        }
+
+        // Autodetectar hijos con Renderer
+        var todos = entry.producto.GetComponentsInChildren<Renderer>(true);
+        foreach (var r in todos)
+        {
+            // Opcional: si NO quieres incluir el renderer del padre, filtra:
+            if (r.gameObject == entry.producto.gameObject) continue;
+            lista.Add(r);
+        }
+
+        // Limitar a N si cantidadHijos > 0
+        if (entry.cantidadHijos > 0 && lista.Count > entry.cantidadHijos)
+            lista = lista.GetRange(0, entry.cantidadHijos);
+
+        return lista;
+    }
+
+    private void AplicarMaterial(Product3DEntry entry, bool estaDesbloqueado)
+    {
+        if (!_objetivoRenderers.TryGetValue(entry, out var renderers) || renderers == null)
+        {
+            renderers = CalcularRenderersObjetivo(entry);
+            _objetivoRenderers[entry] = renderers;
+        }
+
+        var mat = estaDesbloqueado ? entry.materialNormal : entry.materialBloqueado;
+        if (mat == null) return;
+
+        // Aplicar a todos los renderers objetivo
+        for (int i = 0; i < renderers.Count; i++)
+        {
+            var r = renderers[i];
+            if (r == null) continue;
+
+            // Usamos sharedMaterial para evitar instancias en tiempo de juego (puedes cambiar a .material si necesitas copias por objeto)
+            r.sharedMaterial = mat;
+        }
     }
 
     void DesbloquearItem(ShopItem item)

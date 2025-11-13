@@ -5,11 +5,12 @@ using UnityEngine.EventSystems;
 using System.Collections.Generic;
 using System.Reflection;
 
-/// Slot ÚNICO para vender con control por TAG y snapshot ROBUSTO:
-/// - Al primer drop: captura snapshot (slot, item, cantidad) de TODOS los InventorySlot con el mismo tag.
-/// - + / −: reserva/libera unidades buscando por tag en todo el inventario.
-/// - Cerrar/Reemplazar: RESTAURA exactamente el snapshot; si un slot quedó vacío, re-asigna el ItemData del snapshot antes de sumar.
-/// - Vender: descarta snapshot y reservas (no restaura).
+/// VentaSlot con DEVOLUCIÓN EXACTA por unidad (pila LIFO):
+/// - Drop: toma 1 unidad y registra su slot de origen en una pila.
+/// - + : busca un slot con el mismo tag, quita 1 y lo apila.
+/// - − : saca de la pila y devuelve 1 al slot exacto; si está vacío, re-asigna ItemData; si falla, usa fallback.
+/// - Cerrar: devuelve TODAS las unidades de la pila una por una (sin “comerse” nada).
+/// - Vender: limpia sin devolver (venta confirmada).
 public class VentaSlot : MonoBehaviour, IDropHandler
 {
     [Header("UI")]
@@ -23,27 +24,16 @@ public class VentaSlot : MonoBehaviour, IDropHandler
     [Tooltip("Si se deja vacío, se auto-buscan todos los InventorySlot en escena.")]
     public List<InventorySlot> todosLosSlotsInventario = new List<InventorySlot>();
 
-    // Estado del slot actual
+    // Estado del slot
     private ItemData currentItem;
     private string tagActual;
-    private int cantidadReservada = 0;
 
-    // Reservas (de dónde tomamos cuántas unidades, para el botón −)
-    private readonly Dictionary<InventorySlot, int> reservasPorSlot = new Dictionary<InventorySlot, int>();
+    // Registro por UNIDAD: cada entrada es el slot del que salió esa unidad
+    private readonly List<InventorySlot> pilaReservas = new List<InventorySlot>(); // LIFO
 
-    // ===== Snapshot robusto =====
-    private struct Snap
-    {
-        public InventorySlot slot;
-        public ItemData item;
-        public int cantidad;
-    }
-    private readonly List<Snap> snapshotInicio = new List<Snap>();
-    private string snapshotTag = null;
-
-    // ===== API pública usada por la UI =====
+    // ===== API pública =====
     public ItemData ObtenerItem() => currentItem;
-    public int ObtenerCantidad() => cantidadReservada;
+    public int ObtenerCantidad() => pilaReservas.Count;
     public bool EstaVacio() => currentItem == null;
 
     void Awake()
@@ -52,45 +42,18 @@ public class VentaSlot : MonoBehaviour, IDropHandler
             todosLosSlotsInventario = new List<InventorySlot>(FindObjectsOfType<InventorySlot>(true));
     }
 
-    /// Limpia el slot SIN devolver (venta confirmada lo usa luego de descartar snapshot).
-    public void LimpiarSinDevolver()
-    {
-        currentItem = null;
-        tagActual = null;
-        cantidadReservada = 0;
-        reservasPorSlot.Clear();
+    // ---------------- Botones ----------------
 
-        if (itemIcon != null) { itemIcon.sprite = null; itemIcon.enabled = false; }
-        if (cantidadTexto != null) cantidadTexto.text = "0";
-    }
-
-    /// Restaura EXACTO el snapshot (no se pierde nada) y limpia el slot.
-    public void RestaurarYLimpiar()
-    {
-        RestaurarDesdeSnapshotRobusto();
-        LimpiarSinDevolver();
-    }
-
-    /// Venta confirmada: descarta snapshot y reservas.
-    public void ConfirmarVentaFinalize()
-    {
-        snapshotInicio.Clear();
-        snapshotTag = null;
-        reservasPorSlot.Clear();
-        LimpiarSinDevolver();
-    }
-
-    // ===== Botones =====
     public bool TryIncrementar()
     {
         if (EstaVacio() || string.IsNullOrEmpty(tagActual)) return false;
 
-        var slot = EncontrarSlotConTagDisponible(tagActual);
-        if (slot == null) return false;
+        var origen = EncontrarSlotConTagDisponible(tagActual);
+        if (origen == null) return false;
 
-        slot.RemoveQuantity(1);
-        SumarReserva(slot, 1);
-        cantidadReservada++;
+        // Toma 1 del origen y registra EXACTAMENTE de dónde salió
+        origen.RemoveQuantity(1);
+        pilaReservas.Add(origen);
         ActualizarUI();
         return true;
     }
@@ -98,41 +61,26 @@ public class VentaSlot : MonoBehaviour, IDropHandler
     public bool TryDecrementar()
     {
         if (EstaVacio()) return false;
-        if (cantidadReservada <= 1) return false;
+        if (pilaReservas.Count <= 1) return false; // mínimo 1 en el slot
 
-        var slot = ObtenerSlotConReservaMayor();
-        if (slot == null) return false;
+        var ultimoSlot = pilaReservas[pilaReservas.Count - 1];
+        if (!TryDevolverUnaUnidad(ultimoSlot, currentItem))
+        {
+            // Fallback si el slot original ya no acepta
+            var alterno = EncontrarSlotAlternoParaItem(currentItem);
+            if (alterno == null || !TryDevolverUnaUnidad(alterno, currentItem))
+            {
+                Debug.LogWarning("No se pudo devolver una unidad; se mantiene reservada para no perderla.");
+                return false;
+            }
+        }
 
-        slot.AddQuantity(1);
-        RestarReserva(slot, 1);
-        cantidadReservada--;
+        pilaReservas.RemoveAt(pilaReservas.Count - 1);
         ActualizarUI();
         return true;
     }
 
-    // ===== Interno =====
-    private void ConfigurarSlot(ItemData item, int cantidadInicial, InventorySlot origen)
-    {
-        currentItem = item;
-        tagActual = item != null ? item.itemTag : null;
-        cantidadReservada = Mathf.Max(1, cantidadInicial);
-
-        reservasPorSlot.Clear();
-        if (origen != null) SumarReserva(origen, cantidadInicial);
-
-        if (itemIcon != null)
-        {
-            itemIcon.sprite = currentItem.icon;
-            itemIcon.enabled = true;
-        }
-        ActualizarUI();
-    }
-
-    private void ActualizarUI()
-    {
-        if (cantidadTexto != null)
-            cantidadTexto.text = (cantidadReservada > 0) ? cantidadReservada.ToString() : "0";
-    }
+    // -------------- Flujo de drop --------------
 
     public void OnDrop(PointerEventData eventData)
     {
@@ -145,6 +93,7 @@ public class VentaSlot : MonoBehaviour, IDropHandler
         var itemDrop = slotOrigen.GetItemData();
         if (itemDrop == null) return;
 
+        // Validación de vendibles
         if (zonaVentaUI != null && !zonaVentaUI.EsVendible(itemDrop))
         {
             Debug.Log($"El objeto '{itemDrop.name}' no se puede vender.");
@@ -154,117 +103,117 @@ public class VentaSlot : MonoBehaviour, IDropHandler
         bool mismoItem = itemDrop == currentItem;
         bool mismoTag = !string.IsNullOrEmpty(tagActual) && itemDrop.itemTag == tagActual;
 
+        // Si hay algo distinto, devolver TODO antes de aceptar el nuevo
         if (!EstaVacio() && !(mismoItem || mismoTag))
         {
-            // Restaurar inventario del snapshot anterior ANTES de aceptar el nuevo
-            RestaurarDesdeSnapshotRobusto();
-            LimpiarSinDevolver();
+            RestaurarTodoAlInventario();
+            LimpiarUI();
         }
 
         if (EstaVacio())
         {
-            CapturarSnapshotRobusto(itemDrop.itemTag);
             if (slotOrigen.GetQuantity() < 1) return;
+
+            // Primer unidad: toma 1 y apila su origen
             slotOrigen.RemoveQuantity(1);
-            ConfigurarSlot(itemDrop, 1, slotOrigen);
+            currentItem = itemDrop;
+            tagActual = currentItem.itemTag;
+            pilaReservas.Clear();
+            pilaReservas.Add(slotOrigen);
+
+            if (itemIcon != null) { itemIcon.sprite = currentItem.icon; itemIcon.enabled = true; }
+            ActualizarUI();
             return;
         }
 
+        // Mismo ítem/tag -> no acumular por drop (usa +)
         Debug.Log("No se acumula por drop. Usa los botones + / − para ajustar la cantidad.");
     }
 
-    // ===== Snapshot ROBUSTO =====
-    private void CapturarSnapshotRobusto(string tag)
+    // -------------- Cerrar / Vender --------------
+
+    /// Llamar al cerrar el panel (ZonaVentaUI.CerrarPanel): devuelve todo y limpia.
+    public void RestaurarYLimpiar()
     {
-        snapshotInicio.Clear();
-        snapshotTag = tag ?? string.Empty;
-
-        foreach (var slot in todosLosSlotsInventario)
-        {
-            if (slot == null || slot.IsEmpty()) continue;
-
-            var data = slot.GetItemData();
-            if (data == null) continue;
-            if (data.itemTag != snapshotTag) continue;
-
-            snapshotInicio.Add(new Snap { slot = slot, item = data, cantidad = slot.GetQuantity() });
-        }
+        RestaurarTodoAlInventario();
+        LimpiarUI();
     }
 
-    private void RestaurarDesdeSnapshotRobusto()
+    /// Llamar al vender: no se devuelve (ya se vendió), solo limpiar.
+    public void ConfirmarVentaFinalize()
     {
-        if (snapshotInicio.Count == 0) return;
-
-        // Primero, asegurar que cada slot del snapshot tenga el ItemData correcto
-        foreach (var s in snapshotInicio)
-        {
-            if (s.slot == null) continue;
-
-            var actualItem = s.slot.GetItemData();
-            if (actualItem == s.item)
-                continue; // ya correcto
-
-            if (s.slot.IsEmpty())
-            {
-                // El slot quedó vacío -> intentar re-asignar el item del snapshot
-                if (!TryAsegurarItemEnSlot(s.slot, s.item))
-                {
-                    // No se pudo (slot no soporta asignación directa). Buscar un slot alterno.
-                    var alterno = EncontrarSlotAlternoParaItem(s.item);
-                    if (alterno != null && alterno != s.slot)
-                    {
-                        // Añadir ahí la cantidad objetivo; y marcar el original en 0
-                        AjustarCantidadASnapshot(alterno, s.item, s.cantidad);
-                        AjustarCantidadASnapshot(s.slot, s.item, 0);
-                        continue;
-                    }
-                }
-            }
-            else
-            {
-                // El slot tiene otro item distinto al del snapshot -> fallback a alterno
-                var alterno = EncontrarSlotAlternoParaItem(s.item);
-                if (alterno != null && alterno != s.slot)
-                {
-                    AjustarCantidadASnapshot(alterno, s.item, s.cantidad);
-                    AjustarCantidadASnapshot(s.slot, s.item, 0);
-                    continue;
-                }
-
-                // Último recurso: reasignar por reflection el item correcto
-                TryAsegurarItemEnSlot(s.slot, s.item);
-            }
-        }
-
-        // Segundo, ajustar cantidades a lo que marcaba el snapshot
-        foreach (var s in snapshotInicio)
-        {
-            if (s.slot == null) continue;
-            AjustarCantidadASnapshot(s.slot, s.item, s.cantidad);
-        }
-
-        snapshotInicio.Clear();
-        snapshotTag = null;
-        reservasPorSlot.Clear();
+        pilaReservas.Clear();
+        LimpiarUI();
     }
 
-    /// Asegura que el slot apunte al ItemData dado (si está vacío u otro).
-    private bool TryAsegurarItemEnSlot(InventorySlot slot, ItemData item)
+    // -------------- Internos --------------
+
+    private void ActualizarUI()
+    {
+        if (cantidadTexto != null)
+            cantidadTexto.text = (pilaReservas.Count > 0) ? pilaReservas.Count.ToString() : "0";
+    }
+
+    private void LimpiarUI()
+    {
+        currentItem = null;
+        tagActual = null;
+
+        if (itemIcon != null) { itemIcon.sprite = null; itemIcon.enabled = false; }
+        if (cantidadTexto != null) cantidadTexto.text = "0";
+    }
+
+    private void RestaurarTodoAlInventario()
+    {
+        if (pilaReservas.Count == 0 || currentItem == null) { pilaReservas.Clear(); return; }
+
+        // Devolver una por una en orden inverso (LIFO)
+        for (int i = pilaReservas.Count - 1; i >= 0; i--)
+        {
+            var slot = pilaReservas[i];
+            if (!TryDevolverUnaUnidad(slot, currentItem))
+            {
+                var alterno = EncontrarSlotAlternoParaItem(currentItem);
+                if (alterno != null) TryDevolverUnaUnidad(alterno, currentItem);
+                else Debug.LogWarning("No se encontró slot para devolver una unidad; se omite para no duplicar.");
+            }
+        }
+        pilaReservas.Clear();
+    }
+
+    // -------------- Utilidades de devolución / fallback --------------
+
+    private bool TryDevolverUnaUnidad(InventorySlot slot, ItemData item)
     {
         if (slot == null || item == null) return false;
 
-        // 1) Intentar algún método público típico: SetItem(item, qty) o Assign/Configure
+        // Si el slot está vacío o tiene otro item, intenta re-asignar el item correcto.
+        var actual = slot.GetItemData();
+        if (actual == null || actual != item)
+        {
+            if (!TryAsegurarItemEnSlot(slot, item))
+                return false;
+        }
+
+        slot.AddQuantity(1);
+        return true;
+    }
+
+    private bool TryAsegurarItemEnSlot(InventorySlot slot, ItemData item)
+    {
         var t = slot.GetType();
+
+        // Métodos públicos comunes
         var mSetItem2 = t.GetMethod("SetItem", BindingFlags.Instance | BindingFlags.Public, null, new System.Type[] { typeof(ItemData), typeof(int) }, null);
-        if (mSetItem2 != null) { mSetItem2.Invoke(slot, new object[] { item, 0 }); return true; }
+        if (mSetItem2 != null) { mSetItem2.Invoke(slot, new object[] { item, 0 }); LlamarUpdateUI(slot); return true; }
 
         var mSetItem1 = t.GetMethod("SetItem", BindingFlags.Instance | BindingFlags.Public, null, new System.Type[] { typeof(ItemData) }, null);
-        if (mSetItem1 != null) { mSetItem1.Invoke(slot, new object[] { item }); return true; }
+        if (mSetItem1 != null) { mSetItem1.Invoke(slot, new object[] { item }); LlamarUpdateUI(slot); return true; }
 
         var mAssign = t.GetMethod("AssignItem", BindingFlags.Instance | BindingFlags.Public);
-        if (mAssign != null) { mAssign.Invoke(slot, new object[] { item }); return true; }
+        if (mAssign != null) { mAssign.Invoke(slot, new object[] { item }); LlamarUpdateUI(slot); return true; }
 
-        // 2) Reflection sobre campos privados comunes (currentItem / currentQuantity) + UpdateUI
+        // Campos privados comunes
         var fItem = t.GetField("currentItem", BindingFlags.Instance | BindingFlags.NonPublic);
         var fQty = t.GetField("currentQuantity", BindingFlags.Instance | BindingFlags.NonPublic);
 
@@ -272,42 +221,38 @@ public class VentaSlot : MonoBehaviour, IDropHandler
         if (fItem != null) { fItem.SetValue(slot, item); touched = true; }
         if (fQty != null) { fQty.SetValue(slot, 0); touched = true; }
 
-        if (touched)
-        {
-            // Intentar refrescar UI
-            var mUpdate = t.GetMethod("UpdateUI", BindingFlags.Instance | BindingFlags.NonPublic | BindingFlags.Public);
-            if (mUpdate != null) mUpdate.Invoke(slot, null);
-            return true;
-        }
-
+        if (touched) { LlamarUpdateUI(slot); return true; }
         return false;
     }
 
-    /// Ajusta la cantidad del slot al objetivo del snapshot para ese item (creando si hace falta).
-    private void AjustarCantidadASnapshot(InventorySlot slot, ItemData item, int objetivo)
+    private void LlamarUpdateUI(InventorySlot slot)
     {
-        if (slot == null) return;
-
-        // Asegurar que el slot tenga el item correcto antes de tocar cantidades
-        var actualItem = slot.GetItemData();
-        if (actualItem == null)
-        {
-            if (!TryAsegurarItemEnSlot(slot, item)) return;
-        }
-        else if (actualItem != item)
-        {
-            // Si no coincide, intentar reasignar (o abandonar si el inventario no deja)
-            if (!TryAsegurarItemEnSlot(slot, item)) return;
-        }
-
-        int actual = slot.GetQuantity();
-        int delta = objetivo - actual;
-
-        if (delta > 0) slot.AddQuantity(delta);
-        else if (delta < 0) slot.RemoveQuantity(-delta);
+        var mUpdate = slot.GetType().GetMethod("UpdateUI", BindingFlags.Instance | BindingFlags.Public | BindingFlags.NonPublic);
+        if (mUpdate != null) mUpdate.Invoke(slot, null);
     }
 
-    /// Si un slot del snapshot no existe/acepta el item, buscamos otro slot candidato (vacío o con el mismo item).
+    private InventorySlot EncontrarSlotConTagDisponible(string tag)
+    {
+        if (string.IsNullOrEmpty(tag)) return null;
+        InventorySlot candidato = null;
+        int mejorCantidad = 0;
+
+        foreach (var s in todosLosSlotsInventario)
+        {
+            if (s == null || s.IsEmpty()) continue;
+            var data = s.GetItemData();
+            if (data == null || data.itemTag != tag) continue;
+
+            int q = s.GetQuantity();
+            if (q > 0 && q > mejorCantidad)
+            {
+                mejorCantidad = q;
+                candidato = s;
+            }
+        }
+        return candidato;
+    }
+
     private InventorySlot EncontrarSlotAlternoParaItem(ItemData item)
     {
         InventorySlot vacio = null;
@@ -317,71 +262,13 @@ public class VentaSlot : MonoBehaviour, IDropHandler
 
             if (s.IsEmpty())
             {
-                // Guardamos el primero vacío posible y seguimos por si encontramos uno con el mismo item
                 if (vacio == null) vacio = s;
                 continue;
             }
 
             var data = s.GetItemData();
-            if (data == item) return s; // ideal: ya tiene el mismo ItemData
+            if (data == item) return s;
         }
-        return vacio; // si no hay uno con el mismo item, devolvemos un vacío (lo asignaremos por reflection)
-    }
-
-    // ===== Utilidades de reserva para +/- =====
-    private void SumarReserva(InventorySlot slot, int cant)
-    {
-        if (slot == null || cant <= 0) return;
-        if (!reservasPorSlot.ContainsKey(slot)) reservasPorSlot[slot] = 0;
-        reservasPorSlot[slot] += cant;
-    }
-
-    private void RestarReserva(InventorySlot slot, int cant)
-    {
-        if (slot == null || cant <= 0) return;
-        if (!reservasPorSlot.ContainsKey(slot)) return;
-        reservasPorSlot[slot] -= cant;
-        if (reservasPorSlot[slot] <= 0) reservasPorSlot.Remove(slot);
-    }
-
-    private InventorySlot ObtenerSlotConReservaMayor()
-    {
-        InventorySlot best = null;
-        int max = 0;
-        foreach (var kv in reservasPorSlot)
-        {
-            if (kv.Value > max)
-            {
-                max = kv.Value;
-                best = kv.Key;
-            }
-        }
-        return best;
-    }
-
-    private InventorySlot EncontrarSlotConTagDisponible(string tag)
-    {
-        if (string.IsNullOrEmpty(tag)) return null;
-        InventorySlot candidato = null;
-        int mejorCantidad = 0;
-
-        foreach (var slot in todosLosSlotsInventario)
-        {
-            if (slot == null || slot.IsEmpty()) continue;
-
-            var data = slot.GetItemData();
-            if (data == null) continue;
-
-            if (data.itemTag == tag && slot.GetQuantity() > 0)
-            {
-                int q = slot.GetQuantity();
-                if (q > mejorCantidad)
-                {
-                    mejorCantidad = q;
-                    candidato = slot;
-                }
-            }
-        }
-        return candidato;
+        return vacio;
     }
 }
