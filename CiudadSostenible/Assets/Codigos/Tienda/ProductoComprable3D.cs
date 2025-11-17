@@ -36,6 +36,9 @@ public class ProductoComprable3D : MonoBehaviour
     [Header("Manager de tienda")]
     public TiendaComprasUI tienda;       // Manager central de la tienda
 
+    [Header("A qué tienda pertenece este producto")]
+    public ShopContext contexto; // <— asigna aquí Tienda A o B en el inspector
+
     private InventorySystem inventario;
     private bool isHovered;
 
@@ -44,6 +47,14 @@ public class ProductoComprable3D : MonoBehaviour
         inventario = tienda.inventario;
         outlineMesh?.SetActive(false);
         panelFlotante?.SetActive(false);
+    }
+
+    void OnMouseDown() // o el trigger que uses para abrir detalle
+    {
+        if (contexto != null && contexto.comprasUI != null)
+            contexto.comprasUI.AbrirDetalle(this);
+        else
+            Debug.LogWarning($"[{name}] sin ShopContext.comprasUI asignado.");
     }
 
     void Update()

@@ -50,9 +50,16 @@ public class ProgresoMundo : MonoBehaviour
 
     private Image fillImage;
     private bool mapaFinalActivado = false;
+    private int _layerIgnoreRaycast = -1;
 
     // Cache de renderers objetivo por producto (padre o hijos)
     private readonly Dictionary<Product3DEntry, List<Renderer>> _objetivoRenderers = new();
+
+    void Awake()
+    {
+        // Calcula el índice una vez ya en runtime (permitido)
+        _layerIgnoreRaycast = LayerMask.NameToLayer("Ignore Raycast");
+    }
 
     [System.Serializable]
     public class ShopItem
@@ -103,6 +110,9 @@ public class ProgresoMundo : MonoBehaviour
         public List<Renderer> hijosRenderers = new List<Renderer>();
 
         [HideInInspector] public bool _cached; // interno
+        [HideInInspector] public List<Collider> _colliders = new List<Collider>();
+        [HideInInspector] public int _originalLayer = -1;
+
     }
 
     void Start()
@@ -147,6 +157,20 @@ public class ProgresoMundo : MonoBehaviour
 
             // Aplicar material bloqueado al inicio
             AplicarMaterial(entry, estaDesbloqueado: false);
+
+            // Cachear colliders del producto (padre + hijos)
+            entry._colliders.Clear();
+            if (entry.producto != null)
+            {
+                entry._colliders.AddRange(entry.producto.GetComponentsInChildren<Collider>(true));
+                if (entry._originalLayer == -1) entry._originalLayer = entry.producto.gameObject.layer;
+            }
+
+            // Arrancan bloqueados visualmente…
+            prod.desbloqueado = false;
+            // …y también sin raycast/click
+            AplicarInteractuable(entry, false);
+
         }
 
         ActualizarUI();
@@ -207,6 +231,8 @@ public class ProgresoMundo : MonoBehaviour
                 entry.imagenBloqueado.enabled = mostrar;
                 entry.imagenBloqueado.gameObject.SetActive(mostrar);
             }
+
+            AplicarInteractuable(entry, shouldUnlock);
         }
 
         // Niebla
@@ -368,4 +394,35 @@ public class ProgresoMundo : MonoBehaviour
         foreach (var tipo in basuraSpawner.tiposBasura)
             tipo.probabilidad = prob;
     }
+
+    private void AplicarInteractuable(Product3DEntry entry, bool enable)
+    {
+        if (entry == null || entry.producto == null) return;
+
+        // Colliders ON/OFF
+        if (entry._colliders != null)
+        {
+            for (int i = 0; i < entry._colliders.Count; i++)
+            {
+                var c = entry._colliders[i];
+                if (c != null) c.enabled = enable;
+            }
+        }
+
+        // Capa: usar Ignore Raycast al bloquear (solo si existe la capa)
+        var go = entry.producto.gameObject;
+
+        if (!enable)
+        {
+            if (_layerIgnoreRaycast != -1)
+                go.layer = _layerIgnoreRaycast; // Bloqueado => ignora raycast
+                                                // si -1, deja la capa actual (no hacemos nada)
+        }
+        else
+        {
+            if (entry._originalLayer >= 0)
+                go.layer = entry._originalLayer; // Restaurar capa original
+        }
+    }
+
 }

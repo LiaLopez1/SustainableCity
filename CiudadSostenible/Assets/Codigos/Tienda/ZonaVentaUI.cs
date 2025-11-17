@@ -2,6 +2,7 @@
 using TMPro;
 using UnityEngine;
 using UnityEngine.UI;
+using UnityEngine.Events;
 
 [System.Serializable]
 public class ItemPrecio
@@ -50,16 +51,42 @@ public class ZonaVentaUI : MonoBehaviour
     private ItemData itemActual;
     private int precioUnitario;
 
+    private void RebindButtons()
+    {
+        if (botonMas != null)
+        {
+            botonMas.onClick.RemoveAllListeners();
+            botonMas.onClick.AddListener(OnClickMas);
+        }
+        if (botonMenos != null)
+        {
+            botonMenos.onClick.RemoveAllListeners();
+            botonMenos.onClick.AddListener(OnClickMenos);
+        }
+        if (botonVender != null)
+        {
+            botonVender.onClick.RemoveAllListeners();
+            botonVender.onClick.AddListener(VenderActual);
+        }
+        if (botonCerrar != null)
+        {
+            botonCerrar.onClick.RemoveAllListeners();
+            botonCerrar.onClick.AddListener(CerrarPanel);
+        }
+    }
+
     void Awake()
     {
+        if (ventaSlot == null) ventaSlot = GetComponentInChildren<VentaSlot>(true);
         if (ventaSlot != null) ventaSlot.zonaVentaUI = this;
 
-        if (botonMas != null) botonMas.onClick.AddListener(OnClickMas);
-        if (botonMenos != null) botonMenos.onClick.AddListener(OnClickMenos);
-        if (botonVender != null) botonVender.onClick.AddListener(VenderActual);
-        if (botonCerrar != null) botonCerrar.onClick.AddListener(CerrarPanel);
-
+        RebindButtons();           // <-- usa esto en vez de AddListener “en crudo”
         RefrescarDesdeSlot();
+    }
+
+    void Start()
+    {
+        // Primer pintado del dinero, pero sin romper si la economía aún no está lista
         ActualizarDineroUI();
     }
 
@@ -137,7 +164,7 @@ public class ZonaVentaUI : MonoBehaviour
         return Mathf.Max(0, precioDefault);
     }
 
-    private void OnClickMas()
+    public void OnClickMas()
     {
         if (ventaSlot == null || ventaSlot.EstaVacio()) return;
         if (ventaSlot.TryIncrementar())
@@ -147,7 +174,7 @@ public class ZonaVentaUI : MonoBehaviour
         }
     }
 
-    private void OnClickMenos()
+    public void OnClickMenos()
     {
         if (ventaSlot == null || ventaSlot.EstaVacio()) return;
         if (ventaSlot.TryDecrementar())
@@ -190,7 +217,16 @@ public class ZonaVentaUI : MonoBehaviour
 
     private void ActualizarDineroUI()
     {
-        if (textoDinero != null)
-            textoDinero.text = "$" + EconomiaJugador.Instance.ObtenerDinero();
+        if (textoDinero == null) return;
+
+        var econ = EconomiaJugador.Instance; // podría ser null si no está inicializado aún
+        int monto = 0;
+        if (econ != null)
+        {
+            // Protegemos también ObtenerDinero() por si lanza algo raro
+            try { monto = econ.ObtenerDinero(); } catch { monto = 0; }
+        }
+
+        textoDinero.text = "$" + monto;
     }
 }

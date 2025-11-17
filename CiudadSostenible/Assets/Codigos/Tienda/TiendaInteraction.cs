@@ -20,8 +20,6 @@ public class TiendaInteraction : MonoBehaviour
     public GameObject[] objetosUIAOcultar;
 
     [Header("Movimiento del jugador")]
-    // Aquí referenciamos directamente tu script de movimiento
-    // Reemplaza 'PlayerMovement' con el nombre exacto de tu componente
     public PlayerMovement scriptMovimientoJugador;
 
     [Header("Texto de interacción")]
@@ -33,9 +31,12 @@ public class TiendaInteraction : MonoBehaviour
 
     private bool jugadorDentro = false;
     private bool interactuando = false;
+    private ShopContext _ctx;
 
     void Start()
     {
+        _ctx = GetComponent<ShopContext>();
+
         panelBotonesIniciales?.SetActive(false);
         panelContenidoTienda?.SetActive(false);
         textoInteraccion?.SetActive(false);
@@ -46,12 +47,14 @@ public class TiendaInteraction : MonoBehaviour
             canvasGroupFade.gameObject.SetActive(false);
         }
 
-        camaraSecundaria.enabled = false;
+        if (camaraSecundaria != null)
+            camaraSecundaria.enabled = false;
+
         if (objetoCamaraSecundaria != null)
             objetoCamaraSecundaria.SetActive(false);
 
-        botonAbrirTienda?.onClick.AddListener(AbrirPanelTienda);
-        botonCerrarTienda?.onClick.AddListener(CerrarTienda);
+        // 🔹 Eliminado: no se asignan listeners aquí.
+        // Ahora los conectas directamente desde el Inspector.
     }
 
     void Update()
@@ -69,19 +72,17 @@ public class TiendaInteraction : MonoBehaviour
 
         canvasGroupFade.gameObject.SetActive(true);
 
-        // — Desactivar MOVIMIENTO usando tu script específico —
         if (scriptMovimientoJugador != null)
             scriptMovimientoJugador.enabled = false;
 
-        // Fade In
         yield return StartCoroutine(FadeCanvasGroup(0f, 1f, 0.5f));
         yield return new WaitForSeconds(0.5f);
 
         if (objetoCamaraSecundaria != null)
             objetoCamaraSecundaria.SetActive(true);
 
-        camaraPrincipal.enabled = false;
-        camaraSecundaria.enabled = true;
+        if (camaraPrincipal != null) camaraPrincipal.enabled = false;
+        if (camaraSecundaria != null) camaraSecundaria.enabled = true;
 
         foreach (GameObject obj in objetosUIAOcultar)
             if (obj != null) obj.SetActive(false);
@@ -89,13 +90,15 @@ public class TiendaInteraction : MonoBehaviour
         panelBotonesIniciales?.SetActive(true);
         panelContenidoTienda?.SetActive(false);
 
-        // Fade Out
         yield return StartCoroutine(FadeCanvasGroup(1f, 0f, 0.5f));
         canvasGroupFade.gameObject.SetActive(false);
     }
 
+    // === Métodos públicos ===
+
     public void AbrirPanelTienda()
     {
+        _ctx?.OnOpenStore();
         panelContenidoTienda?.SetActive(true);
     }
 
@@ -106,19 +109,18 @@ public class TiendaInteraction : MonoBehaviour
 
     IEnumerator SalirDeInteraccion()
     {
+        _ctx?.OnCloseStore();
         canvasGroupFade.gameObject.SetActive(true);
 
-        // Fade In
         yield return StartCoroutine(FadeCanvasGroup(0f, 1f, 0.5f));
         yield return new WaitForSeconds(0.5f);
 
         if (objetoCamaraSecundaria != null)
             objetoCamaraSecundaria.SetActive(false);
 
-        camaraSecundaria.enabled = false;
-        camaraPrincipal.enabled = true;
+        if (camaraSecundaria != null) camaraSecundaria.enabled = false;
+        if (camaraPrincipal != null) camaraPrincipal.enabled = true;
 
-        // — Reactivar MOVIMIENTO usando tu script específico —
         if (scriptMovimientoJugador != null)
             scriptMovimientoJugador.enabled = true;
 
@@ -128,7 +130,6 @@ public class TiendaInteraction : MonoBehaviour
         panelBotonesIniciales?.SetActive(false);
         panelContenidoTienda?.SetActive(false);
 
-        // Fade Out
         yield return StartCoroutine(FadeCanvasGroup(1f, 0f, 0.5f));
         canvasGroupFade.gameObject.SetActive(false);
 

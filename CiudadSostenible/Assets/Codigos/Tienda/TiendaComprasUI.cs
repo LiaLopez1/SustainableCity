@@ -92,7 +92,18 @@ public class TiendaComprasUI : MonoBehaviour
         productoActual = producto;
 
         textoNombre.text = producto.itemData.itemName;
-        textoPrecio.text = "$" + producto.precio;
+        // Construimos el texto principal con precio
+        string texto = "$" + producto.precio;
+
+        // Si el producto tiene un requisito adicional, lo mostramos debajo
+        if (producto.itemRequerido != null && producto.cantidadRequerida > 0)
+        {
+            texto += "\n" + producto.cantidadRequerida + " " + producto.itemRequerido.itemName;
+        }
+
+        // Asignamos el texto final al campo del UI
+        textoPrecio.text = texto;
+
         textoDescripcion.text = producto.descripcionPersonalizada;
         imagenIcono.sprite = producto.itemData.icon;
 

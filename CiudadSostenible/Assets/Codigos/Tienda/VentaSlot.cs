@@ -5,12 +5,9 @@ using UnityEngine.EventSystems;
 using System.Collections.Generic;
 using System.Reflection;
 
-/// VentaSlot con DEVOLUCIÓN EXACTA por unidad (pila LIFO):
-/// - Drop: toma 1 unidad y registra su slot de origen en una pila.
-/// - + : busca un slot con el mismo tag, quita 1 y lo apila.
-/// - − : saca de la pila y devuelve 1 al slot exacto; si está vacío, re-asigna ItemData; si falla, usa fallback.
-/// - Cerrar: devuelve TODAS las unidades de la pila una por una (sin “comerse” nada).
-/// - Vender: limpia sin devolver (venta confirmada).
+/// VentaSlot con DEVOLUCIÓN EXACTA por unidad (pila LIFO) + AUTO-DESCUBRIMIENTO de inventario:
+/// - No hace falta asignar InventorySlots por tienda; por defecto detecta todos los del jugador en escena.
+/// - Opcionalmente, puedes limitar el alcance con 'inventarioRootOptional' (p.ej., el panel/objeto raíz del inventario).
 public class VentaSlot : MonoBehaviour, IDropHandler
 {
     [Header("UI")]
@@ -20,26 +17,31 @@ public class VentaSlot : MonoBehaviour, IDropHandler
     [Header("Referencias")]
     public ZonaVentaUI zonaVentaUI;
 
-    [Header("Inventario (opcional)")]
-    [Tooltip("Si se deja vacío, se auto-buscan todos los InventorySlot en escena.")]
-    public List<InventorySlot> todosLosSlotsInventario = new List<InventorySlot>();
+    [Header("Descubrimiento de inventario")]
+    [Tooltip("Si lo dejas vacío, se auto-buscan TODOS los InventorySlot de la escena (inventario global del jugador). " +
+             "Si lo asignas, se buscarán SOLO dentro de este transform.")]
+    public Transform inventarioRootOptional;
 
     // Estado del slot
     private ItemData currentItem;
     private string tagActual;
 
-    // Registro por UNIDAD: cada entrada es el slot del que salió esa unidad
-    private readonly List<InventorySlot> pilaReservas = new List<InventorySlot>(); // LIFO
+    // Registro por unidad (LIFO): de qué slot salió cada unidad reservada
+    private readonly List<InventorySlot> pilaReservas = new List<InventorySlot>();
+
+    // Cache local de slots encontrados
+    private List<InventorySlot> _slotsCache = new List<InventorySlot>();
+    private bool _cacheValida = false;
 
     // ===== API pública =====
     public ItemData ObtenerItem() => currentItem;
     public int ObtenerCantidad() => pilaReservas.Count;
     public bool EstaVacio() => currentItem == null;
 
-    void Awake()
+    void OnEnable()
     {
-        if (todosLosSlotsInventario == null || todosLosSlotsInventario.Count == 0)
-            todosLosSlotsInventario = new List<InventorySlot>(FindObjectsOfType<InventorySlot>(true));
+        // Cada vez que se abra el panel, refrescamos la cache (por si algo cambió en la UI)
+        RebuildInventarioSlots();
     }
 
     // ---------------- Botones ----------------
@@ -47,11 +49,11 @@ public class VentaSlot : MonoBehaviour, IDropHandler
     public bool TryIncrementar()
     {
         if (EstaVacio() || string.IsNullOrEmpty(tagActual)) return false;
+        if (!_cacheValida) RebuildInventarioSlots();
 
         var origen = EncontrarSlotConTagDisponible(tagActual);
         if (origen == null) return false;
 
-        // Toma 1 del origen y registra EXACTAMENTE de dónde salió
         origen.RemoveQuantity(1);
         pilaReservas.Add(origen);
         ActualizarUI();
@@ -61,12 +63,12 @@ public class VentaSlot : MonoBehaviour, IDropHandler
     public bool TryDecrementar()
     {
         if (EstaVacio()) return false;
-        if (pilaReservas.Count <= 1) return false; // mínimo 1 en el slot
+        if (pilaReservas.Count <= 1) return false; // mínimo 1 visible en el slot
 
         var ultimoSlot = pilaReservas[pilaReservas.Count - 1];
         if (!TryDevolverUnaUnidad(ultimoSlot, currentItem))
         {
-            // Fallback si el slot original ya no acepta
+            if (!_cacheValida) RebuildInventarioSlots();
             var alterno = EncontrarSlotAlternoParaItem(currentItem);
             if (alterno == null || !TryDevolverUnaUnidad(alterno, currentItem))
             {
@@ -93,7 +95,6 @@ public class VentaSlot : MonoBehaviour, IDropHandler
         var itemDrop = slotOrigen.GetItemData();
         if (itemDrop == null) return;
 
-        // Validación de vendibles
         if (zonaVentaUI != null && !zonaVentaUI.EsVendible(itemDrop))
         {
             Debug.Log($"El objeto '{itemDrop.name}' no se puede vender.");
@@ -123,6 +124,10 @@ public class VentaSlot : MonoBehaviour, IDropHandler
 
             if (itemIcon != null) { itemIcon.sprite = currentItem.icon; itemIcon.enabled = true; }
             ActualizarUI();
+
+            // Asegura cache actualizada por si el usuario presiona + inmediatamente
+            _cacheValida = false;
+            RebuildInventarioSlots();
             return;
         }
 
@@ -132,14 +137,12 @@ public class VentaSlot : MonoBehaviour, IDropHandler
 
     // -------------- Cerrar / Vender --------------
 
-    /// Llamar al cerrar el panel (ZonaVentaUI.CerrarPanel): devuelve todo y limpia.
     public void RestaurarYLimpiar()
     {
         RestaurarTodoAlInventario();
         LimpiarUI();
     }
 
-    /// Llamar al vender: no se devuelve (ya se vendió), solo limpiar.
     public void ConfirmarVentaFinalize()
     {
         pilaReservas.Clear();
@@ -166,6 +169,7 @@ public class VentaSlot : MonoBehaviour, IDropHandler
     private void RestaurarTodoAlInventario()
     {
         if (pilaReservas.Count == 0 || currentItem == null) { pilaReservas.Clear(); return; }
+        if (!_cacheValida) RebuildInventarioSlots();
 
         // Devolver una por una en orden inverso (LIFO)
         for (int i = pilaReservas.Count - 1; i >= 0; i--)
@@ -181,13 +185,10 @@ public class VentaSlot : MonoBehaviour, IDropHandler
         pilaReservas.Clear();
     }
 
-    // -------------- Utilidades de devolución / fallback --------------
-
     private bool TryDevolverUnaUnidad(InventorySlot slot, ItemData item)
     {
         if (slot == null || item == null) return false;
 
-        // Si el slot está vacío o tiene otro item, intenta re-asignar el item correcto.
         var actual = slot.GetItemData();
         if (actual == null || actual != item)
         {
@@ -203,7 +204,6 @@ public class VentaSlot : MonoBehaviour, IDropHandler
     {
         var t = slot.GetType();
 
-        // Métodos públicos comunes
         var mSetItem2 = t.GetMethod("SetItem", BindingFlags.Instance | BindingFlags.Public, null, new System.Type[] { typeof(ItemData), typeof(int) }, null);
         if (mSetItem2 != null) { mSetItem2.Invoke(slot, new object[] { item, 0 }); LlamarUpdateUI(slot); return true; }
 
@@ -213,7 +213,6 @@ public class VentaSlot : MonoBehaviour, IDropHandler
         var mAssign = t.GetMethod("AssignItem", BindingFlags.Instance | BindingFlags.Public);
         if (mAssign != null) { mAssign.Invoke(slot, new object[] { item }); LlamarUpdateUI(slot); return true; }
 
-        // Campos privados comunes
         var fItem = t.GetField("currentItem", BindingFlags.Instance | BindingFlags.NonPublic);
         var fQty = t.GetField("currentQuantity", BindingFlags.Instance | BindingFlags.NonPublic);
 
@@ -231,15 +230,39 @@ public class VentaSlot : MonoBehaviour, IDropHandler
         if (mUpdate != null) mUpdate.Invoke(slot, null);
     }
 
+    // -------------- Descubrimiento de inventario --------------
+
+    /// Reconstruye la lista de InventorySlots del jugador (global o bajo un root específico).
+    public void RebuildInventarioSlots()
+    {
+        _slotsCache.Clear();
+
+        if (inventarioRootOptional != null)
+        {
+            _slotsCache.AddRange(inventarioRootOptional.GetComponentsInChildren<InventorySlot>(true));
+        }
+        else
+        {
+            // Inventario global del jugador (toda la escena)
+            _slotsCache.AddRange(FindObjectsOfType<InventorySlot>(true));
+        }
+
+        _cacheValida = true;
+    }
+
     private InventorySlot EncontrarSlotConTagDisponible(string tag)
     {
         if (string.IsNullOrEmpty(tag)) return null;
+
         InventorySlot candidato = null;
         int mejorCantidad = 0;
 
-        foreach (var s in todosLosSlotsInventario)
+        // Busca slots con mismo tag y cantidad > 0
+        for (int i = 0; i < _slotsCache.Count; i++)
         {
+            var s = _slotsCache[i];
             if (s == null || s.IsEmpty()) continue;
+
             var data = s.GetItemData();
             if (data == null || data.itemTag != tag) continue;
 
@@ -256,8 +279,10 @@ public class VentaSlot : MonoBehaviour, IDropHandler
     private InventorySlot EncontrarSlotAlternoParaItem(ItemData item)
     {
         InventorySlot vacio = null;
-        foreach (var s in todosLosSlotsInventario)
+
+        for (int i = 0; i < _slotsCache.Count; i++)
         {
+            var s = _slotsCache[i];
             if (s == null) continue;
 
             if (s.IsEmpty())
