@@ -25,6 +25,13 @@ public class ProgresoMundo : MonoBehaviour
     [Header("Panel final al completar todas las misiones")]
     public GameObject panelFinal;
 
+    [Header("Misiones donde ocurren estos eventos")]
+    [Tooltip("Número de misiones completadas necesarias para cambiar de mapa.")]
+    public int misionCambioMapa = 15;
+
+    [Tooltip("Número de misiones completadas necesarias para mostrar el panel final.")]
+    public int misionPanelFinal = 15;
+
     [Header("Colores del slider")]
     public Color colorNormal;
     public Color colorAdvertencia;
@@ -240,13 +247,20 @@ public class ProgresoMundo : MonoBehaviour
             fogController.SetFogDensityByContamination(valorSlider);
 
         // Cambio de mapa final
-        if (!mapaFinalActivado && completadas >= totalMisiones)
+        // Cambio de mapa (controlado por misión específica)
+        if (!mapaFinalActivado && completadas >= misionCambioMapa)
         {
             mapaFinalActivado = true;
             if (mapaViejo != null) mapaViejo.SetActive(false);
             if (mapaNuevo != null) mapaNuevo.SetActive(true);
-            if (panelFinal != null) panelFinal.SetActive(true);
         }
+
+        // Panel final (controlado por misión específica)
+        if (panelFinal != null && completadas >= misionPanelFinal)
+        {
+            panelFinal.SetActive(true);
+        }
+
 
         // Actualizar spawner de basura
         ActualizarSpawnerDeBasura(completadas);
