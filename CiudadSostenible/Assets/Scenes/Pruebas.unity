@@ -1382,6 +1382,8 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   itemIcon: {fileID: 207692304}
   cantidadTexto: {fileID: 900296373}
+  zonaVentaUI: {fileID: 0}
+  inventarioRootOptional: {fileID: 0}
 --- !u!1 &204989880
 GameObject:
   m_ObjectHideFlags: 0
@@ -2824,6 +2826,8 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   itemIcon: {fileID: 1118351913}
   cantidadTexto: {fileID: 2028483365}
+  zonaVentaUI: {fileID: 0}
+  inventarioRootOptional: {fileID: 0}
 --- !u!1 &451175482
 GameObject:
   m_ObjectHideFlags: 0
@@ -2874,13 +2878,25 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 1c67f9a41c55ab740a043675b0f25aec, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  desbloqueado: 0
+  cameraInteractiva: {fileID: 0}
+  shopItemLayer:
+    serializedVersion: 2
+    m_Bits: 0
   itemData: {fileID: 11400000, guid: c3373be862a70174e86cd7c49d0818b7, type: 2}
   precio: 60
-  basuraRequerida: 30
-  botonComprar: {fileID: 416390416}
-  textoPrecio: {fileID: 1323012135}
-  textoProgresoBasura: {fileID: 428605217}
+  itemRequerido: {fileID: 0}
+  cantidadRequerida: 0
+  esMejora: 0
+  objetoAntiguo: {fileID: 0}
+  objetoNuevo: {fileID: 0}
+  esDecorativo: 0
+  objetoDecorativo: {fileID: 0}
+  outlineMesh: {fileID: 0}
+  panelFlotante: {fileID: 0}
+  descripcionPersonalizada: 
   tienda: {fileID: 1612469605}
+  contexto: {fileID: 0}
 --- !u!1 &497517571
 GameObject:
   m_ObjectHideFlags: 0
@@ -3088,6 +3104,7 @@ GameObject:
   m_Component:
   - component: {fileID: 548997789}
   - component: {fileID: 548997788}
+  - component: {fileID: 548997790}
   m_Layer: 0
   m_Name: Directional Light
   m_TagString: Untagged
@@ -3172,6 +3189,29 @@ Transform:
   m_Children: []
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 50, y: -30, z: 0}
+--- !u!114 &548997790
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 548997787}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 474bcb49853aa07438625e644c072ee6, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  m_Version: 3
+  m_UsePipelineSettings: 1
+  m_AdditionalLightsShadowResolutionTier: 2
+  m_LightLayerMask: 1
+  m_RenderingLayers: 1
+  m_CustomShadowLayers: 0
+  m_ShadowLayerMask: 1
+  m_ShadowRenderingLayers: 1
+  m_LightCookieSize: {x: 1, y: 1}
+  m_LightCookieOffset: {x: 0, y: 0}
+  m_SoftShadowQuality: 0
 --- !u!1 &551674437
 GameObject:
   m_ObjectHideFlags: 0
@@ -3265,6 +3305,8 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   itemIcon: {fileID: 689845101}
   cantidadTexto: {fileID: 1377635583}
+  zonaVentaUI: {fileID: 0}
+  inventarioRootOptional: {fileID: 0}
 --- !u!1 &558522459
 GameObject:
   m_ObjectHideFlags: 0
@@ -3563,11 +3605,12 @@ MonoBehaviour:
     probabilidad: 25
   basuraTotalRecogida: 0
   alturaBasura: 0.133
-  rangoMaximoX: 40
-  rangoMaximoZ: 40
+  xMin: -20
+  xMax: 20
+  zMin: -15
+  zMax: 25
   cantidadMaximaBasura: 20
   tiempoTotalGeneracion: 60
-  sliderSuciedad: {fileID: 1896017441}
 --- !u!4 &573575324
 Transform:
   m_ObjectHideFlags: 0
@@ -3676,6 +3719,8 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   itemIcon: {fileID: 1142134894}
   cantidadTexto: {fileID: 935767031}
+  zonaVentaUI: {fileID: 0}
+  inventarioRootOptional: {fileID: 0}
 --- !u!1 &577899751
 GameObject:
   m_ObjectHideFlags: 0
@@ -4034,13 +4079,22 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   dragVisualPrefab: {fileID: 0}
+  maxDropDistance: 100
   groundMask:
     serializedVersion: 2
     m_Bits: 4294967295
-  maxDropDistance: 100
   bounceDuration: 0.5
   bounceIntensity: 100
-  aerialCamera: {fileID: 1992274644}
+  allowedCameras: []
+  botonUnico: {fileID: 0}
+  imagenesPorCamara: []
+  botellaSpawnPoint: {fileID: 0}
+  tapaSpawnPoint: {fileID: 0}
+  botellaDestinoSpawnPoint: {fileID: 0}
+  paperSpawnPoint: {fileID: 0}
+  paperDestinoSpawnPoint: {fileID: 0}
+  avisoPaperTMP: {fileID: 0}
+  noAprovechablesManager: {fileID: 0}
 --- !u!225 &601017123
 CanvasGroup:
   m_ObjectHideFlags: 0
@@ -4300,9 +4354,10 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: df2b14d6c3878894f965407c06f6aece, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  panelComprar: {fileID: 1243309263}
+  panelTienda1: {fileID: 0}
+  panelTienda2: {fileID: 0}
+  panelTienda3: {fileID: 0}
   panelVender: {fileID: 659653997}
-  canvasTienda: {fileID: 17213523}
   panelPrincipal: {fileID: 1430861464}
 --- !u!4 &660617931
 Transform:
@@ -4825,6 +4880,8 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   itemIcon: {fileID: 974078337}
   cantidadTexto: {fileID: 1644656045}
+  zonaVentaUI: {fileID: 0}
+  inventarioRootOptional: {fileID: 0}
 --- !u!1 &779652335
 GameObject:
   m_ObjectHideFlags: 0
@@ -5410,13 +5467,25 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 1c67f9a41c55ab740a043675b0f25aec, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  desbloqueado: 0
+  cameraInteractiva: {fileID: 0}
+  shopItemLayer:
+    serializedVersion: 2
+    m_Bits: 0
   itemData: {fileID: 11400000, guid: 4071cc46b1d78084b977d318c11e1aa7, type: 2}
   precio: 30
-  basuraRequerida: 20
-  botonComprar: {fileID: 558522461}
-  textoPrecio: {fileID: 864195768}
-  textoProgresoBasura: {fileID: 1213872098}
+  itemRequerido: {fileID: 0}
+  cantidadRequerida: 0
+  esMejora: 0
+  objetoAntiguo: {fileID: 0}
+  objetoNuevo: {fileID: 0}
+  esDecorativo: 0
+  objetoDecorativo: {fileID: 0}
+  outlineMesh: {fileID: 0}
+  panelFlotante: {fileID: 0}
+  descripcionPersonalizada: 
   tienda: {fileID: 1612469605}
+  contexto: {fileID: 0}
 --- !u!1 &931731088
 GameObject:
   m_ObjectHideFlags: 0
@@ -5667,18 +5736,19 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 1838079c688b9784591825376faea069, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  slotsUI:
-  - {fileID: 754626324}
-  - {fileID: 1311706413}
-  - {fileID: 574959070}
-  - {fileID: 1089410355}
-  - {fileID: 199200819}
-  - {fileID: 443892854}
-  - {fileID: 551674441}
-  - {fileID: 1332933762}
-  - {fileID: 1449751410}
+  ventaSlot: {fileID: 0}
   textoDinero: {fileID: 577899753}
-  inventario: {fileID: 174371608}
+  panelVenta: {fileID: 0}
+  botonMas: {fileID: 0}
+  botonMenos: {fileID: 0}
+  textoCantidad: {fileID: 0}
+  textoPrecioUnitario: {fileID: 0}
+  textoPrecioTotal: {fileID: 0}
+  botonVender: {fileID: 0}
+  botonCerrar: {fileID: 0}
+  precioDefault: 10
+  itemsVendibles: []
+  itemsNoVendibles: []
 --- !u!1 &959485742
 GameObject:
   m_ObjectHideFlags: 0
@@ -6594,6 +6664,8 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   itemIcon: {fileID: 1167802050}
   cantidadTexto: {fileID: 1001980916}
+  zonaVentaUI: {fileID: 0}
+  inventarioRootOptional: {fileID: 0}
 --- !u!1 &1118351911
 GameObject:
   m_ObjectHideFlags: 0
@@ -7118,13 +7190,22 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   dragVisualPrefab: {fileID: 0}
+  maxDropDistance: 100
   groundMask:
     serializedVersion: 2
     m_Bits: 4294967295
-  maxDropDistance: 100
   bounceDuration: 0.5
   bounceIntensity: 100
-  aerialCamera: {fileID: 1992274644}
+  allowedCameras: []
+  botonUnico: {fileID: 0}
+  imagenesPorCamara: []
+  botellaSpawnPoint: {fileID: 0}
+  tapaSpawnPoint: {fileID: 0}
+  botellaDestinoSpawnPoint: {fileID: 0}
+  paperSpawnPoint: {fileID: 0}
+  paperDestinoSpawnPoint: {fileID: 0}
+  avisoPaperTMP: {fileID: 0}
+  noAprovechablesManager: {fileID: 0}
 --- !u!225 &1159543891
 CanvasGroup:
   m_ObjectHideFlags: 0
@@ -8247,10 +8328,17 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: ba69d9ee5f9c39647a0f164567851533, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  canvasTienda: {fileID: 659653997}
+  panelBotonesIniciales: {fileID: 0}
+  panelContenidoTienda: {fileID: 0}
+  canvasGroupFade: {fileID: 0}
+  camaraPrincipal: {fileID: 0}
+  camaraSecundaria: {fileID: 0}
+  objetoCamaraSecundaria: {fileID: 0}
+  objetosUIAOcultar: []
+  scriptMovimientoJugador: {fileID: 0}
   textoInteraccion: {fileID: 187323874}
-  panelPrincipal: {fileID: 1430861464}
-  tiendaUIController: {fileID: 660617930}
+  botonAbrirTienda: {fileID: 0}
+  botonCerrarTienda: {fileID: 0}
 --- !u!65 &1299869910
 BoxCollider:
   m_ObjectHideFlags: 0
@@ -8451,6 +8539,8 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   itemIcon: {fileID: 1620898640}
   cantidadTexto: {fileID: 1491256082}
+  zonaVentaUI: {fileID: 0}
+  inventarioRootOptional: {fileID: 0}
 --- !u!1 &1323012133
 GameObject:
   m_ObjectHideFlags: 0
@@ -8678,6 +8768,8 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   itemIcon: {fileID: 321080001}
   cantidadTexto: {fileID: 1536433546}
+  zonaVentaUI: {fileID: 0}
+  inventarioRootOptional: {fileID: 0}
 --- !u!1 &1377635581
 GameObject:
   m_ObjectHideFlags: 0
@@ -9301,6 +9393,8 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   itemIcon: {fileID: 1417740678}
   cantidadTexto: {fileID: 1222640632}
+  zonaVentaUI: {fileID: 0}
+  inventarioRootOptional: {fileID: 0}
 --- !u!1001 &1487461098
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -9542,13 +9636,25 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 1c67f9a41c55ab740a043675b0f25aec, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  desbloqueado: 0
+  cameraInteractiva: {fileID: 0}
+  shopItemLayer:
+    serializedVersion: 2
+    m_Bits: 0
   itemData: {fileID: 11400000, guid: b36e1c8eb2601f04482ec57dda46c558, type: 2}
   precio: 10
-  basuraRequerida: 10
-  botonComprar: {fileID: 723244452}
-  textoPrecio: {fileID: 211539877}
-  textoProgresoBasura: {fileID: 402539076}
+  itemRequerido: {fileID: 0}
+  cantidadRequerida: 0
+  esMejora: 0
+  objetoAntiguo: {fileID: 0}
+  objetoNuevo: {fileID: 0}
+  esDecorativo: 0
+  objetoDecorativo: {fileID: 0}
+  outlineMesh: {fileID: 0}
+  panelFlotante: {fileID: 0}
+  descripcionPersonalizada: 
   tienda: {fileID: 1612469605}
+  contexto: {fileID: 0}
 --- !u!1 &1511025237
 GameObject:
   m_ObjectHideFlags: 0
@@ -10361,8 +10467,8 @@ MonoBehaviour:
   specialViewCanvas: {fileID: 1044975726}
   mainCamera: {fileID: 1412406310}
   playerMovement: {fileID: 1235521613}
+  botonCerrar: {fileID: 0}
   switchKey: 101
-  exitKey: 27
 --- !u!1 &1611161795
 GameObject:
   m_ObjectHideFlags: 0
@@ -10453,13 +10559,22 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   dragVisualPrefab: {fileID: 0}
+  maxDropDistance: 100
   groundMask:
     serializedVersion: 2
     m_Bits: 4294967295
-  maxDropDistance: 100
   bounceDuration: 0.5
   bounceIntensity: 100
-  aerialCamera: {fileID: 1992274644}
+  allowedCameras: []
+  botonUnico: {fileID: 0}
+  imagenesPorCamara: []
+  botellaSpawnPoint: {fileID: 0}
+  tapaSpawnPoint: {fileID: 0}
+  botellaDestinoSpawnPoint: {fileID: 0}
+  paperSpawnPoint: {fileID: 0}
+  paperDestinoSpawnPoint: {fileID: 0}
+  avisoPaperTMP: {fileID: 0}
+  noAprovechablesManager: {fileID: 0}
 --- !u!225 &1611161800
 CanvasGroup:
   m_ObjectHideFlags: 0
@@ -10523,7 +10638,13 @@ MonoBehaviour:
   inventario: {fileID: 174371608}
   textoDinero: {fileID: 577899753}
   textoAdvertencia: {fileID: 1261194365}
-  dinero: 0
+  panelDetalle: {fileID: 0}
+  textoNombre: {fileID: 0}
+  textoPrecio: {fileID: 0}
+  textoDescripcion: {fileID: 0}
+  imagenIcono: {fileID: 0}
+  botonComprar: {fileID: 0}
+  botonCancelar: {fileID: 0}
 --- !u!1 &1620898638
 GameObject:
   m_ObjectHideFlags: 0
@@ -11331,13 +11452,22 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   dragVisualPrefab: {fileID: 0}
+  maxDropDistance: 100
   groundMask:
     serializedVersion: 2
     m_Bits: 4294967295
-  maxDropDistance: 100
   bounceDuration: 0.5
   bounceIntensity: 100
-  aerialCamera: {fileID: 1992274644}
+  allowedCameras: []
+  botonUnico: {fileID: 0}
+  imagenesPorCamara: []
+  botellaSpawnPoint: {fileID: 0}
+  tapaSpawnPoint: {fileID: 0}
+  botellaDestinoSpawnPoint: {fileID: 0}
+  paperSpawnPoint: {fileID: 0}
+  paperDestinoSpawnPoint: {fileID: 0}
+  avisoPaperTMP: {fileID: 0}
+  noAprovechablesManager: {fileID: 0}
 --- !u!225 &1865402010
 CanvasGroup:
   m_ObjectHideFlags: 0
@@ -11530,13 +11660,22 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   dragVisualPrefab: {fileID: 0}
+  maxDropDistance: 100
   groundMask:
     serializedVersion: 2
     m_Bits: 4294967295
-  maxDropDistance: 100
   bounceDuration: 0.5
   bounceIntensity: 100
-  aerialCamera: {fileID: 1992274644}
+  allowedCameras: []
+  botonUnico: {fileID: 0}
+  imagenesPorCamara: []
+  botellaSpawnPoint: {fileID: 0}
+  tapaSpawnPoint: {fileID: 0}
+  botellaDestinoSpawnPoint: {fileID: 0}
+  paperSpawnPoint: {fileID: 0}
+  paperDestinoSpawnPoint: {fileID: 0}
+  avisoPaperTMP: {fileID: 0}
+  noAprovechablesManager: {fileID: 0}
 --- !u!225 &1947548471
 CanvasGroup:
   m_ObjectHideFlags: 0
@@ -12325,6 +12464,63 @@ PrefabInstance:
     m_AddedGameObjects: []
     m_AddedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 319501c53c8b3d34e9901b71f52f02c1, type: 3}
+--- !u!1001 &6177276161149621714
+PrefabInstance:
+  m_ObjectHideFlags: 0
+  serializedVersion: 2
+  m_Modification:
+    serializedVersion: 3
+    m_TransformParent: {fileID: 0}
+    m_Modifications:
+    - target: {fileID: 3689766191795614599, guid: b44e224528b677f4e8a8c5b4dc3dceda, type: 3}
+      propertyPath: m_LocalPosition.x
+      value: 9.871652
+      objectReference: {fileID: 0}
+    - target: {fileID: 3689766191795614599, guid: b44e224528b677f4e8a8c5b4dc3dceda, type: 3}
+      propertyPath: m_LocalPosition.y
+      value: -0.0000009536743
+      objectReference: {fileID: 0}
+    - target: {fileID: 3689766191795614599, guid: b44e224528b677f4e8a8c5b4dc3dceda, type: 3}
+      propertyPath: m_LocalPosition.z
+      value: -3.8829699
+      objectReference: {fileID: 0}
+    - target: {fileID: 3689766191795614599, guid: b44e224528b677f4e8a8c5b4dc3dceda, type: 3}
+      propertyPath: m_LocalRotation.w
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 3689766191795614599, guid: b44e224528b677f4e8a8c5b4dc3dceda, type: 3}
+      propertyPath: m_LocalRotation.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 3689766191795614599, guid: b44e224528b677f4e8a8c5b4dc3dceda, type: 3}
+      propertyPath: m_LocalRotation.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 3689766191795614599, guid: b44e224528b677f4e8a8c5b4dc3dceda, type: 3}
+      propertyPath: m_LocalRotation.z
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 3689766191795614599, guid: b44e224528b677f4e8a8c5b4dc3dceda, type: 3}
+      propertyPath: m_LocalEulerAnglesHint.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 3689766191795614599, guid: b44e224528b677f4e8a8c5b4dc3dceda, type: 3}
+      propertyPath: m_LocalEulerAnglesHint.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 3689766191795614599, guid: b44e224528b677f4e8a8c5b4dc3dceda, type: 3}
+      propertyPath: m_LocalEulerAnglesHint.z
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 4071111546540484925, guid: b44e224528b677f4e8a8c5b4dc3dceda, type: 3}
+      propertyPath: m_Name
+      value: Personaje base para mixamo (1)
+      objectReference: {fileID: 0}
+    m_RemovedComponents: []
+    m_RemovedGameObjects: []
+    m_AddedGameObjects: []
+    m_AddedComponents: []
+  m_SourcePrefab: {fileID: 100100000, guid: b44e224528b677f4e8a8c5b4dc3dceda, type: 3}
 --- !u!1660057539 &9223372036854775807
 SceneRoots:
   m_ObjectHideFlags: 0
@@ -12355,3 +12551,4 @@ SceneRoots:
   - {fileID: 660617931}
   - {fileID: 538860419}
   - {fileID: 1824946098}
+  - {fileID: 6177276161149621714}
