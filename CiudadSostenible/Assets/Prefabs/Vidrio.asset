@@ -14,7 +14,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   itemName: Glass
   icon: {fileID: 21300000, guid: 26072003714afec4286bff1c1398b8ac, type: 3}
-  worldPrefab: {fileID: 0}
+  worldPrefab: {fileID: 4959637675862636618, guid: 7b60187a735cc4a4986db760879d9942, type: 3}
   alternatePrefab: {fileID: 0}
   itemTag: Glass
   maxStack: 10

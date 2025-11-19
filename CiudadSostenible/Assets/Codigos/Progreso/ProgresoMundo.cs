@@ -12,8 +12,19 @@ public class ProgresoMundo : MonoBehaviour
     [Header("Niebla")]
     public PollutionFogController fogController;
 
+    [Header("Niebla y misiones")]
+    [Tooltip("Número de misiones completadas en las que la niebla debe ser 0 (mínima).")]
+    public int misionNieblaLimpia = 24;
+
+    [Header("Basura - Activación de zonas")]
+    [Tooltip("Misión a partir de la cual se activa la segunda zona de spawn de basura.")]
+    public int misionActivarSegundaZona = 10;   // pon 24, 15, lo que quieras
+
     [Header("Control de Basura")]
     public BasuraSpawner basuraSpawner;
+
+    [Header("Basura - Configuración por rango de misiones")]
+    public List<ConfigBasuraPorMision> configuracionesBasura = new List<ConfigBasuraPorMision>();
 
     [Header("Configuración")]
     public int totalMisiones = 15;
@@ -116,6 +127,9 @@ public class ProgresoMundo : MonoBehaviour
         [Tooltip("Si NO quieres autodetectar, arrastra aquí los Renderers de los hijos a afectar.")]
         public List<Renderer> hijosRenderers = new List<Renderer>();
 
+        [Header("Basura - Activación de zonas")]
+        public int misionActivarSegundaZona = 10;
+
         [HideInInspector] public bool _cached; // interno
         [HideInInspector] public List<Collider> _colliders = new List<Collider>();
         [HideInInspector] public int _originalLayer = -1;
@@ -194,7 +208,12 @@ public class ProgresoMundo : MonoBehaviour
             return;
 
         int completadas = missionManager.misionesCompletadas;
-        float valorSlider = Mathf.Clamp01(1f - (float)completadas / totalMisiones);
+        float valorSlider = 1f;
+        if (totalMisiones > 0)
+        {
+            float porcentajeCompletado = (float)completadas / totalMisiones;
+            valorSlider = Mathf.Clamp01(1f - porcentajeCompletado);
+        }
 
         // Slider y colores
         sliderContaminacion.value = valorSlider;
@@ -243,8 +262,19 @@ public class ProgresoMundo : MonoBehaviour
         }
 
         // Niebla
+        float contaminacionNiebla = 1f;
+        if (misionNieblaLimpia > 0)
+        {
+            // Cada misión reduce la contaminación en la misma cantidad.
+            // Cuando completadas >= misionNieblaLimpia → contaminacionNiebla = 0
+            contaminacionNiebla = Mathf.Clamp01((float)(misionNieblaLimpia - completadas) / misionNieblaLimpia);
+        }
+
+        // Enviamos SOLO este valor al controlador de niebla
         if (fogController != null)
-            fogController.SetFogDensityByContamination(valorSlider);
+        {
+            fogController.SetFogDensityByContamination(contaminacionNiebla);
+        }
 
         // Cambio de mapa final
         // Cambio de mapa (controlado por misión específica)
@@ -261,6 +291,11 @@ public class ProgresoMundo : MonoBehaviour
             panelFinal.SetActive(true);
         }
 
+        // Activar zona 2 del spawner de basura
+        if (basuraSpawner != null && missionManager.misionesCompletadas >= misionActivarSegundaZona)
+        {
+            basuraSpawner.usarSegundaArea = true;
+        }
 
         // Actualizar spawner de basura
         ActualizarSpawnerDeBasura(completadas);
@@ -357,43 +392,39 @@ public class ProgresoMundo : MonoBehaviour
 
     void ActualizarSpawnerDeBasura(int misionesCompletadas)
     {
-        if (basuraSpawner == null || basuraSpawner.tiposBasura == null) return;
+        if (basuraSpawner == null || basuraSpawner.tiposBasura == null)
+            return;
 
-        if (misionesCompletadas < 4)
+        // 1) Buscar la configuración que aplica para este número de misiones
+        ConfigBasuraPorMision configActiva = null;
+
+        foreach (var cfg in configuracionesBasura)
         {
-            AsignarProbabilidades(new float[] { 70f, 20f, 10f, 0f });
-            basuraSpawner.cantidadMaximaBasura = 20;
+            if (misionesCompletadas >= cfg.misionMin && misionesCompletadas <= cfg.misionMax)
+            {
+                configActiva = cfg;
+                break;
+            }
         }
-        else if (misionesCompletadas < 8)
-        {
-            AsignarProbabilidades(new float[] { 20f, 70f, 10f, 0f });
-            basuraSpawner.cantidadMaximaBasura = 18;
-        }
-        else if (misionesCompletadas < 11)
-        {
-            AsignarProbabilidades(new float[] { 20f, 20f, 60f, 0f });
-            basuraSpawner.cantidadMaximaBasura = 15;
-        }
-        else if (misionesCompletadas < 13)
-        {
-            AsignarProbabilidades(new float[] { 5f, 5f, 5f, 85f });
-            basuraSpawner.cantidadMaximaBasura = 15;
-        }
-        else if (misionesCompletadas < 16)
-        {
-            AsignarProbabilidades(new float[] { 22f, 22f, 22f, 34f });
-            basuraSpawner.cantidadMaximaBasura = 15;
-        }
-        else if (misionesCompletadas < 25)
-        {
-            AsignarProbabilidades(new float[] { 40f, 20f, 25f, 15f });
-            basuraSpawner.cantidadMaximaBasura = 10;
-        }
-        else
-        {
-            basuraSpawner.cantidadMaximaBasura = 0;
-        }
+
+        if (configActiva == null)
+            return; // No hay config para este rango, no tocamos nada
+
+        // 2) Aplicar activación de zonas
+        basuraSpawner.usarSegundaArea = configActiva.zona2.activarZona;
+
+        // 3) Aplicar máximos por zona
+        basuraSpawner.maxZona1 = configActiva.zona1.activarZona ? configActiva.zona1.cantidadMaximaZona : 0;
+        basuraSpawner.maxZona2 = configActiva.zona2.activarZona ? configActiva.zona2.cantidadMaximaZona : 0;
+
+        // cantidadMaximaBasura = suma de ambas
+        basuraSpawner.cantidadMaximaBasura = basuraSpawner.maxZona1 + basuraSpawner.maxZona2;
+
+        // 4) Probabilidades por zona
+        basuraSpawner.SetProbabilidadesZona(0, configActiva.zona1.probabilidades);
+        basuraSpawner.SetProbabilidadesZona(1, configActiva.zona2.probabilidades);
     }
+
 
     void AsignarProbabilidades(float[] nuevasProbs)
     {
@@ -440,3 +471,31 @@ public class ProgresoMundo : MonoBehaviour
     }
 
 }
+
+[System.Serializable]
+public class ConfigBasuraZona
+{
+    [Header("Zona")]
+    public bool activarZona = true;
+
+    [Tooltip("Cantidad máxima de basura simultánea en esta zona para este rango de misiones.")]
+    public int cantidadMaximaZona = 10;
+
+    [Tooltip("Probabilidades por tipo de basura (orden = lista 'tiposBasura' del BasuraSpawner).")]
+    public List<float> probabilidades;
+}
+
+[System.Serializable]
+public class ConfigBasuraPorMision
+{
+    [Header("Rango de misiones")]
+    public int misionMin = 0;
+    public int misionMax = 10;
+
+    [Header("Configuración Zona 1")]
+    public ConfigBasuraZona zona1 = new ConfigBasuraZona();
+
+    [Header("Configuración Zona 2")]
+    public ConfigBasuraZona zona2 = new ConfigBasuraZona();
+}
+
