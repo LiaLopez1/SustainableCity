@@ -13,8 +13,8 @@ MonoBehaviour:
   m_Name: MetalFInal
   m_EditorClassIdentifier: 
   itemName: Recycled Metal
-  icon: {fileID: 21300000, guid: 5c0c2e71493ca514ea3049a2d4a5f04c, type: 3}
-  worldPrefab: {fileID: 0}
+  icon: {fileID: 21300000, guid: 9c077fe249defae4ab611defd8a77e9e, type: 3}
+  worldPrefab: {fileID: 3536465380755207773, guid: 6a3c4047e401c054ba6283c0b71b96ec, type: 3}
   alternatePrefab: {fileID: 0}
   itemTag: RecycledMetal
   maxStack: 10

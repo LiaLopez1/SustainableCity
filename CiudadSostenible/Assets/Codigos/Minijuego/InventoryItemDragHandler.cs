@@ -50,10 +50,14 @@ public class InventoryItemDragHandler : MonoBehaviour, IBeginDragHandler, IDragH
     public TextMeshProUGUI avisoPaperTMP;
     private GameObject paperEnSpawn = null;
 
+    [Header("Configuración metal")]
+    public Transform metalSpawnPoint;
+
     [Header("Manager no aprovechables")]
     public NoAprovechablesManager noAprovechablesManager;
 
     private GameObject botellaActivaEnSpawn = null;
+    private GameObject metalActivoEnSpawn = null;
 
     public InventorySlot GetParentSlot() => parentSlot;
 
@@ -261,6 +265,28 @@ public class InventoryItemDragHandler : MonoBehaviour, IBeginDragHandler, IDragH
                     basura.tag = "NoAprovechables";
                     parentSlot.RemoveQuantity(1);
                 }
+                else if (itemData.itemTag == "Metal" && metalSpawnPoint != null && IsFifthCameraActive())
+                {
+                    if (metalActivoEnSpawn != null)
+                    {
+                        if (avisoPaperTMP != null)
+                        {
+                            avisoPaperTMP.gameObject.SetActive(true);
+                            StartCoroutine(HideWarningTMP(avisoPaperTMP, 2f));
+                        }
+
+                        StartCoroutine(BounceBackToSlot());
+                        return;
+                    }
+
+                    GameObject metal = Instantiate(itemData.worldPrefab, metalSpawnPoint.position, Quaternion.identity);
+                    metal.tag = "Metal";
+                    parentSlot.RemoveQuantity(1);
+                    metalActivoEnSpawn = metal;
+
+                    // Si el objeto tiene un componente que necesita configuración, puedes agregarlo aquí
+                    // Por ejemplo, similar a BottleClickHandler o PaperClickSplitter
+                }
                 else
                 {
                     StartCoroutine(BounceBackToSlot());
@@ -378,6 +404,7 @@ public class InventoryItemDragHandler : MonoBehaviour, IBeginDragHandler, IDragH
     public bool IsSecondCameraActive() => allowedCameras.Count >= 2 && allowedCameras[1].enabled && allowedCameras[1].gameObject.activeInHierarchy;
     public bool IsThirdCameraActive() => allowedCameras.Count >= 3 && allowedCameras[2].enabled && allowedCameras[2].gameObject.activeInHierarchy;
     public bool IsFourthCameraActive() => allowedCameras.Count >= 4 && allowedCameras[3].enabled && allowedCameras[3].gameObject.activeInHierarchy;
+    public bool IsFifthCameraActive() => allowedCameras.Count >= 5 && allowedCameras[4].enabled && allowedCameras[4].gameObject.activeInHierarchy;
 
     private IEnumerator HideWarningTMP(TextMeshProUGUI tmp, float seconds)
     {
