@@ -16,6 +16,13 @@ public class MetalAplanado : MonoBehaviour
     [Tooltip("Partículas al ser aplanado")]
     public GameObject efectoParticulas;
     
+    [Header("Configuración BoxCollider del prefab aplanado")]
+    [Tooltip("Tamaño del BoxCollider del prefab aplanado")]
+    public Vector3 tamanioBoxColliderAplanado = new Vector3(8178.507f, 500f, 3500f);
+    
+    [Tooltip("Centro del BoxCollider del prefab aplanado")]
+    public Vector3 centroBoxColliderAplanado = new Vector3(-7.17276f, 167.9172f, -260f);
+    
     private bool yaAplanado = false;
     private AudioSource audioSource;
     
@@ -82,9 +89,37 @@ public class MetalAplanado : MonoBehaviour
             renderer.enabled = true;
         }
         
+        // Cambiar el tamaño del BoxCollider del prefab aplanado
+        CambiarTamanioBoxCollider(objetoAplanado);
+        
         objetoAplanado.SetActive(true);
         
         Destroy(gameObject);
+    }
+    
+    /// <summary>
+    /// Cambia el tamaño y centro del BoxCollider del objeto aplanado
+    /// </summary>
+    private void CambiarTamanioBoxCollider(GameObject objeto)
+    {
+        if (objeto == null) return;
+        
+        // Buscar BoxCollider en el objeto o sus hijos
+        BoxCollider boxCollider = objeto.GetComponent<BoxCollider>();
+        if (boxCollider == null)
+        {
+            boxCollider = objeto.GetComponentInChildren<BoxCollider>();
+        }
+        
+        if (boxCollider != null)
+        {
+            boxCollider.size = tamanioBoxColliderAplanado;
+            boxCollider.center = centroBoxColliderAplanado;
+        }
+        else
+        {
+            Debug.LogWarning($"⚠️ No se encontró BoxCollider en '{objeto.name}' para cambiar su tamaño y centro.");
+        }
     }
     
     public void ForzarAplanado()

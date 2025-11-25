@@ -53,6 +53,9 @@ public class InventoryItemDragHandler : MonoBehaviour, IBeginDragHandler, IDragH
     [Header("Configuración metal")]
     public Transform metalSpawnPoint;
 
+    [Header("Configuración MetalMid")]
+    public MetalMidDropZone metalMidDropZone;
+
     [Header("Manager no aprovechables")]
     public NoAprovechablesManager noAprovechablesManager;
 
@@ -182,6 +185,12 @@ public class InventoryItemDragHandler : MonoBehaviour, IBeginDragHandler, IDragH
             if (isSpecialCanvasActive && itemData != null)
             {
                 UpdateCurrentActiveCamera();
+                
+                // Debug: verificar el tag del objeto
+                if (itemData.itemTag == "MetalMid")
+                {
+                    Debug.Log($"🔍 Detectado MetalMid - isSpecialCanvasActive: {isSpecialCanvasActive}, metalMidDropZone: {(metalMidDropZone != null ? "Asignado" : "NULL")}, Cámara 6 activa: {IsSixthCameraActive()}");
+                }
 
                 if (itemData.itemTag == "Botella" && botellaSpawnPoint != null && IsSecondCameraActive())
                 {
@@ -286,6 +295,43 @@ public class InventoryItemDragHandler : MonoBehaviour, IBeginDragHandler, IDragH
 
                     // Si el objeto tiene un componente que necesita configuración, puedes agregarlo aquí
                     // Por ejemplo, similar a BottleClickHandler o PaperClickSplitter
+                }
+                else if (itemData.itemTag == "MetalMid")
+                {
+                    // Verificaciones de debug
+                    if (metalMidDropZone == null)
+                    {
+                        Debug.LogWarning("⚠️ MetalMidDropZone no está asignado en el InventoryItemDragHandler.");
+                        StartCoroutine(BounceBackToSlot());
+                        return;
+                    }
+                    
+                    if (!IsSixthCameraActive())
+                    {
+                        Debug.LogWarning("⚠️ La cámara 6 no está activa. No se puede soltar MetalMid.");
+                        StartCoroutine(BounceBackToSlot());
+                        return;
+                    }
+                    
+                    // Verificar capacidad máxima usando el drop zone
+                    if (!metalMidDropZone.PuedeRecibirMasObjetos())
+                    {
+                        metalMidDropZone.MostrarMensajeFullCapacity();
+                        StartCoroutine(BounceBackToSlot());
+                        return;
+                    }
+
+                    // Obtener posición de spawn desde el drop zone
+                    Vector3 posicionSpawn = metalMidDropZone.GetPosicionSpawn();
+
+                    GameObject metalMid = Instantiate(itemData.worldPrefab, posicionSpawn, Quaternion.identity);
+                    metalMid.tag = "MetalMid";
+                    parentSlot.RemoveQuantity(1);
+                    
+                    // Agregar el objeto al drop zone
+                    metalMidDropZone.AgregarObjeto(metalMid);
+
+                    Debug.Log($"✅ MetalMid #{metalMidDropZone.GetCantidadObjetos()} spawneado exitosamente en {posicionSpawn}");
                 }
                 else
                 {
@@ -405,6 +451,7 @@ public class InventoryItemDragHandler : MonoBehaviour, IBeginDragHandler, IDragH
     public bool IsThirdCameraActive() => allowedCameras.Count >= 3 && allowedCameras[2].enabled && allowedCameras[2].gameObject.activeInHierarchy;
     public bool IsFourthCameraActive() => allowedCameras.Count >= 4 && allowedCameras[3].enabled && allowedCameras[3].gameObject.activeInHierarchy;
     public bool IsFifthCameraActive() => allowedCameras.Count >= 5 && allowedCameras[4].enabled && allowedCameras[4].gameObject.activeInHierarchy;
+    public bool IsSixthCameraActive() => allowedCameras.Count >= 6 && allowedCameras[5].enabled && allowedCameras[5].gameObject.activeInHierarchy;
 
     private IEnumerator HideWarningTMP(TextMeshProUGUI tmp, float seconds)
     {

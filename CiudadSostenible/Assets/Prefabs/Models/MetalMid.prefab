@@ -14,10 +14,10 @@ GameObject:
   - component: {fileID: 7247789077918062419}
   - component: {fileID: 448094172902658560}
   - component: {fileID: 9159317291683878835}
-  - component: {fileID: 2926853457885298823}
-  m_Layer: 3
-  m_Name: MetalFinal 1
-  m_TagString: Metal
+  - component: {fileID: 3725047031626554827}
+  m_Layer: 0
+  m_Name: MetalMid
+  m_TagString: MetalMid
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -154,8 +154,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 82018dccf9ddab248ab11587b8debf3e, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  itemData: {fileID: 11400000, guid: 17be1089748631e4187c9049c3245e1e, type: 2}
---- !u!65 &2926853457885298823
+  itemData: {fileID: 11400000, guid: f27e95abd66194942945b39932412fa9, type: 2}
+--- !u!65 &3725047031626554827
 BoxCollider:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -174,5 +174,5 @@ BoxCollider:
   m_ProvidesContacts: 0
   m_Enabled: 1
   serializedVersion: 3
-  m_Size: {x: 8178.5073, y: 500, z: 3009.4048}
-  m_Center: {x: 770.5339, y: 165.09998, z: -531.84375}
+  m_Size: {x: 1117.2216, y: 463.1919, z: 415.03488}
+  m_Center: {x: -7.1727595, y: 167.91718, z: 0.008117675}
