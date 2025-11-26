@@ -1,52 +1,71 @@
-using UnityEngine;
+Ôªøusing UnityEngine;
 using UnityEngine.AI;
 
 public class NPCInteraction : MonoBehaviour
 {
-    [Header("DetecciÛn del jugador")]
+    [Header("Detecci√≥n del jugador")]
     public string playerTag = "Player";
 
     [Header("Iconos / UI")]
     public GameObject exclamationIcon;   // Signo ! o ?
     public GameObject talkPromptUI;      // Texto "Pulsa E para hablar"
-    public GameObject dialogueCanvas;    // Panel con las opciones de di·logo
+    public GameObject dialogueCanvas;    // Panel con las opciones de di√°logo (principal)
+
+    [Header("UI de materiales")]
+    public GameObject materialesPanel;   // Panel con botones: Papel / Pl√°stico / Org√°nico
 
     [Header("Movimiento del NPC")]
-    public NavMeshAgent agent;
-    public NPCWander wanderScript;       // Script que lo hace caminar por el mapa
+    [SerializeField] private NavMeshAgent agent;
+    [SerializeField] private NPCWander wanderScript;   // Script que lo hace caminar por el mapa
 
-    [Header("C·mara principal")]
-    public CamaraJugador camaraJugador;  // Script de la c·mara del jugador
+    [Header("C√°mara principal")]
+    [SerializeField] private CamaraJugador camaraJugador;  // Script de la c√°mara del jugador
 
-    [Header("MisiÛn de recoger basura")]
-    public int trashGoal = 10;                // Cu·nta basura debe recoger
-    public bool isCollectingTrash = false;    // MisiÛn en curso
-    public bool trashQuestCompleted = false;  // MisiÛn completada
+    [Header("Misi√≥n de recoger basura")]
+    public int trashGoal = 10;                // Cu√°nta basura debe recoger
+    public bool isCollectingTrash = false;    // Misi√≥n en curso
+    public bool trashQuestCompleted = false;  // Misi√≥n completada
     public int currentTrashCount = 0;         // Basura que lleva este NPC
 
+    [Header("Tipos de basura disponibles")]
+    public ItemData papelItemData;
+    public ItemData plasticoItemData;
+    public ItemData organicoItemData;
+
+    [Tooltip("Tipo de basura que este NPC est√° recogiendo actualmente.")]
+    public ItemData basuraObjetivoItemData;   // se setea al contratar
+
+    [Header("B√∫squeda de basura (radio)")]
+    public float searchRadius = 10f;      // radio de b√∫squeda
+    public float searchInterval = 0.25f;  // cada cu√°ntos segundos vuelve a buscar
+
     [Header("Inventario del jugador")]
-    public InventorySystem playerInventory;   // Inventario del jugador
-    public ItemData basuraItemData;          // ItemData de la basura que te va a entregar
+    [SerializeField] private InventorySystem playerInventory;   // Inventario del jugador
 
     private bool playerInRange = false;
     private bool isTalking = false;
     private Transform playerTransform;
 
+    // estado interno para la b√∫squeda
+    private float searchTimer = 0f;
+    private ItemRecogible currentTargetItem;
+
     void Start()
     {
-        // Referencias autom·ticas si no se arrastran en el Inspector
-        if (agent == null) agent = GetComponent<NavMeshAgent>();
-        if (wanderScript == null) wanderScript = GetComponent<NPCWander>();
-        if (camaraJugador == null) camaraJugador = FindObjectOfType<CamaraJugador>();
-        if (playerInventory == null) playerInventory = FindObjectOfType<InventorySystem>();
+        if (!agent) agent = GetComponent<NavMeshAgent>();
+        if (!wanderScript) wanderScript = GetComponent<NPCWander>();
+        if (!camaraJugador) camaraJugador = FindFirstObjectByType<CamaraJugador>();
+        if (!playerInventory) playerInventory = FindFirstObjectByType<InventorySystem>();
 
         if (exclamationIcon != null) exclamationIcon.SetActive(true);
         if (talkPromptUI != null) talkPromptUI.SetActive(false);
         if (dialogueCanvas != null) dialogueCanvas.SetActive(false);
+        if (materialesPanel != null) materialesPanel.SetActive(false);
     }
 
     private void OnTriggerEnter(Collider other)
     {
+        // 1) detecci√≥n del jugador
         if (other.CompareTag(playerTag))
         {
             playerInRange = true;
@@ -54,6 +73,13 @@ public class NPCInteraction : MonoBehaviour
 
             if (!isTalking && talkPromptUI != null)
                 talkPromptUI.SetActive(true);
+        }
+
+        // 2) detecci√≥n de basura para "recogerla"
+        var itemRec = other.GetComponent<ItemRecogible>();
+        if (itemRec != null)
+        {
+            TryCollectTrashItem(itemRec);
         }
     }
 
@@ -74,24 +100,38 @@ public class NPCInteraction : MonoBehaviour
 
     void Update()
     {
-        // Entrar a conversaciÛn
+        // Entrar a conversaci√≥n
         if (playerInRange && !isTalking && Input.GetKeyDown(KeyCode.E))
         {
             StartConversation();
         }
-        // Salir de conversaciÛn con E SOLO si ya no hay panel abierto
-        else if (isTalking && Input.GetKeyDown(KeyCode.E) && (dialogueCanvas == null || !dialogueCanvas.activeSelf))
+        // Salir de conversaci√≥n con E SOLO si no hay panel abierto
+        else if (isTalking
+                 && Input.GetKeyDown(KeyCode.E)
+                 && ((dialogueCanvas == null || !dialogueCanvas.activeSelf)
+                     && (materialesPanel == null || !materialesPanel.activeSelf)))
         {
             EndConversation();
         }
+
+        // B√∫squeda de basura mientras est√° trabajando
+        if (isCollectingTrash && !trashQuestCompleted)
+        {
+            HandleTrashSearch();
+        }
     }
+
+    // ==========================
+    // CONVERSACI√ìN
+    // ==========================
 
     void StartConversation()
     {
         isTalking = true;
 
-        // 1) Detener al NPC
-        if (wanderScript != null) wanderScript.enabled = false;
+        // 1) Detener wander, pero NO el script (s√≥lo apagar movimiento aleatorio)
+        if (wanderScript != null)
+            wanderScript.canWander = false;
 
         if (agent != null)
         {
@@ -112,7 +152,7 @@ public class NPCInteraction : MonoBehaviour
             }
         }
 
-        // 3) Pausar la c·mara del jugador (deja de seguirlo)
+        // 3) Pausar la c√°mara del jugador
         if (camaraJugador != null)
             camaraJugador.enabled = false;
 
@@ -123,87 +163,221 @@ public class NPCInteraction : MonoBehaviour
         if (talkPromptUI != null)
             talkPromptUI.SetActive(false);
 
-        // 5) Mostrar panel de di·logo
+        // 5) Mostrar panel principal
         if (dialogueCanvas != null)
             dialogueCanvas.SetActive(true);
 
-        Debug.Log("Comienza conversaciÛn con " + gameObject.name);
+        if (materialesPanel != null)
+            materialesPanel.SetActive(false);
+
+        Debug.Log("Comienza conversaci√≥n con " + gameObject.name);
     }
 
     public void EndConversation()
     {
         isTalking = false;
 
-        // 1) Reanudar movimiento
+        // 1) Reactivar NavMesh (el tipo de movimiento lo decide el estado: wander o misi√≥n)
         if (agent != null)
             agent.isStopped = false;
 
-        if (wanderScript != null)
-            wanderScript.enabled = true;
+        // 2) Si NO est√° en misi√≥n, vuelve a vagar solo
+        if (wanderScript != null && !isCollectingTrash)
+            wanderScript.canWander = true;
 
-        // 2) Volver a activar la c·mara del jugador
+        // 3) Reactivar c√°mara
         if (camaraJugador != null)
             camaraJugador.enabled = true;
 
-        // 3) Ocultar panel
+        // 4) Ocultar paneles
         if (dialogueCanvas != null)
             dialogueCanvas.SetActive(false);
 
-        // 4) Mostrar el signo ! solo si no est· en misiÛn ni completada
+        if (materialesPanel != null)
+            materialesPanel.SetActive(false);
+
+        // 5) Mostrar signo ! si no est√° en misi√≥n ni completada
         if (exclamationIcon != null && !isCollectingTrash && !trashQuestCompleted)
             exclamationIcon.SetActive(true);
 
-        // 5) Si el jugador sigue cerca, vuelve "Pulsa E"
+        // 6) Si el jugador sigue cerca, mostrar "Pulsa E"
         if (playerInRange && talkPromptUI != null)
             talkPromptUI.SetActive(true);
 
-        Debug.Log("Termina conversaciÛn con " + gameObject.name);
+        Debug.Log("Termina conversaci√≥n con " + gameObject.name);
     }
 
     // ==========================
     // BOTONES DEL DIALOGO
     // ==========================
 
-    // OpciÛn: Iniciar misiÛn de recoger basura
-    public void OnClick_RecogerBasura()
+    public void OnClick_Contratar()
     {
+
+        if (materialesPanel != null)
+            materialesPanel.SetActive(true);
+
+        Debug.Log("Abriendo men√∫ de selecci√≥n de material.");
+    }
+
+    public void OnClick_Cancelar()
+    {
+        Debug.Log("Jugador cancel√≥ la conversaci√≥n.");
+        EndConversation();
+    }
+
+    // ==========================
+    // Selecci√≥n de MATERIAL
+    // ==========================
+
+    public void OnClick_ContratarPapel()
+    {
+        IniciarMisionBasura(papelItemData);
+    }
+
+    public void OnClick_ContratarPlastico()
+    {
+        IniciarMisionBasura(plasticoItemData);
+    }
+
+    public void OnClick_ContratarOrganico()
+    {
+        IniciarMisionBasura(organicoItemData);
+    }
+
+    void IniciarMisionBasura(ItemData tipoBasura)
+    {
+        if (tipoBasura == null)
+        {
+            Debug.LogWarning("No se asign√≥ ItemData para este tipo de basura.");
+            return;
+        }
+
+        basuraObjetivoItemData = tipoBasura;
         isCollectingTrash = true;
         trashQuestCompleted = false;
         currentTrashCount = 0;
+        currentTargetItem = null;
 
-        Debug.Log("MisiÛn de basura iniciada. Debe recoger " + trashGoal + " Ìtems.");
+        Debug.Log($"Misi√≥n iniciada: {trashGoal} de {tipoBasura.itemName}.");
 
-        // Cerramos di·logo para que el NPC salga a "trabajar"
+        // mientras est√° en misi√≥n, el wander aleatorio se apaga,
+        // pero el script sigue actualizando animaci√≥n
+        if (wanderScript != null)
+            wanderScript.canWander = false;
+
+        // üîπ que NO se quede parado: reactivamos el agente
+        if (agent != null)
+            agent.isStopped = false;
+
+        // üîπ buscar de inmediato el primer objetivo
+        searchTimer = searchInterval; // fuerza a que HandleTrashSearch busque ya
+        HandleTrashSearch();
+
         EndConversation();
     }
 
-    // OpciÛn: Cancelar / hablar despuÈs
-    public void OnClick_Cancelar()
+    // ==========================
+    // B√öSQUEDA Y RECOLECCI√ìN
+    // ==========================
+
+    void HandleTrashSearch()
     {
-        Debug.Log("Jugador cancelÛ la misiÛn de basura.");
-        EndConversation();
+        if (basuraObjetivoItemData == null) return;
+
+        // si ya tiene objetivo, deja que el NavMesh se encargue
+        if (currentTargetItem != null) return;
+
+        searchTimer += Time.deltaTime;
+        if (searchTimer < searchInterval)
+            return;
+
+        searchTimer = 0f;
+
+        Collider[] hits = Physics.OverlapSphere(transform.position, searchRadius);
+        ItemRecogible mejorObjetivo = null;
+        float mejorDistancia = Mathf.Infinity;
+
+        foreach (var hit in hits)
+        {
+            var itemRec = hit.GetComponent<ItemRecogible>();
+            if (itemRec == null) continue;
+
+            if (itemRec.itemData != basuraObjetivoItemData)
+                continue;
+
+            float dist = Vector3.Distance(transform.position, itemRec.transform.position);
+            if (dist < mejorDistancia)
+            {
+                mejorDistancia = dist;
+                mejorObjetivo = itemRec;
+            }
+        }
+
+        if (mejorObjetivo != null && agent != null)
+        {
+            currentTargetItem = mejorObjetivo;
+            agent.isStopped = false;
+            agent.SetDestination(currentTargetItem.transform.position);
+        }
     }
 
-    // Llamado desde TrashCollector cuando llega a la meta
+    void TryCollectTrashItem(ItemRecogible itemRec)
+    {
+        if (!isCollectingTrash) return;
+        if (trashQuestCompleted) return;
+        if (basuraObjetivoItemData == null) return;
+        if (itemRec.itemData != basuraObjetivoItemData) return;
+
+        currentTrashCount++;
+
+        if (currentTargetItem == itemRec)
+            currentTargetItem = null;
+
+        BasuraSpawner spawner = FindFirstObjectByType<BasuraSpawner>();
+        if (spawner != null)
+        {
+            spawner.RecogerBasura(itemRec.itemData.itemName);
+        }
+
+        Destroy(itemRec.gameObject);
+
+        Debug.Log($"NPC recogi√≥ {itemRec.itemData.itemName}. Lleva: {currentTrashCount}");
+
+        if (currentTrashCount >= trashGoal)
+        {
+            OnTrashQuestCompleted();
+        }
+    }
+
     public void OnTrashQuestCompleted()
     {
         trashQuestCompleted = true;
         isCollectingTrash = false;
+        currentTargetItem = null;
 
-        Debug.Log("NPC terminÛ de recoger basura. Total: " + currentTrashCount);
+        Debug.Log("NPC termin√≥ de recoger basura. Total: " + currentTrashCount);
 
-        // Volvemos a mostrar el signo para que el jugador sepa que ya puede ir
+        // Vuelve al wander aleatorio
+        if (wanderScript != null)
+        {
+            wanderScript.canWander = true;
+            wanderScript.ChooseNewDestination();
+        }
+
         if (exclamationIcon != null)
             exclamationIcon.SetActive(true);
     }
 
-    // OpciÛn: ENTREGAR BASURA al jugador (este es el que te faltaba)
+    // ==========================
+    // ENTREGAR AL INVENTARIO
+    // ==========================
+
     public void OnClick_EntregarBasura()
     {
-        // Validaciones b·sicas
         if (!trashQuestCompleted)
         {
-            Debug.Log("El NPC a˙n no ha completado la misiÛn de basura.");
+            Debug.Log("El NPC a√∫n no ha completado la misi√≥n.");
             return;
         }
 
@@ -213,34 +387,31 @@ public class NPCInteraction : MonoBehaviour
             return;
         }
 
-        if (playerInventory == null || basuraItemData == null)
+        if (playerInventory == null || basuraObjetivoItemData == null)
         {
-            Debug.LogWarning("Falta asignar playerInventory o basuraItemData en el NPC.");
+            Debug.LogWarning("Falta asignar playerInventory o basuraObjetivoItemData.");
             return;
         }
 
-        // Agregar la basura al inventario del jugador
-        bool added = playerInventory.AddItem(basuraItemData, currentTrashCount);
+        bool added = playerInventory.AddItem(basuraObjetivoItemData, currentTrashCount);
 
         if (added)
         {
-            Debug.Log($"Se aÒadieron {currentTrashCount} unidades de basura al inventario.");
+            Debug.Log($"Se a√±adieron {currentTrashCount} de {basuraObjetivoItemData.itemName} al inventario.");
         }
         else
         {
-            Debug.LogWarning("No se pudo agregar la basura al inventario (no hay espacio).");
+            Debug.LogWarning("No se pudo agregar al inventario (sin espacio).");
         }
 
-        // Resetear estado de la misiÛn en el NPC
         currentTrashCount = 0;
         trashQuestCompleted = false;
         isCollectingTrash = false;
+        currentTargetItem = null;
 
-        // El signo puede volver a aparecer para ofrecer de nuevo la misiÛn, si quieres
         if (exclamationIcon != null)
             exclamationIcon.SetActive(true);
 
-        // Cerrar conversaciÛn
         EndConversation();
     }
 }
