@@ -18,7 +18,7 @@ public class MetalAplanado : MonoBehaviour
     
     [Header("Configuración BoxCollider del prefab aplanado")]
     [Tooltip("Tamaño del BoxCollider del prefab aplanado")]
-    public Vector3 tamanioBoxColliderAplanado = new Vector3(8178.507f, 500f, 3500f);
+    public Vector3 tamanioBoxColliderAplanado = new Vector3(276.2457f, 12.98422f, 292.224f);
     
     [Tooltip("Centro del BoxCollider del prefab aplanado")]
     public Vector3 centroBoxColliderAplanado = new Vector3(-7.17276f, 167.9172f, -260f);

@@ -1,5 +1,6 @@
 using UnityEngine;
 using System.Collections;
+using System;
 
 public class RotadorConPivote : MonoBehaviour
 {
@@ -58,6 +59,9 @@ public class RotadorConPivote : MonoBehaviour
     [Header("Estado")]
     [Tooltip("Ángulo actual de rotación acumulada")]
     [SerializeField] private float anguloActual = 0f;
+    
+    // Evento que se dispara cuando el objeto vuelve completamente a su posición inicial
+    public event Action OnObjetoVuelveAPosicionInicial;
     
     private bool rotando = false;
     private bool rotadoCompletamente = false;
@@ -212,7 +216,7 @@ public class RotadorConPivote : MonoBehaviour
     {
         if (activarConClick && !rotando && !activadorMoviendose)
         {
-            // Mover el activador correspondiente
+            // Mover el activador correspondiente (exactamente igual para todos)
             if (tipoActivador == "Metal" && activadorMetal != null)
             {
                 StartCoroutine(MoverActivador(activadorMetal, posicionInicialActivadorMetal));
@@ -518,6 +522,9 @@ public class RotadorConPivote : MonoBehaviour
         anguloActual = 0f;
         rotadoCompletamente = false;
         rotando = false;
+        
+        // Disparar evento cuando el objeto vuelve a su posición inicial
+        OnObjetoVuelveAPosicionInicial?.Invoke();
     }
     
     /// <summary>
@@ -589,6 +596,8 @@ public class RotadorConPivote : MonoBehaviour
         yield return StartCoroutine(RotarHaciaPosicionInicial());
         
         objetoDesplazandose = false;
+        
+        // El evento OnObjetoVuelveAPosicionInicial se dispara dentro de RotarHaciaPosicionInicial
     }
     
     /// <summary>
