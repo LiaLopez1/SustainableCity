@@ -29,6 +29,25 @@ public class RotadorConPivote : MonoBehaviour
     [Tooltip("Drop zone de MetalMid que se moverá junto con el objeto a desplazar")]
     public MetalMidDropZone metalMidDropZone;
     
+    [Header("Otro Objeto a Rotar")]
+    [Tooltip("Otro objeto que rotará hacia la derecha cuando el objeto principal vuelva a su posición inicial")]
+    public Transform otroObjetoARotar;
+    
+    [Tooltip("Velocidad de rotación del otro objeto (grados por segundo hacia la derecha)")]
+    public float velocidadRotacionOtroObjeto = 90f;
+    
+    [Tooltip("Eje de rotación del otro objeto")]
+    public Vector3 ejeRotacionOtroObjeto = Vector3.right;
+    
+    [Header("Audio del Otro Objeto")]
+    [Tooltip("Clip de audio que se reproduce en loop mientras el otro objeto rota")]
+    public AudioClip audioRotacionLoop;
+    
+    [Tooltip("Clip de audio que se reproduce cuando el otro objeto termina de rotar")]
+    public AudioClip audioFinRotacion;
+    
+    private AudioSource audioSource;
+    
     [Header("Configuración del Objeto Activador")]
     [Tooltip("Distancia que se desplazará el objeto activador en Z al ser presionado")]
     public float distanciaDesplazamientoZ = 0.04f;
@@ -129,6 +148,16 @@ public class RotadorConPivote : MonoBehaviour
         // Calcular posición del pivote automáticamente
         CalcularPosicionPivote();
         posicionPivoteInicial = posicionPivote; // Guardar el pivote inicial
+        
+        // Inicializar AudioSource si no está asignado
+        if (audioSource == null)
+        {
+            audioSource = GetComponent<AudioSource>();
+            if (audioSource == null)
+            {
+                audioSource = gameObject.AddComponent<AudioSource>();
+            }
+        }
         
         // Rotar automáticamente al inicio si está configurado
         if (rotarAlInicio)
@@ -525,6 +554,111 @@ public class RotadorConPivote : MonoBehaviour
         
         // Disparar evento cuando el objeto vuelve a su posición inicial
         OnObjetoVuelveAPosicionInicial?.Invoke();
+        
+        // Rotar el otro objeto hacia la derecha por 10 segundos solo si hay hijos (MetalMid o objeto nuevo)
+        if (otroObjetoARotar != null && TieneHijos())
+        {
+            StartCoroutine(RotarOtroObjetoPorTiempo(10f));
+        }
+    }
+    
+    /// <summary>
+    /// Verifica si hay hijos en el objeto a desplazar (MetalMid o objeto nuevo)
+    /// </summary>
+    private bool TieneHijos()
+    {
+        // Verificar si hay MetalMid en la zona
+        if (metalMidDropZone != null)
+        {
+            var objetosEnZona = metalMidDropZone.GetObjetosEnZona();
+            if (objetosEnZona != null && objetosEnZona.Count > 0)
+            {
+                return true;
+            }
+            
+            // Verificar si hay un objeto instanciado actual (objeto nuevo)
+            if (metalMidDropZone.TieneObjetoInstanciado())
+            {
+                return true;
+            }
+        }
+        
+        // También verificar directamente si el objeto a desplazar tiene hijos
+        if (objetoADesplazar != null && objetoADesplazar.childCount > 0)
+        {
+            return true;
+        }
+        
+        return false;
+    }
+    
+    /// <summary>
+    /// Rota el otro objeto hacia la derecha por un tiempo determinado
+    /// </summary>
+    /// <param name="tiempoSegundos">Tiempo en segundos que rotará el objeto</param>
+    private IEnumerator RotarOtroObjetoPorTiempo(float tiempoSegundos)
+    {
+        if (otroObjetoARotar == null || velocidadRotacionOtroObjeto <= 0f)
+        {
+            yield break;
+        }
+        
+        // Reproducir audio en loop si está asignado
+        if (audioSource != null && audioRotacionLoop != null)
+        {
+            audioSource.clip = audioRotacionLoop;
+            audioSource.loop = true;
+            audioSource.Play();
+        }
+        
+        float tiempoTranscurrido = 0f;
+        
+        while (tiempoTranscurrido < tiempoSegundos)
+        {
+            // Rotar hacia la derecha (rotación positiva)
+            float rotacionFrame = velocidadRotacionOtroObjeto * Time.deltaTime;
+            otroObjetoARotar.Rotate(ejeRotacionOtroObjeto, rotacionFrame, Space.World);
+            
+            tiempoTranscurrido += Time.deltaTime;
+            yield return null;
+        }
+        
+        // Detener el audio de loop
+        if (audioSource != null && audioSource.isPlaying)
+        {
+            audioSource.Stop();
+            audioSource.loop = false;
+        }
+        
+        // Reproducir audio de fin de rotación si está asignado
+        if (audioSource != null && audioFinRotacion != null)
+        {
+            audioSource.PlayOneShot(audioFinRotacion);
+        }
+        
+        // Repetir las acciones del objeto a rotar y del objeto a desplazar
+        RepetirAccionesObjetos();
+    }
+    
+    /// <summary>
+    /// Repite las acciones del objeto a rotar y del objeto a desplazar
+    /// </summary>
+    private void RepetirAccionesObjetos()
+    {
+        // Solo repetir las acciones si hay hijos (MetalMid o objeto nuevo)
+        if (!TieneHijos())
+        {
+            return;
+        }
+        
+        // Rotar el objeto nuevamente
+        if (objetoARotar != null && !rotando)
+        {
+            RotarObjeto(anguloRotacion);
+        }
+        
+        // El desplazamiento del objeto se activará automáticamente cuando termine la rotación
+        // (ya está implementado en RotarSuavemente y RotarInstantaneamente)
     }
     
     /// <summary>
@@ -595,9 +729,66 @@ public class RotadorConPivote : MonoBehaviour
         // Rotar el objeto suavemente hacia su posición inicial con la misma velocidad
         yield return StartCoroutine(RotarHaciaPosicionInicial());
         
+        // Destruir todos los MetalMid cuando el objeto llegue a su posición inicial
+        if (metalMidDropZone != null)
+        {
+            metalMidDropZone.DestruirTodosLosMetalMid();
+        }
+        
         objetoDesplazandose = false;
         
         // El evento OnObjetoVuelveAPosicionInicial se dispara dentro de RotarHaciaPosicionInicial
+    }
+    
+    /// <summary>
+    /// Vuelve el objeto a desplazar y el objeto a rotar a su posición inicial (sin destruir MetalMid)
+    /// </summary>
+    public void VolverAPosicionInicial()
+    {
+        if (objetoADesplazar != null && !objetoDesplazandose)
+        {
+            StartCoroutine(MoverObjetoAPosicionInicialSinDestruir());
+        }
+    }
+    
+    /// <summary>
+    /// Mueve el objeto a desplazar a su posición original y resetea la rotación del objeto (sin destruir MetalMid)
+    /// </summary>
+    private IEnumerator MoverObjetoAPosicionInicialSinDestruir()
+    {
+        if (objetoADesplazar == null) yield break;
+        
+        objetoDesplazandose = true;
+        
+        Vector3 posicionObjetivo = posicionInicialObjetoADesplazar;
+        
+        if (velocidadDesplazamientoObjeto > 0f)
+        {
+            // Mover hacia la posición original
+            while (Vector3.Distance(objetoADesplazar.position, posicionObjetivo) > 0.01f)
+            {
+                objetoADesplazar.position = Vector3.MoveTowards(
+                    objetoADesplazar.position,
+                    posicionObjetivo,
+                    velocidadDesplazamientoObjeto * Time.deltaTime
+                );
+                
+                yield return null;
+            }
+            
+            // Asegurar posición exacta
+            objetoADesplazar.position = posicionObjetivo;
+        }
+        else
+        {
+            // Movimiento instantáneo
+            objetoADesplazar.position = posicionObjetivo;
+        }
+        
+        // Rotar el objeto suavemente hacia su posición inicial con la misma velocidad
+        yield return StartCoroutine(RotarHaciaPosicionInicial());
+        
+        objetoDesplazandose = false;
     }
     
     /// <summary>

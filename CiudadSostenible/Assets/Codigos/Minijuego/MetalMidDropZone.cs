@@ -32,9 +32,19 @@ public class MetalMidDropZone : MonoBehaviour
     [Tooltip("Si está activado, los MetalMid serán hijos del objeto a desplazar para moverse con él")]
     public bool hacerMetalMidsHijos = true;
     
+    [Header("Objeto a Aparecer")]
+    [Tooltip("Objeto que aparecerá después de destruir los MetalMid")]
+    public GameObject objetoAAparecer;
+    
+    [Tooltip("Posición donde aparecerá el objeto")]
+    public Vector3 posicionAparicion = new Vector3(0.284596384f, 0.793167174f, -11.6230383f);
+    
     [Header("Estado")]
     [Tooltip("Objetos actualmente en la zona")]
     private System.Collections.Generic.List<GameObject> objetosEnZona = new System.Collections.Generic.List<GameObject>();
+    
+    [Tooltip("Referencia al objeto instanciado que apareció")]
+    private GameObject objetoInstanciadoActual = null;
     
     private void Start()
     {
@@ -321,6 +331,69 @@ public class MetalMidDropZone : MonoBehaviour
         {
             RemoverObjeto(other.gameObject);
         }
+    }
+    
+    /// <summary>
+    /// Destruye todos los MetalMid en la zona y hace aparecer un objeto en la posición especificada
+    /// </summary>
+    public void DestruirTodosLosMetalMid()
+    {
+        // Crear una copia de la lista para evitar problemas al modificar durante la iteración
+        var objetosACopiar = new System.Collections.Generic.List<GameObject>(objetosEnZona);
+        
+        foreach (GameObject metalMid in objetosACopiar)
+        {
+            if (metalMid != null)
+            {
+                Destroy(metalMid);
+            }
+        }
+        
+        // Limpiar la lista después de destruir los objetos
+        objetosEnZona.Clear();
+        
+        // Hacer aparecer el objeto en la posición especificada
+        if (objetoAAparecer != null)
+        {
+            objetoInstanciadoActual = Instantiate(objetoAAparecer, posicionAparicion, Quaternion.identity);
+            
+            // Hacer que el objeto sea hijo del objeto a desplazar si está configurado (igual que los MetalMid)
+            if (hacerMetalMidsHijos && rotadorConPivote != null && rotadorConPivote.objetoADesplazar != null)
+            {
+                objetoInstanciadoActual.transform.SetParent(rotadorConPivote.objetoADesplazar, true);
+            }
+            
+            // Iniciar la verificación para detectar cuando el objeto sea recogido
+            StartCoroutine(VerificarObjetoRecogido());
+        }
+    }
+    
+    /// <summary>
+    /// Verifica periódicamente si el objeto instanciado ya fue recogido (ya no existe)
+    /// </summary>
+    private IEnumerator VerificarObjetoRecogido()
+    {
+        // Verificar cada frame si el objeto ya no existe
+        while (objetoInstanciadoActual != null)
+        {
+            yield return null;
+        }
+        
+        // El objeto ya no existe, volver a la posición inicial
+        if (rotadorConPivote != null)
+        {
+            rotadorConPivote.VolverAPosicionInicial();
+        }
+        
+        objetoInstanciadoActual = null;
+    }
+    
+    /// <summary>
+    /// Verifica si hay un objeto instanciado actualmente
+    /// </summary>
+    public bool TieneObjetoInstanciado()
+    {
+        return objetoInstanciadoActual != null;
     }
     
 }

@@ -14,10 +14,10 @@ GameObject:
   - component: {fileID: 6383317405660320752}
   - component: {fileID: 7330703462311538008}
   - component: {fileID: 8681421539255446024}
-  - component: {fileID: -2347434767996534257}
+  - component: {fileID: 3007501253236076233}
   m_Layer: 0
   m_Name: MetalFinal
-  m_TagString: Metal
+  m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -154,7 +154,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::ItemRecogible
   itemData: {fileID: 11400000, guid: 17be1089748631e4187c9049c3245e1e, type: 2}
---- !u!65 &-2347434767996534257
+--- !u!65 &3007501253236076233
 BoxCollider:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -173,5 +173,5 @@ BoxCollider:
   m_ProvidesContacts: 0
   m_Enabled: 1
   serializedVersion: 3
-  m_Size: {x: 2.6159098, y: 1.5023594, z: 2.757212}
-  m_Center: {x: 0.09637011, y: 0.25117975, z: -0.13997585}
+  m_Size: {x: 317.56985, y: 43.21982, z: 331.14236}
+  m_Center: {x: 35.187824, y: -20.57824, z: -164.19441}
