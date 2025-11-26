@@ -66,6 +66,15 @@ public class ProgresoMundo : MonoBehaviour
     [Header("Productos 3D a controlar")]
     public List<Product3DEntry> productos3D;
 
+    [Header("Cinemática por misión")]
+    [Tooltip("Número de misiones completadas necesarias para reproducir la cinemática.")]
+    public int misionCinematica = 10;
+
+    [Tooltip("Controlador de la cinemática (maneja cámaras y fade).")]
+    public MissionCutsceneController cutsceneController;
+
+    private bool cinematicaYaReproducida = false;
+
     private Image fillImage;
     private bool mapaFinalActivado = false;
     private int _layerIgnoreRaycast = -1;
@@ -208,6 +217,15 @@ public class ProgresoMundo : MonoBehaviour
             return;
 
         int completadas = missionManager.misionesCompletadas;
+        // --- Disparar cinemática por misión ---
+        if (!cinematicaYaReproducida &&
+            cutsceneController != null &&
+            completadas >= misionCinematica)
+        {
+            cinematicaYaReproducida = true;
+            cutsceneController.PlayCutscene();
+        }
+
         float valorSlider = 1f;
         if (totalMisiones > 0)
         {
