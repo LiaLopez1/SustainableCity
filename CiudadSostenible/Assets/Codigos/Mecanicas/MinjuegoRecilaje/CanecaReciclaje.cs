@@ -84,8 +84,7 @@ public class CanecaReciclaje : MonoBehaviour, IDropHandler
             {
                 if (material.bloqueoEntrada) return;
 
-                int espacioDisponible = material.cantidadMaxima - material.cantidadActual;
-                int cantidadATomar = Mathf.Min(espacioDisponible, cantidadEnSlot);
+                int cantidadATomar = cantidadEnSlot;
 
                 if (cantidadATomar <= 0) return;
 
@@ -93,6 +92,7 @@ public class CanecaReciclaje : MonoBehaviour, IDropHandler
                 material.estaCompleto = (material.cantidadActual >= material.cantidadMaxima);
 
                 material.textoContador.text = $"{material.tipoMaterial}: {material.cantidadActual}/{material.cantidadMaxima}";
+
                 if (material.botonRecompensa != null)
                     material.botonRecompensa.SetActive(material.estaCompleto);
 
@@ -102,11 +102,7 @@ public class CanecaReciclaje : MonoBehaviour, IDropHandler
                     material.bloqueoEntrada = true;
                 }
 
-                if (cantidadATomar == cantidadEnSlot)
-                    slot.ClearSlot();
-                else
-                    slot.UpdateQuantity(cantidadEnSlot - cantidadATomar);
-
+                slot.ClearSlot();
                 return;
             }
         }
@@ -144,22 +140,26 @@ public class CanecaReciclaje : MonoBehaviour, IDropHandler
 
     private void ReclamarRecompensa(MaterialReciclable material)
     {
-        if (!material.estaCompleto || material.recompensa == null)
-            return;
+        if (material.cantidadActual < material.cantidadMaxima || material.recompensa == null)
+        return;
 
         if (inventarioNormal == null)
-            return;
+        return;
 
-        bool agregado = inventarioNormal.AddItem(material.recompensa, 1);
+        int cantidadRecompensas = material.cantidadActual / material.cantidadMaxima;
+        int sobrante = material.cantidadActual % material.cantidadMaxima;
+
+        bool agregado = inventarioNormal.AddItem(material.recompensa, cantidadRecompensas);
 
         if (agregado)
         {
-            material.cantidadActual = 0;
-            material.estaCompleto = false;
+            material.cantidadActual = sobrante;
+            material.estaCompleto = material.cantidadActual >= material.cantidadMaxima;
             material.bloqueoEntrada = false;
+
             material.textoContador.text = $"{material.tipoMaterial}: {material.cantidadActual}/{material.cantidadMaxima}";
             material.textoContador.gameObject.SetActive(true);
-            material.botonRecompensa.SetActive(false);
+            material.botonRecompensa.SetActive(material.estaCompleto);
         }
         else
         {
