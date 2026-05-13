@@ -283,6 +283,12 @@ public class MissionManager : MonoBehaviour
         AplicarMisionesCompletadas(n, reiniciarProgresoDeLaActual);
     }
 
+    [ContextMenu("Aplicar progreso global")]
+    public void AplicarProgresoGlobalDesdeInspector()
+    {
+        AplicarMisionesCompletadas(misionesCompletadas, true);
+    }
+
     /// <summary>
     /// Limpia contadores y marca una misión como no completada.
     /// </summary>
