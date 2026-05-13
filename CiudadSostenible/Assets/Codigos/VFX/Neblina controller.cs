@@ -3,9 +3,14 @@ using UnityEngine;
 public class PollutionFogController : MonoBehaviour
 {
     [Header("Valores de niebla")]
-    public float initialDensity = 0.09f;
-    public float targetDensity = 0.0f;
-    public float reductionSpeed = 0.01f;
+    [Header("Partículas de niebla")]
+    public ParticleSystem fogParticles;
+
+    public float maxParticleRate = 300f;
+
+    private float initialDensity = 0.09f;
+    private float targetDensity = 0.0f;
+    private float reductionSpeed = 0.01f;
 
     private float currentDensity;
 
@@ -21,7 +26,7 @@ public class PollutionFogController : MonoBehaviour
         RenderSettings.fogDensity = currentDensity;
     }
 
-    /*void Update()
+    void Update()
     {
         if (currentDensity > targetDensity)
         {
@@ -30,7 +35,7 @@ public class PollutionFogController : MonoBehaviour
             RenderSettings.fogDensity = currentDensity;
         }
 
-    }*/
+    }
 
     // Puedes llamar esta funci�n para aumentar la niebla si algo contamina el ambiente
     public void IncreasePollution(float amount)
@@ -40,22 +45,34 @@ public class PollutionFogController : MonoBehaviour
         RenderSettings.fogDensity = currentDensity;
     }
 
-   public void SetFogDensityByContamination(float contaminationLevel)
+    public void SetFogDensityByContamination(float contaminationLevel)
     {
-        // Asegurar rango 0-1
         contaminationLevel = Mathf.Clamp01(contaminationLevel);
 
-        // Convertir contaminación a densidad
-        currentDensity = Mathf.Lerp(0f, initialDensity, contaminationLevel);
+        // ---------- Fog clásico ----------
+        currentDensity = initialDensity * contaminationLevel;
 
-        // Aplicar densidad
         RenderSettings.fogDensity = currentDensity;
 
-        // Apagar completamente la niebla cuando llegue a 0
         RenderSettings.fog = currentDensity > 0.0001f;
 
-        Debug.Log("Fog Density: " + currentDensity +
-                " | Contaminación: " + contaminationLevel);
+        // ---------- Partículas ----------
+        if (fogParticles != null)
+        {
+            var emission = fogParticles.emission;
+
+            emission.rateOverTime = maxParticleRate * contaminationLevel;
+
+            // Detener completamente si llega a 0
+            if (contaminationLevel <= 0.001f)
+            {
+                fogParticles.Stop();
+            }
+            else if (!fogParticles.isPlaying)
+            {
+                fogParticles.Play();
+            }
+        }
     }
 
 }

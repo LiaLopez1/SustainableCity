@@ -35660,7 +35660,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 5e7114af89cb963439256bc2c6266924, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  panelFinal: {fileID: 1215423816}
+  panelFinal: {fileID: 71158042}
   jugador: {fileID: 778765609}
 --- !u!1 &1145579290
 GameObject:
@@ -55579,7 +55579,7 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0, y: 0}
   m_AnchorMax: {x: 1, y: 1}
-  m_AnchoredPosition: {x: -3.0748901, y: 87}
+  m_AnchoredPosition: {x: -3.0749512, y: 87}
   m_SizeDelta: {x: 0, y: 0}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!64 &1676802324
@@ -60211,7 +60211,6 @@ MonoBehaviour:
   sliderContaminacion: {fileID: 1896017441}
   imagenEstado: {fileID: 1380588862}
   fogController: {fileID: 8261014176839090557}
-  misionNieblaLimpia: 24
   misionActivarSegundaZona: 30
   basuraSpawner: {fileID: 573575323}
   configuracionesBasura:
@@ -60333,7 +60332,7 @@ MonoBehaviour:
       - 0
       - 50
       - 50
-  totalMisiones: 5
+  totalMisiones: 24
   mapaViejo: {fileID: 919132148362196974}
   mapaNuevo: {fileID: 919132149061537887}
   panelFinal: {fileID: 1215423816}
@@ -102283,9 +102282,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: f53ee52a6b70f66429ea5589a9ede4f9, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  initialDensity: 0
-  targetDensity: 0
-  reductionSpeed: 0.01
+  fogParticles: {fileID: 1852936692}
+  maxParticleRate: 300
 --- !u!1 &8314620760347585484
 GameObject:
   m_ObjectHideFlags: 0

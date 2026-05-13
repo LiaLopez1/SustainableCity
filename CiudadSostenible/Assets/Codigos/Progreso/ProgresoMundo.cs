@@ -12,9 +12,7 @@ public class ProgresoMundo : MonoBehaviour
     [Header("Niebla")]
     public PollutionFogController fogController;
 
-    [Header("Niebla y misiones")]
-    [Tooltip("Número de misiones completadas en las que la niebla debe ser 0 (mínima).")]
-    public int misionNieblaLimpia = 24;
+    [Header("Configuración de misiones")]
 
     [Header("Basura - Activación de zonas")]
     [Tooltip("Misión a partir de la cual se activa la segunda zona de spawn de basura.")]
@@ -279,19 +277,10 @@ public class ProgresoMundo : MonoBehaviour
             AplicarInteractuable(entry, shouldUnlock);
         }
 
-        // Niebla
-        float contaminacionNiebla = 1f;
-        if (misionNieblaLimpia > 0)
-        {
-            // Cada misión reduce la contaminación en la misma cantidad.
-            // Cuando completadas >= misionNieblaLimpia → contaminacionNiebla = 0
-            contaminacionNiebla = Mathf.Clamp01((float)(misionNieblaLimpia - completadas) / misionNieblaLimpia);
-        }
-
         // Enviamos SOLO este valor al controlador de niebla
         if (fogController != null)
         {
-            fogController.SetFogDensityByContamination(contaminacionNiebla);
+            fogController.SetFogDensityByContamination(valorSlider);
         }
 
         // Cambio de mapa final
